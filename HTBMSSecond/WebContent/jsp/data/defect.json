@@ -1,0 +1,34 @@
+{
+	"data":[
+		{
+			"dName":"钢筋锈蚀",
+			"dLoc":"距1墩10cm",
+			"dDesc":"111",
+			"weight":"中",
+			"serious":"是",
+			"needMaint":"否",
+			"focus":"是",
+			"pic":"<a href='#'>查看</a>"
+		},
+		{
+			"dName":"钢筋锈蚀",
+			"dLoc":"距1墩10cm",
+			"dDesc":"111",
+			"weight":"中",
+			"serious":"是",
+			"needMaint":"否",
+			"focus":"是",
+			"pic":"<a href='#'>查看</a>"
+		},
+		{
+			"dName":"钢筋锈蚀",
+			"dLoc":"距1墩10cm",
+			"dDesc":"111",
+			"weight":"中",
+			"serious":"是",
+			"needMaint":"否",
+			"focus":"是",
+			"pic":"<a href='#'>查看</a>"
+		}
+	]
+}

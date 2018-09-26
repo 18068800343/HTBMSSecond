@@ -1,0 +1,43 @@
+{
+	"data":[
+		{
+			"dir":"上部承重构件",
+			"str":"2",
+			"def":"<a href='#'>查看</a>",
+			"sco":"<span class='label label-success'>已评定</span>",
+			"eva":[
+				{
+					"ind":"缺损程度",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)'  onmouseover='bbb(this)' onmouseout='ccc(this)' title='0分值标准' >&nbsp;0</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi'onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)'title='+1分值标准'>+1</a>&nbsp;<a class='btn btn-default btn-xs fenzhi'onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)'>+2</a>"},  
+				{
+					"ind":"缺损对使用功能的影响程度",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)' title='0分值标准'>&nbsp;0</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='+1分值标准'>+1</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+2</a>"
+				},
+				{
+					"ind":"缺损发展变化状况的修正",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>-1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;0</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+1</a>"
+				}
+			]
+		},
+		{
+			"dir":"上部承重构件",
+			"str":"",
+			"def":"<a href='#'>查看</a>",
+			"sco":"<span class='label label-danger'>未评定</span>",
+			"eva":[
+				{
+					"ind":"缺损程度",
+					"sco":"<a  class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)'>&nbsp;0</a>&nbsp;<a class='btn btn-default btn-xs fenzhi'  onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+1</a>&nbsp;<a class='btn btn-default btn-xs fenzhi'  onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+2</a>"
+				},
+				{
+					"ind":"缺损对使用功能的影响程度",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)' >&nbsp;0</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)'>+1</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+2</a>"
+				},
+				{
+					"ind":"缺损发展变化状况的修正",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)' onmouseout='ccc(this)'>-1</a>&nbsp;<a class='btn btn-default btn-xs fenzhi'  onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;0</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>+1</a>"
+				}
+			]
+		}
+	]
+}

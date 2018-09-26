@@ -1,0 +1,81 @@
+{
+	"data":[
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		},
+		{
+			"no":"PRJ_XXXX_XX_XX",
+			"name":"XXXXXX",
+			"org":"XXXXXX",
+			"manager":"XXX",
+			"finish":"<span style='margin-top:5px' class='sparkline display-inline' data-sparkline-type='pie' data-sparkline-piecolor='[\"#E979BB\", \"#57889C\"]' data-sparkline-offset='90' data-sparkline-piesize='23px'>17,83</span>",
+			"worker":"XXX,XXX,XXX",
+			"structs":"XXXX,XXXX,XXXX,XXXX",
+			"struct_count":"20",
+			"member_count":"200"
+		}
+	]
+}

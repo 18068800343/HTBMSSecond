@@ -1,0 +1,44 @@
+{
+	"data":[
+		{	
+			"distr_name":"上部结构",
+			"component_name":"翼墙、锥坡",
+			"member_no":"耳墙0-1-1",
+			"member_name":"耳墙",
+			"defects":[
+				{
+					"defect_name":"钢筋锈蚀",
+					"defect_location_desc":"距1墩10cm",
+					"defect_count":"111",
+					"defect_photo":"wwwwww",
+					"repair_state":"1",
+					"operation":"<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-pencil'></i></button>&nbsp;<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-trash'></i></button>"
+				},
+				{
+					"defect_name":"钢筋锈蚀",
+					"defect_location_desc":"距1墩10cm",
+					"defect_count":"111",
+					"defect_photo":"wwwww",
+					"repair_state":"0",
+					"operation":"<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-pencil'></i></button>&nbsp;<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-trash'></i></button>"
+				}
+			]
+		},
+		{	
+			"distr_name":"桥面系",
+			"component_name":"照明、标志",
+			"member_no":"标志0-1-1",
+			"member_name":"标志",
+			"defects":[
+				{
+					"defect_name":"钢筋锈蚀",
+					"defect_location_desc":"距1墩10cm",
+					"defect_count":"111",
+					"defect_photo":"wwwwww",
+					"repair_state":"0",
+					"operation":"<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-pencil'></i></button>&nbsp;<button class='btn btn-warning btn-xs'><i class='glyphicon glyphicon-trash'></i></button>"
+				}
+			]
+		}
+	]
+}

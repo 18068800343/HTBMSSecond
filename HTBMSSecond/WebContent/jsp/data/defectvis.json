@@ -1,0 +1,28 @@
+{
+	"data":[
+		{	
+			"dir":"上行",
+			"span":"12",
+			"comType":"立柱",
+			"comNo":"2-2-1#",
+			"comLoc":"",
+			"chkTime":"2016-08-01",
+			"chkStatus":"共发现2处病害",
+			"chkOper":"<button class='btn btn-warning btn-xs' onclick='openVis()'><li class='fa fa-eye'></li></button>",
+			"defect":[
+				{
+					"dName":"钢筋锈蚀",
+					"dLoc":"距1#墩10cm",
+					"dDesc":"",
+					"pic":"<a href='#'>查看</a>"
+				},
+				{
+					"dName":"钢筋锈蚀",
+					"dLoc":"距1#墩10cm",
+					"dDesc":"",
+					"pic":"<a href='#'>查看</a>"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,88 @@
+{
+	"data":[
+		{
+			"dir":"上行",
+			"spa":"1",
+			"str":"下部结构",
+			"com":"翼墙、耳墙",
+			"mem":"翼墙",
+			"mid":"BRG-11-22",
+			"def":"<a href='#'>查看</a>",
+			"sco":"<span class='label label-success'>已评定</span>",
+			"eva":[
+				{
+					"ind":"破损",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"位移",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"鼓肚、砌体松动",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"裂缝",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				}
+			]
+		},
+		{
+			"dir":"上行",
+			"spa":"1",
+			"str":"下部结构",
+			"com":"翼墙、耳墙",
+			"mem":"翼墙",
+			"mid":"BRG-11-22",
+			"def":"<a href='#'>查看</a>",
+			"sco":"<span class='label label-danger'>未评定</span>",
+			"eva":[
+				{
+					"ind":"破损",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"位移",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"鼓肚、砌体松动",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"裂缝",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				}
+			]
+		},
+		{
+			"dir":"上行",
+			"spa":"1",
+			"str":"下部结构",
+			"com":"翼墙、耳墙",
+			"mem":"翼墙",
+			"mid":"BRG-11-22",
+			"def":"<a href='#'>查看</a>",
+			"sco":"<span class='label label-danger'>未评定</span>",
+			"eva":[
+				{
+					"ind":"破损",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"位移",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"鼓肚、砌体松动",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				},
+				{
+					"ind":"裂缝",
+					"sco":"<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)' title='-1分值标准'>1</a>&nbsp;<a class='btn btn-warning btn-sm fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;2</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;3</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>&nbsp;4</a>&nbsp;<a class='btn btn-default btn-xs fenzhi' onclick='aaa(this)' onmouseover='bbb(this)'onmouseout='ccc(this)'>5</a>"
+				}
+			]
+		}
+	]
+}

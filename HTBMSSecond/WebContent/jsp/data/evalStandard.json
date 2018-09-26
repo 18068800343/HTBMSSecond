@@ -1,0 +1,72 @@
+{
+	"data":[
+		{
+			"no":"1",
+			"stdset":"主缆",
+			"oper":"<a href='#' onclick='addSt()' class='btn btn-warning btn-xs'>增加</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>&nbsp;<a href='#' onclick='setFilter()' class='btn btn-warning btn-xs'>匹配</a>",
+			"sitems":[
+				{
+					"no":"1",
+					"item":"主缆防护损坏",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"2",
+					"item":"主缆线形",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"3",
+					"item":"扶手绳及栏杆绳损坏",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"4",
+					"item":"主缆腐蚀或索股损坏",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"5",
+					"item":"涂膜劣化",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				}
+			]
+		},
+		{
+			"no":"2",
+			"stdset":"索夹",
+			"oper":"<a href='#' onclick='addSt()' class='btn btn-warning btn-xs'>增加</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>&nbsp;<a href='#' onclick='setFilter()' class='btn btn-warning btn-xs'>匹配</a>",
+			"sitems":[
+				{
+					"no":"1",
+					"item":"错位、位移",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"2",
+					"item":"面漆起皮",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"3",
+					"item":"索夹密封填料损坏",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				},
+				{
+					"no":"4",
+					"item":"裂纹和锈蚀",
+					"sco":"0,1,2,3,4,5",
+					"oper":"<a href='#' class='btn btn-warning btn-xs'>编辑</a>&nbsp;<a href='#' class='btn btn-warning btn-xs'>删除</a>"
+				}
+			]
+		}
+	]
+}
