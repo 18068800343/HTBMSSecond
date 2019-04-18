@@ -204,13 +204,14 @@ public class OrgManagerServlet extends HttpServlet {
 		else if(type.equals("editCompany")){
 			//System.out.println("editCompany-In");
 			String org_id = request.getParameter("org_id"); 
+			String org_name_short = request.getParameter("org_name_short"); 
 			String org_name = request.getParameter("org_name");  
 			String tech_section = request.getParameter("tech_section"); 
 			String section_name= request.getParameter("section_name");
 			String section_id= request.getParameter("section_id");
 			//System.out.println(section_name+"  "+section_id);
 			try {
-				int i=OrgManagerDao.getInstance().editCompany(org_id,org_name,tech_section,section_name,section_id);
+				int i=OrgManagerDao.getInstance().editCompanyNew(org_id,org_name,tech_section,section_name,section_id,org_name_short);
 				//System.out.println(i);
 				if(i<0){
 					ro.setError(2);

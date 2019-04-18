@@ -466,7 +466,31 @@ public class OrgManagerDao
 		}
 		return i;
 	}
-
+	public int editCompanyNew(String org_id, String org_name, String tech_section, String section_name, String section_id,String org_name_short)
+	{
+		String sql = "update sys_org_info set org_name=?,tech_section=?,org_name_short=? where org_id=?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql, new String[]
+		{ org_name, tech_section,org_name_short, org_id });
+		dataOperation.close();
+		//编辑下辖路段
+		if(i>=0){
+			String[] arr=section_name.split(",");
+			String[] brr=section_id.split(",");
+			int length=brr.length;
+			for(int ii=0;ii<length;ii++){
+		   i=updateSectionName(arr[ii],brr[ii]);	
+		   if(i<0){
+			   return i;
+		   }
+			}
+			//添加新增的section
+		for(int jj=length;jj<arr.length;jj++){
+			i=addSection(arr[jj],org_id);
+		}
+		}
+		return i;
+	}
 	private int updateSectionName(String section_name, String section_id) {
 
 		String sql = "update sys_section_info set section_name=? where section_id=?";

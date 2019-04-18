@@ -101,12 +101,12 @@ public class BrgMonitorDao {
 		dataOperation.close();
 		return list;
 	}*/
-	public List<String>getlineList1(String tableName,String brg_id,String mode){
+	public List<String>getlineList1(String tableName,String brg_id,String mode,String sort){
 		List<String>list=new ArrayList<>();
 		String data=null;
-		String sql="SELECT distinct time FROM "+tableName+" where monitor_id=? and mode=?";
+		String sql="SELECT  time FROM "+tableName+" where monitor_id=? and mode=? and sort =?";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
-		ResultSet rs =dataOperation.executeQuery(sql,new String[]{brg_id,mode});
+		ResultSet rs =dataOperation.executeQuery(sql,new String[]{brg_id,mode,sort});
 		try {
 			while(rs.next()){
 				data=rs.getString(1);

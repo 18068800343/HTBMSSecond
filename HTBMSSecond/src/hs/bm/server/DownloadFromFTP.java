@@ -18,9 +18,11 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import hs.bm.bean.BrgGpsStatistic;
 import hs.bm.bean.BrgHealthStatistic;
 import hs.bm.bean.BrgSystem;
 import hs.bm.bean.BrgWeightStatistic;
+import hs.bm.bean.BrgWindStatistic;
 import hs.bm.dao.MyDataOperation;
 import hs.bm.dao.MyDataSource;
 
@@ -132,6 +134,63 @@ public class DownloadFromFTP implements Runnable{
 			}
 			return lb;
 	 }
+	 
+	 public List<BrgGpsStatistic> getGpsList(String bridge_id,String state){
+		 List<BrgGpsStatistic> lb=new ArrayList<BrgGpsStatistic>();
+	    	Connection conn = MyDataSource.getInstance().getConnection();
+			MyDataOperation mdo = new MyDataOperation(conn);
+			String sql="select * from brg_gps_statistic where bridge_id=? and is_download=0";
+			ResultSet rs=mdo.executeQuery(sql,new String[]{bridge_id});
+			try {
+				while (rs.next()) {
+					String datafile = rs.getString("data_file");
+					if(datafile.startsWith(state)) {
+						BrgGpsStatistic bs=new BrgGpsStatistic();
+						bs.setBridge_id(rs.getString("bridge_id"));
+						bs.setR_id(rs.getString("r_id"));
+						bs.setData_file(rs.getString("data_file"));
+						bs.setEnd_time(rs.getString("end_time"));
+						bs.setFile_size(rs.getInt("file_size"));
+						bs.setFile_time(rs.getString("file_time"));
+						bs.setStart_time(rs.getString("start_time"));
+						lb.add(bs);
+					}
+					
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				mdo.close();
+			}
+			return lb;
+	 }
+	 
+	 public List<BrgWindStatistic> getWindList(String bridge_id){
+		 List<BrgWindStatistic> lb=new ArrayList<BrgWindStatistic>();
+	    	Connection conn = MyDataSource.getInstance().getConnection();
+			MyDataOperation mdo = new MyDataOperation(conn);
+			String sql="select * from brg_wind_statistic where bridge_id=? and is_download=0";
+			ResultSet rs=mdo.executeQuery(sql,new String[]{bridge_id});
+			try {
+				while (rs.next()) {
+					BrgWindStatistic bs=new BrgWindStatistic();
+					bs.setBridge_id(rs.getString("bridge_id"));
+					bs.setR_id(rs.getString("r_id"));
+					bs.setData_file(rs.getString("data_file"));
+					bs.setEnd_time(rs.getString("end_time"));
+					bs.setFile_size(rs.getInt("file_size"));
+					bs.setFile_time(rs.getString("file_time"));
+					bs.setStart_time(rs.getString("start_time"));
+					lb.add(bs);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				mdo.close();
+			}
+			return lb;
+	 }
+	 
 	 public List<String> getFileList(String bridge_id,String mode){
 		 List<String> ls=new ArrayList<>();
 		 if(mode.equals("weight")){
@@ -142,6 +201,36 @@ public class DownloadFromFTP implements Runnable{
 		 }else if(mode.equals("health")){
 			 List<BrgHealthStatistic> lb=getHealthList(bridge_id);
 			 for(BrgHealthStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("GPS1")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("GPS2")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("GPS3")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("GPS4")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("GPS5")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 ls.add(bs.getData_file());
+			 }
+		 }else if(mode.equals("wind")){
+			 List<BrgWindStatistic> lb=getWindList(bridge_id);
+			 for(BrgWindStatistic bs:lb){
 				 ls.add(bs.getData_file());
 			 }
 		 }
@@ -160,6 +249,36 @@ public class DownloadFromFTP implements Runnable{
 			 for(BrgHealthStatistic bs:lb){
 				 map.put(bs.getData_file(), bs.getR_id());
 			 }
+		 }else if(mode.equals("GPS1")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
+		 }else if(mode.equals("GPS2")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
+		 }else if(mode.equals("GPS3")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
+		 }else if(mode.equals("GPS4")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
+		 }else if(mode.equals("GPS5")){
+			 List<BrgGpsStatistic> lb=getGpsList(bridge_id,mode);
+			 for(BrgGpsStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
+		 }else if(mode.equals("wind")){
+			 List<BrgWindStatistic> lb=getWindList(bridge_id);
+			 for(BrgWindStatistic bs:lb){
+				 map.put(bs.getData_file(), bs.getR_id());
+			 }
 		 }
 		 return map;
 	 }
@@ -169,7 +288,20 @@ public class DownloadFromFTP implements Runnable{
 			 sql="update brg_weight_statistic set is_download=1 where r_id=?";
 		 }else if(mode.equals("health")){
 			 sql="update brg_health_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("GPS1")){
+			 sql="update brg_gps_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("GPS2")){
+			 sql="update brg_gps_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("GPS3")){
+			 sql="update brg_gps_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("GPS4")){
+			 sql="update brg_gps_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("GPS5")){
+			 sql="update brg_gps_statistic set is_download=1 where r_id=?";
+		 }else if(mode.equals("wind")){
+			 sql="update brg_wind_statistic set is_download=1 where r_id=?";
 		 }
+		 
 		 if(sql.equals("")){
 			 return 0;
 		 }
@@ -235,10 +367,25 @@ public class DownloadFromFTP implements Runnable{
 						String mode="health";
 						if(dir.toLowerCase().endsWith("w")){
 							mode="weight";
+						}else if(dir.toLowerCase().endsWith("01g")) {
+							mode = "GPS1";
+						}else if(dir.toLowerCase().endsWith("02g")) {
+							mode = "GPS2";
+						}else if(dir.toLowerCase().endsWith("03g")) {
+							mode = "GPS3";
+						}else if(dir.toLowerCase().endsWith("04g")) {
+							mode = "GPS4";
+						}else if(dir.toLowerCase().endsWith("05g")) {
+							mode = "GPS5";
+						}else if(dir.toLowerCase().endsWith("f")) {
+							mode = "wind";
 						}
+						
 						Map<String, String> map=getFileMap(bs.getBridge_id(), mode);
 						FTPFile[] files =ftpClient.listFiles();  
-			            for(FTPFile file:files){  
+			            for(FTPFile file:files){
+			            		
+			            	
 			            	if(!map.containsKey(file.getName())){
 			            		continue;
 			            	}
@@ -263,6 +410,7 @@ public class DownloadFromFTP implements Runnable{
 		                    is.close();
 			            } 
 					}
+			            
 				} catch (IOException e) {
 					e.printStackTrace();
 				}finally {
@@ -276,7 +424,6 @@ public class DownloadFromFTP implements Runnable{
 			System.out.println("结束本次下载"+new Date());
 	 }
 	public static void main(String[] args) {
-		
 		ScheduledThreadPoolExecutor schedule=new ScheduledThreadPoolExecutor(5);
 		schedule.scheduleWithFixedDelay(new DownloadFromFTP(), 0, 7, TimeUnit.DAYS);
 	}

@@ -378,7 +378,7 @@ public class BrgMonitorServlet extends HttpServlet {
 			String item_second=request.getParameter("item_second");
 			String brg_no = BrgCardDao.getInstance().getBrgCardAdminIdData(brg_id).get(0).getBridge_no();
 			String monitor_id=BrgMonitorDao.getIntance().getMonitor_id(item_first, item_second, brg_id);
-			List<String>list1=BrgMonitorDao.getIntance().getlineList1(tableName, brg_no, mode);
+			List<String>list1=BrgMonitorDao.getIntance().getlineList1(tableName, brg_no, mode,sort);
 			List<String> list=BrgMonitorDao.getIntance().getRowListBySort(tableName, rowName, brg_no, mode,sort);
 			Map map=new HashMap<>();
 			map.put("x",list1);

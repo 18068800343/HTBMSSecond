@@ -4,9 +4,16 @@
   <welcome-file-list>
     <welcome-file>jsp/login.jsp</welcome-file>
   </welcome-file-list>
+    <listener>
+    <listener-class>hs.bm.server.LoopJobListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>hs.bm.server.SendMessageListener</listener-class>
+  </listener>
   <listener>
     <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
   </listener>
+
   <filter>
     <filter-name>ShiroFilter</filter-name>
     <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
@@ -437,12 +444,7 @@
     <servlet-name>PasMbrServlet</servlet-name>
     <url-pattern>/PasMbrServlet</url-pattern>
   </servlet-mapping>
-  <listener>
-    <listener-class>hs.bm.server.LoopJobListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>hs.bm.server.SendMessageListener</listener-class>
-  </listener>
+
   <servlet>
     <description></description>
     <display-name>AppDownloadServices</display-name>

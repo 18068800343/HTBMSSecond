@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import hs.bm.vo.SpanMem;
 import hs.bm.bean.ChkBrgDefect;
 import hs.bm.bean.ChkBrgPhoto;
+import hs.bm.bean.ChkBrgRecord;
 import hs.bm.bean.ChkPassPhoto;
 import hs.bm.bean.DefectCount;
 import hs.bm.bean.DicMbrDefectS;
@@ -73,7 +74,16 @@ public class CheckSpanDao {
 		dataOperation.close();
 		return i;
 	}
-
+	public int insertIntoChkBrgRecord(ChkBrgRecord bm) {
+		String sql = "insert into chk_brg_record(mbr_chk_id,span_chk_id,bridge_id,direction,span_no,mbr_type,mbr_no,mbr_chk_date,mbr_chk_person) values(?,?,?,?,?,?,?,?,?)";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql,
+				new String[] { bm.getMbr_chk_id(), bm.getSpan_chk_id(), bm.getBridge_id(), bm.getDirection(),
+						bm.getSpan_no(), bm.getMbr_type(), bm.getMbr_no(),
+						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),bm.getMbr_chk_person() });
+		dataOperation.close();
+		return i;
+	}
 	public List<SpanMem> initTable(String span_chk_id) {
 		String sql = "select a.*,b.component8,b.distr_name,c.* from chk_brg_record as a,dic_brg_struct_member_def as b,brg_mbr_info as c where span_chk_id=? and a.mbr_type=b.member_name and c.r_id = a.mbr_no";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
@@ -461,6 +471,15 @@ public class CheckSpanDao {
 		return i;
 	}
 
+	public int updatePhotoPath(String photoPath,String photo_id) {
+		int i = 0;
+		MyDataOperation mdo = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		String sql = " update chk_brg_photo set photo_path=? where photo_id=? ";
+		String[] params = new String[] {photoPath,photo_id};
+		i = mdo.executeUpdate(sql, params);
+		mdo.close();
+		return i;
+	}
 	public int deletePhotoById(String photo_id) {
 		int i = 0;
 		MyDataOperation mdo = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);

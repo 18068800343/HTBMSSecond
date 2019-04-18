@@ -820,7 +820,7 @@ public class PrjMgrDao {
 						new Object[] {chk_id, prj_id, sf.getHighway_id(),
 								sf.getHighway_name(), sf.getStruct_id(), sf.getStruct_name(), sf.getManage_name(),
 								prj_charge_man, 0 });
-				/* @author xianing(￣ε(#￣)
+				/* @author
 				 * 当前项目prj_id为prj_id
 				 * 当前分区主键为zone_id
 				 * 当前项目chk_id为chk_id
@@ -1061,21 +1061,44 @@ public class PrjMgrDao {
 		dataOperation.close();
 		return flag;
 	}
+	public static String getChkIdByPrjAndBrgId(String prjId,String brgId) {
+		String sql = "select * from chk_brg_regular where prj_id=? and bridge_id=?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[] {prjId,brgId});
+		String chk_id="";
+		try {
+			while (rs.next()) {
+				chk_id=rs.getString("chk_id");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return chk_id;
+	}
 
 	public int addStruct(String prj_id, String chk_type, List<StructInformation> ll, String prj_charge_man) {
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		int i = 0;
 		for (StructInformation sf : ll) {
 			if (sf.getStruct_mode().equals("bridge")) {
+				
+				String chk_id = getChkIdByPrjAndBrgId(prj_id,sf.getStruct_id());
 				String brgSql = "insert into chk_brg_regular( chk_id, prj_id, line_no, line_name, bridge_id, bridge_name, maintain_org, response_person, audit_state ) values(?,?,?,?,?,?,?,?,?)";
-				i = dataOperation.executeUpdate(brgSql,
-						new Object[] { UUID.randomUUID().toString().replaceAll("-", ""), prj_id, sf.getHighway_id(),
-								sf.getHighway_name(), sf.getStruct_id(), sf.getStruct_name(), sf.getManage_name(),
-								prj_charge_man, 0 });
+				
+				if(chk_id==""||null==chk_id){
+					i = dataOperation.executeUpdate(brgSql,
+							new Object[] { UUID.randomUUID().toString().replaceAll("-", ""), prj_id, sf.getHighway_id(),
+									sf.getHighway_name(), sf.getStruct_id(), sf.getStruct_name(), sf.getManage_name(),
+									prj_charge_man, 0 });
+				}
 				if (i < 0) {
 					dataOperation.close();
 					return i;
 				}
+				
+				
 				brgSql = "insert into eva_brg_rec (bridge_id,prj_id,er_std,audit_state) values(?,?,?,?)";
 				i = dataOperation.executeUpdate(brgSql, new Object[] { sf.getStruct_id(), prj_id, "2004", 0 });
 				if (i < 0) {
@@ -1087,7 +1110,11 @@ public class PrjMgrDao {
 					dataOperation.close();
 					return i;
 				}
+				
+				
 			}
+			
+			
 			if (sf.getStruct_mode().equals("pass")) {
 				String passSql = "insert into chk_pass_regular( chk_id, prj_id, pass_id, line_no, line_name, maintain_org, response_person, audit_state ) values(?,?,?,?,?,?,?,?)";
 				i = dataOperation.executeUpdate(passSql,

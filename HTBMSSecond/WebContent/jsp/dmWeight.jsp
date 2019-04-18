@@ -454,7 +454,7 @@
 	        type: 'date',
 	        trigger: 'click',
 	        done: function(date) {
-	        	 var beginDate=date;  
+	        	 var beginDate=date;
 	        	 var endDate=$("#reservationEnd").val();
 	        	 var d1 = beginDate;
 	        	 var d2 = endDate;

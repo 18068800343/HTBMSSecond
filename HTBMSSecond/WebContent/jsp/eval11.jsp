@@ -449,7 +449,11 @@
                         if (data == "0") {
                             return "<span class='label label-danger state'>未评定</span>";
                         } else {
+                        	if(full.calcu_value==undefined){
+                        		 return "<span class='label label-success state'>已评定</span>";
+                        	}else{
                         	return "<span class='label label-success state'>"+Number(full.calcu_value).toFixed(2)+"</span>";
+                        	}
                         }
                     }
                 }],

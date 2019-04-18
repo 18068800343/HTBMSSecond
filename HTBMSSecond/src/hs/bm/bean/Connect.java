@@ -10,6 +10,7 @@ public class Connect {
 	private String type;
 	private String bgco;
 	private String name_no;
+	
 	private List<Connect> children;
 	
 	public Connect(){
