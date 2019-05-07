@@ -906,6 +906,7 @@
 
         for (var i = 0; i < dd.length; i++) {
             var def = dd[i];
+            console.log(def.mbr_no)
             var count_val = JSON.parse(def.defect_count_val);
             var loc_val = JSON.parse(def.defect_location_desc_val);
             component = formatMember(def.mbr_no);
@@ -1032,7 +1033,13 @@
                 }
             });
 
+    var choose_brgName;//裂缝图-项目名称
+    var choose_direction;//裂缝图-方向
+    var choose_span_no;//裂缝图-跨号
     function initTable(info) {
+    	choose_brgName="<%=oc.getName()%>";
+    	choose_direction=info.direction;
+    	choose_span_no=info.name;
         var prj = $('#project').val();
         $('#dt_basic').dataTable().fnClearTable();
         $.ajax({
@@ -1252,9 +1259,17 @@
         if (direction.indexOf('下') >= 0) {
             for (var i = 1; i <= beamCount; i++) {
                 if (mod) {
-                    text = i + "#梁外侧翼板";
+                	if(i>9){
+                		text = i + "#梁外侧翼板";
+                	}else{
+                		text ="0"+ i + "#梁外侧翼板";
+                	}
                 } else {
-                    text = i + "#梁右侧翼板";
+                	if(i>9){
+                		text = i + "#梁右侧翼板";
+                	}else{
+                		text ="0"+ i + "#梁右侧翼板";
+                	}
                 }
                 y = y + svgFlangeWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
@@ -1263,17 +1278,31 @@
                 ts[(i - 1) * 6] = text;
 
                 if (mod) {
-                    text = i + "#梁外侧腹板";
+                	if(i>9){
+                		text = i + "#梁外侧腹板";
+                	}else{
+                		text ="0"+ i + "#梁外侧腹板";
+                	}
+                    
                 } else {
-                    text = i + "#梁右侧腹板";
+                	if(i>9){
+                		text = i + "#梁右侧腹板";
+                	}else{
+                		text ="0"+ i + "#梁右侧腹板";
+                	}
+                    
                 }
                 y = y + svgWebHeight;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
                 drawText(0, y - svgWebHeight / 2 + textHeight / 2, text);
                 ys[(i - 1) * 6 + 1] = y;
                 ts[(i - 1) * 6 + 1] = text;
-
-                text = i + "#梁底板";
+				
+                if(i>9){
+                	text = i + "#梁底板";
+                }else{
+                	text ="0"+ i + "#梁底板";
+                }
                 y = y + svgBottomWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
                 drawText(0, y - svgBottomWidth / 2 + textHeight / 2, text);
@@ -1281,9 +1310,19 @@
                 ts[(i - 1) * 6 + 2] = text;
 
                 if (mod) {
-                    text = i + "#梁内侧腹板";
+                	if(i>9){
+                		text = i + "#梁内侧腹板";
+                	}else{
+                		text ="0"+ i + "#梁内侧腹板";
+                	}
+                    
                 } else {
-                    text = i + "#梁左侧腹板";
+                	if(i>9){
+                		text = i + "#梁左侧腹板";
+                	}else{
+                		text ="0"+ i + "#梁左侧腹板";
+                	}
+                    
                 }
                 y = y + svgWebHeight;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
@@ -1292,9 +1331,19 @@
                 ts[(i - 1) * 6 + 3] = text;
 
                 if (mod) {
-                    text = i + "#梁内侧翼板";
+                	if(i>9){
+                		 text = i + "#梁内侧翼板";
+                	}else{
+                		 text ="0"+ i + "#梁内侧翼板";
+                	}
+                   
                 } else {
-                    text = i + "#梁左侧翼板";
+                	if(i>9){
+                		text = i + "#梁左侧翼板";
+	               	}else{
+	               		text ="0"+ i + "#梁左侧翼板";
+	               	}
+                    
                 }
                 y = y + svgFlangeWidth;
                 if (i == beamCount) {
@@ -1307,7 +1356,11 @@
                 ts[(i - 1) * 6 + 4] = text;
 
                 if (i != beamCount) {
-                    text = i + "#湿接缝";
+                	 if(i>9){
+                		 text = i + "#湿接缝";
+                     }else{
+                    	 text ="0"+ i + "#湿接缝";
+                     }
                     y = y + svgJointWidth;
                     drawLine(x, y, x + svgBeamLength, y, DASH, 'BLACK');
                     drawText(0, y - svgJointWidth / 2 + textHeight / 2, text);
@@ -1318,9 +1371,19 @@
         } else {
             for (var i = beamCount; i >= 1; i--) {
                 if (mod) {
-                    text = i + "#梁内侧翼板";
+                	if(i>9){
+                		text = i + "#梁内侧翼板";
+	               	}else{
+	               		text ="0"+ i + "#梁内侧翼板";
+	               	}
+                    
                 } else {
-                    text = i + "#梁左侧翼板";
+                	if(i>9){
+                		text = i + "#梁左侧翼板";
+	               	}else{
+	               		text ="0"+ i + "#梁左侧翼板";
+	               	}
+                    
                 }
                 y = y + svgFlangeWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
@@ -1329,9 +1392,19 @@
                 ts[(beamCount - i) * 6] = text;
 
                 if (mod) {
-                    text = i + "#梁内侧腹板";
+                	if(i>9){
+                		text = i + "#梁内侧腹板";
+	               	}else{
+	               		text ="0"+ i + "#梁内侧腹板";
+	               	}
+                    
                 } else {
-                    text = i + "#梁左侧腹板";
+                	if(i>9){
+                		 text = i + "#梁左侧腹板";
+	               	}else{
+	               	 	 text ="0"+ i + "#梁左侧腹板";
+	               	}
+                   
                 }
                 y = y + svgWebHeight;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
@@ -1339,7 +1412,11 @@
                 ys[(beamCount - i) * 6 + 1] = y;
                 ts[(beamCount - i) * 6 + 1] = text;
 
-                text = i + "#梁底板";
+                if(i>9){
+                	text = i + "#梁底板";
+               	}else{
+               		text ="0"+ i + "#梁底板";
+               	}
                 y = y + svgBottomWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
                 drawText(0, y - svgBottomWidth / 2 + textHeight / 2, text);
@@ -1347,9 +1424,19 @@
                 ts[(beamCount - i) * 6 + 2] = text;
 
                 if (mod) {
-                    text = i + "#梁外侧腹板";
+                	if(i>9){
+                		 text = i + "#梁外侧腹板";
+	               	}else{
+	               	     text ="0"+ i + "#梁外侧腹板"; 
+	               	}
+                   
                 } else {
-                    text = i + "#梁右侧腹板";
+                	if(i>9){
+                		text = i + "#梁右侧腹板";
+	               	}else{
+	               		text ="0"+ i + "#梁右侧腹板";
+	               	}
+                    
                 }
 
                 y = y + svgWebHeight;
@@ -1359,9 +1446,19 @@
                 ts[(beamCount - i) * 6 + 3] = text;
 
                 if (mod) {
-                    text = i + "#梁外侧翼板";
+                	if(i>9){
+                		 text = i + "#梁外侧翼板";
+	               	}else{
+	               	     text ="0"+ i + "#梁外侧翼板";
+	               	}
+                   
                 } else {
-                    text = i + "#梁右侧翼板";
+                	if(i>9){
+                		text = i + "#梁右侧翼板";
+	               	}else{
+	               		text ="0"+ i + "#梁右侧翼板";
+	               	}
+                    
                 }
                 y = y + svgFlangeWidth;
                 if (i == 1) {
@@ -1374,7 +1471,11 @@
                 ts[(beamCount - i) * 6 + 4] = text;
 
                 if (i != 1) {
-                    text = (i - 1) + "#湿接缝";
+                	if(i>10){
+                		text = (i - 1) + "#湿接缝";
+                   	}else{
+                   		text ="0"+ (i - 1) + "#湿接缝";
+                   	}
                     y = y + svgJointWidth;
                     drawLine(x, y, x + svgBeamLength, y, DASH, 'BLACK');
                     drawText(0, y - svgJointWidth / 2 + textHeight / 2, text);
@@ -1417,7 +1518,11 @@
             ts[1] = text;
 
             for (var i = 1; i <= beamCount; i++) {
-                text = i + "#梁底板";
+                if(i>9){
+                	text = i + "#梁底板";
+                }else{
+                	text ="0"+ i + "#梁底板";
+                }
                 y = y + svgBottomWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
                 drawText(0, y - svgBottomWidth / 2 + textHeight / 2, text);
@@ -1470,7 +1575,11 @@
             ts[1] = text;
 
             for (var i = beamCount; i >= 1; i--) {
-                text = i + "#梁底板";
+            	if(i>9){
+            		text = i + "#梁底板";
+                }else{
+                	text ="0"+ i + "#梁底板";
+                }
                 y = y + svgBottomWidth;
                 drawLine(x, y, x + svgBeamLength, y, SOLID, 'BLACK');
                 drawText(0, y - svgBottomWidth / 2 + textHeight / 2, text);
@@ -1657,7 +1766,7 @@
         var x1, y1, x2, y2;
         var index = 0;
         for (var i = 0; i < ts.length; i++) {
-            if (ts[i] == component) {//TODO
+            if (ts[i].indexOf(component)!=-1 ) {//TODO
                 index = i;
                 break;
             }
@@ -1875,15 +1984,17 @@
             //console.log(x1+","+x2+","+y1+","+y2);
             drawLine(x1, y1, x2, y2, SOLID, 'RED');
         }
-        drawText2(x1 + (x2 - x1) / 2, y1 + (y2 - y1) / 2, '[' + crackNumber + ']');
+        drawText2(x1 + (x2 - x1) / 2, y1 + (y2 - y1) / 2, '[' + (crackNumber-1) + ']');
     }
     function ajustSVGHeight() {
         $('#mysvg').height(y + 10);
     }
+    
     //保存为图片
     function save() {
+    	var pngName=choose_brgName+choose_direction+choose_span_no+"#跨裂缝布置图.png"
         saveSvgAsPng(
-            document.getElementById("mysvg"), "defect.png",
+            document.getElementById("mysvg"), pngName,
             {width: $('#mysvg').width(), height: $('#mysvg').height()}
         );
     }

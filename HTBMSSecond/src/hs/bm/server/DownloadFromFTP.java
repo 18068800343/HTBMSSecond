@@ -396,15 +396,17 @@ public class DownloadFromFTP implements Runnable{
 			            	File localFile = new File("D:\\htbms\\"+dir+"\\"+file.getName());    
 		                    OutputStream is = new FileOutputStream(localFile); 
 		                    boolean dl=ftpClient.retrieveFile(file.getName(), is);
-		                    
+		                    if("".equals(file.getName())){
+		                    	System.out.println("*****G15320921L0010S");
+		                    }
 		                    if(dl&&localFile.length()==file.getSize()){
 		                    	System.out.println("下载成功----"+dir+"---"+file.getName()+"---"+file.getSize());
 		                    	int i=updateIsDownload(map.get(file.getName()), mode);
 		                    	if(i>0){
 		                    		System.out.println("修改入库成功");
-		                    		/*if(ftpClient.deleteFile("/"+dir+"/"+file.getName())){
+		                    		if(ftpClient.deleteFile("/"+dir+"/"+file.getName())){
 		                    			System.out.println("删除"+file.getName()+"成功");
-		                    		}*/
+		                    		}
 		                    	}
 		                    }
 		                    is.close();
