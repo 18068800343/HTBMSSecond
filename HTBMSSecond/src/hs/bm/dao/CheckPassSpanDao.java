@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import hs.bm.vo.SpanMem;
 import hs.bm.bean.ChkBrgDefect;
 import hs.bm.bean.ChkBrgPhoto;
+import hs.bm.bean.ChkBrgRecord;
 import hs.bm.bean.ChkPassPhoto;
 import hs.bm.bean.DefectCount;
 import hs.bm.bean.DicMbrDefectS;
@@ -74,6 +75,17 @@ public class CheckPassSpanDao {
 		return i;
 	}
 
+	public int insertIntoChkPassRecord(ChkBrgRecord bm) {
+		String sql = "insert into chk_pass_record(mbr_chk_id,span_chk_id,pass_id,direction,span_no,mbr_type,mbr_no,mbr_chk_date,mbr_chk_person) values(?,?,?,?,?,?,?,?,?)";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql,
+				new String[] { bm.getMbr_chk_id(), bm.getSpan_chk_id(), bm.getBridge_id(), bm.getDirection(),
+						bm.getSpan_no(), bm.getMbr_type(), bm.getMbr_no(),
+						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), "" });
+		dataOperation.close();
+		return i;
+	}
+	
 	public List<SpanMem> initTable(String span_chk_id) {
 		String sql = "select a.*,b.component9,b.distr_name,c.* from chk_pass_record as a,dic_brg_struct_member_def as b,pass_mbr_info as c where span_chk_id=? and a.mbr_type=b.member_name and c.r_id = a.mbr_no";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
@@ -264,6 +276,19 @@ public class CheckPassSpanDao {
 		return i;
 	}
 
+	public int insertChkPassDefect(ChkBrgDefect cbd) {
+		String sql = "insert into chk_pass_defect(defect_serial,defect_id,defect_name,defect_location_desc,defect_count,mbr_chk_id,mbr_no,repair_state,develop_state,defect_attr,defect_location_desc_val,defect_count_val,chk_defect_memo,current,defect_name_f) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql,
+				new String[] { cbd.getDefect_serial(), cbd.getDefect_id(), cbd.getDefect_name(),
+						cbd.getDefect_location_desc(), cbd.getDefect_count(),
+						cbd.getMbr_chk_id(), cbd.getMbr_no(), cbd.getRepair_state(), cbd.getDevelop_state(),
+						 cbd.getDefect_attr(), cbd.getDefect_location_desc_val(),
+						cbd.getDefect_count_val(), cbd.getChk_defect_memo(), cbd.getCurrent(), cbd.getDefect_name_f() });
+		dataOperation.close();
+		return i;
+	}
+	
 	public int editDefect(ChkBrgDefect cbd, String current) {
 		String sql = "update  chk_pass_defect set defect_name_f=?,defect_name=?,defect_location_desc=?,defect_count=?,defect_attr=?,defect_location_desc_val=?,defect_count_val=?,chk_defect_memo=?,current=?,develop_state=? where defect_serial=?";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
@@ -412,6 +437,17 @@ public class CheckPassSpanDao {
 	}
 
 	public int insertPhoto(ChkPassPhoto chkPassPhoto) {
+		int i = 0;
+		MyDataOperation mdo = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		String sql = " INSERT INTO chk_pass_photo(photo_name,photo_path,photo_date,defect_serial) VALUES(?,?,?,?) ";
+		String[] params = new String[] { chkPassPhoto.getPhoto_name(), chkPassPhoto.getPhoto_path(),
+				chkPassPhoto.getPhoto_date(), chkPassPhoto.getDefect_serial() };
+		i = mdo.executeUpdate(sql, params);
+		mdo.close();
+		return i;
+	}
+	
+	public int insertChkPassPhoto(ChkBrgPhoto chkPassPhoto) {
 		int i = 0;
 		MyDataOperation mdo = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		String sql = " INSERT INTO chk_pass_photo(photo_name,photo_path,photo_date,defect_serial) VALUES(?,?,?,?) ";

@@ -154,6 +154,36 @@ public class GetFTPFile implements Runnable{
 		}
 		return set;
     }
+    
+    
+    public boolean getDataIFDownLoad(String bridge_id,String mode,String fileName){
+    	boolean bool = false;
+    	String sql="";
+    	if(mode.equals("s")){
+    		sql="select * from brg_health_statistic where bridge_id=? and data_file like ? and is_download = 1 ";
+    	}else if(mode.equals("w")){
+    		sql="select * from brg_weight_statistic where bridge_id=? and data_file like ? and is_download = 1";
+    	}else if(mode.equals("g")) {
+    		sql = "select * from brg_gps_statistic where bridge_id=? and data_file like ? and is_download = 1";
+    	}else{
+    		return false;
+    	}
+    	Connection conn = MyDataSource.getInstance().getConnection();
+		MyDataOperation mdo = new MyDataOperation(conn);
+		ResultSet rs=mdo.executeQuery(sql,new String[]{bridge_id,fileName+"%"});
+		try {
+			while (rs.next()) {
+				bool = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			mdo.close();
+		}
+		return bool;
+    }
+    
+    
     public String getDateFormat(String s){
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     	SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -215,6 +245,9 @@ public class GetFTPFile implements Runnable{
 			for(BrgSystem bs:lb){
 				
 				String dir="/"+bs.getDir_name()+"/";
+				if("dir".contains("G15320921L0010S")){
+					System.out.println("****G15320921L0010S");
+				}
 				Set<String> set=getDataSet(bs.getBridge_id(), bs.getMode());
 			
 				try {
@@ -243,6 +276,16 @@ public class GetFTPFile implements Runnable{
 							
 						
 						if(re.equals("*")||set.contains(re)){
+							//115重复文件清除
+/*							if(set.contains(re)){
+								boolean bool = getDataIFDownLoad(bs.getBridge_id(), bs.getMode(),file.getName());
+								if(bool){
+									boolean dl = ftpClient.deleteFile("/"+dir+"/"+file.getName());
+									if(dl){
+										System.out.println("删除已转移文件成功");
+									}
+								}
+							}*/
 							continue;
 						}
 						

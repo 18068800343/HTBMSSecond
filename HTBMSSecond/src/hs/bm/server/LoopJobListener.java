@@ -39,8 +39,8 @@ public class LoopJobListener implements ServletContextListener {
 		}
     	schedule.scheduleWithFixedDelay(new AutoProgress(), 5, 3600, TimeUnit.SECONDS);
     	if(ConfigInfo.ftp){
-    		//schedule.scheduleWithFixedDelay(new GetFTPFile(), 60, 1860, TimeUnit.SECONDS);
-    		schedule.scheduleWithFixedDelay(new DownloadFromFTP(), waitTime+7200, 259200,  TimeUnit.SECONDS);
+    		schedule.scheduleWithFixedDelay(new GetFTPFile(), 60, 1860, TimeUnit.SECONDS);
+    		//schedule.scheduleWithFixedDelay(new DownloadFromFTP(), waitTime+7200, 259200,  TimeUnit.SECONDS);
     	}
     	schedule.scheduleWithFixedDelay(new AutoSetDefectRatio(), waitTime, 86400, TimeUnit.SECONDS);
     	if(ConfigInfo.dailyPrj){

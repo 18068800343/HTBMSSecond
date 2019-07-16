@@ -731,20 +731,21 @@ public class CheckBridgeDao {
 			 }
 		}*/
 		//deletePhotoPath();
-		//根据新老项目进行缺少的检查记录恢复
-		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("4004c04f506141ed80c8c48b7cc4aaba");
+		//根据新老项目进行缺少的检查记录恢复 @param 参数为老项目ID
+		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("30ee97b319a34c7e8977384ffe9e85bd");
 		int i=1;
 		for(BridgeChkVo bridgeChkVo:bridgeChkVos){
 			System.out.println("第"+i+"座桥正在copy");
 			String oldChkId = bridgeChkVo.getChkId();
 			String brgId = bridgeChkVo.getBrgId();
-			String newChkId = getNewChkIdByBrgIdAndPrjId("7eb2844342e84b5c8ffcc61609aabe09", brgId);
+			//参数为新项目Id
+			String newChkId = getNewChkIdByBrgIdAndPrjId("99c4158664a14605a34b87a839f6e4bf", brgId);
 			if(null!=newChkId&&!"".equals(newChkId)){
 				copyByPrj(oldChkId, newChkId);
 				i++;
 			}
 		}
-		/*copyByPrj("fab1acf597a84b81a4dbf789524b674b", "fd0a959466054ef897521fd04aa3a982");*/
+		/*copyByPrj("31ce446f369c4e97a75204f79c3b6530", "cfca4651e6cd4f36b926d1eb64ffb4f4");*/
 	}
 	
 	
@@ -806,6 +807,8 @@ public class CheckBridgeDao {
 			 }
 		}
 	}
+	
+	
 	
 	public static void deletePhotoPath(){
 		BridgeChk old_bc = new BridgeChk();
