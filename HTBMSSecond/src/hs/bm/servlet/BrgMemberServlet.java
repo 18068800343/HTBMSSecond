@@ -676,7 +676,7 @@ public class BrgMemberServlet extends HttpServlet {
 			}
 			if (i > 0) {
 				ro.setSuccess("success");
-				LogDao.getInstance().addLogInfo(log_user,"修改构件", "操作成功","BrgMemberServlet+editMember");
+				LogDao.getInstance().addLogInfo(log_user,"修改构件", "操作成功","BrgMemberServlet+editMember+mv:"+mv.getR_id());
 			} else {
 				ro.setSuccess("fail");
 				ro.setError(i);

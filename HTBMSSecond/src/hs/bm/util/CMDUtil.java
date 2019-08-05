@@ -486,6 +486,23 @@ public class CMDUtil {
 		return path;
 	}
 	
+	public static Map<String, String> getHDSpace(String pan){
+	      File[] files = File. listRoots();
+        Map<String, String> map = new HashMap<>();
+        for(File file:files) {
+             System. out.println(file+"磁盘的空间大小为：" +file.getTotalSpace()/1024/1024/1024+"G");
+             System. out.println(file+"磁盘的可使用空间大小为：" +file.getUsableSpace()/1024/1024/1024+"G");
+             System. out.println(file+"磁盘的空闲空间大小为：" +file.getFreeSpace()/1024/1024/1024+"G");
+             System. out.println("------------------------------------------------------------------" );
+             if(file.toString().contains(pan)){
+          	   map.put("totalSpace",file.getTotalSpace()/1024/1024/1024+"G");
+          	   map.put("usableSpace", file.getUsableSpace()/1024/1024/1024+"G");
+             }
+       }
+        return map;
+        
+	}
+	
 	public static void main(String[] args){
 		//buildSqlBack();
 		//System.out.println(buildCard("G15320981L0080"));

@@ -505,7 +505,7 @@
 
     var autoOpen = false;
     var info = <%=JSON.toJSONString(oc)%>;
-    $('h4').html("<label class='label label-success label-lg'>" + span.direction + "第" + span.span_no + "跨</label>");
+    $('h4[class*="pull-left"]').html("<label class='label label-success label-lg'>" + span.direction + "第" + span.span_no + "跨</label>");
     $.cookie('direction',span.direction);
     $.cookie('span_no',span.span_no);
     $(function () {

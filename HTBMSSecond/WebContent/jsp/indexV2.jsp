@@ -1647,6 +1647,7 @@
     var myChartW;//动态称重图表
     var myChartH;//健康监测图表
     $(document).ready(function () {
+
     	initFreeway();//路线名称
     	custody.init();//管养单位+所属路段+所属分区
     	initbridgeType();//桥型

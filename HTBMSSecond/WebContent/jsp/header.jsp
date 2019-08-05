@@ -6,21 +6,40 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>华通桥涵管理系统</title>
+<style type="text/css">
+.leftItem{
+	margin-left: 12px;
+	float:left;
+    margin-bottom:3px;
+}
+
+.rightItem{
+	float:right;
+    margin-bottom:3px;
+}
+
+.flexBetween{
+	display: flex;
+	justify-content: space-between;
+}
+</style>
 </head>
 <body>
 
 	<!-- HEADER -->
 	<header id="header">
-		<div id="logo-group" >
-
-			<!-- PLACE YOUR LOGO HERE -->
-			<!-- <span id="logo"> <img src="../img/logo.png" alt="SmartAdmin"> </span> -->
-			<div class="row" style="width: 600px">
+		<div  id="logo-group" class="">
 			
-				&nbsp;&nbsp;&nbsp;&nbsp;<img alt="华通桥涵管理系统" src="../img/htlogo.png" class="" style="width: 25%;">
-				<span id="logo" style="padding-left:0px;font-size:1.5em;font-weight:bold">华通桥涵管理系统</span>
-<!-- 				<a style="font-size: 1.5em;cursor: pointer;" href="/HTBMSSecond/DescripDownloadServices" target="_blank"><i class="fa fa-question-circle" ></i></a> -->
-			</div>
+				<!-- PLACE YOUR LOGO HERE -->
+				<!-- <span id="logo"> <img src="../img/logo.png" alt="SmartAdmin"> </span> -->
+				<div class="" style="width: 600px">
+				
+					&nbsp;&nbsp;&nbsp;&nbsp;<img alt="华通桥涵管理系统" src="../img/htlogo.png" class="" style="width: 25%;">
+					<span id="logo" style="padding-left:0px;font-size:1.5em;font-weight:bold">华通桥涵管理系统</span>
+	<!-- 				<a style="font-size: 1.5em;cursor: pointer;" href="/HTBMSSecond/DescripDownloadServices" target="_blank"><i class="fa fa-question-circle" ></i></a> -->
+				</div>
+				
+			
 			<!-- END LOGO PLACEHOLDER -->
 
 			<!-- Note: The activity badge color changes when clicked and resets the number to 0
@@ -89,7 +108,11 @@
 			</div>
 			<!-- END AJAX-DROPDOWN -->
 		</div>
-
+		<div style="float:right;margin-top:13px;" class="flexBetween" >
+			<div id="totalSpace" class="lodingmsg leftItem" ><h4 style='font-size:1.2em;font-weight:bold'>磁盘空间：</h4></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           	<div id="usableSpace" class="lodingmsg rightItem" style="margin-right:50px;"><h4 style='font-size:1.2em;font-weight:bold'>剩余空间：</h4></div>
+           	
+		</div>
 		<!-- projects dropdown -->
 		<!--  
 		<div class="project-context hidden-xs">
@@ -277,6 +300,27 @@
 
 	</header>
 	<!-- END HEADER -->
+<script src="../js/libs/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
 
+$(function(){
+    $.ajax({
+        type: 'POST',
+        url: '../UserMgrServlet',
+        dataType: 'json',
+        data: {
+            type: "getHDSpace",
+            pan: "D"
+        },
+        error: function (msg) {
+            errMessage("请求CheckBridgeServlet失败");
+        },
+        success: function (json) {
+        	 $("#totalSpace").find("h4").append(json.obj.totalSpace);
+             $("#usableSpace").find("h4").append(json.obj.usableSpace);
+        }
+    });
+})
+</script>
 </body>
 </html>

@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -29,6 +31,7 @@ import hs.bm.dao.LogDao;
 import hs.bm.dao.OrgManagerDao;
 import hs.bm.dao.PrjMgrDao;
 import hs.bm.dao.UserDao;
+import hs.bm.util.CMDUtil;
 import hs.bm.util.GetMacAndNetCard;
 import hs.bm.util.IDtool;
 import hs.bm.util.PropertiesUtil;
@@ -468,11 +471,21 @@ public class UserMgrServlet extends HttpServlet {
 			String usr_id=request.getParameter("usr_id");
 			List<OrgUserInfo> ll = ud.getOrg_usr_id(usr_id);
 			if(ll.size()>=0){
-			
 				ro.setError(0);
 				ro.setSuccess("success");
 				ro.setObj(ll);
 			}
+			ro.ToJsp(response);
+			return;
+		}
+
+		else if(type.equals("getHDSpace")){
+			Map<String, String> map = new HashMap<>();
+			String pan=request.getParameter("pan");
+			map = CMDUtil.getHDSpace(pan);
+			ro.setError(0);
+			ro.setSuccess("success");
+			ro.setObj(map);
 			ro.ToJsp(response);
 			return;
 		}
