@@ -725,9 +725,9 @@ var role = '<%=session.getAttribute("userRole")%>';
         buildManage: function () {
             var d = $('#manage');
             d.empty();
-            if(role=='admin'||role=='guest'){
+            //if(role=='admin'||role=='guest'){
 				d.append('<option value="%">--全部--</option>');
-			}
+			//}
             for (var i = 0; i < manage.manageData.length; i++) {
                 d.append("<option value='"+manage.manageData[i].org_id+"'>"+manage.manageData[i].org_name_short+"</option>");
             }
