@@ -1572,7 +1572,7 @@
             //marker.setAnimation(BMAP_ANIMATION_BOUNCE);
         }
         marker.addEventListener("click", function () {
-            this.openInfoWindow();
+            this.openInfoWindow(infoWindow);
         });
     }
 
@@ -1670,7 +1670,6 @@
     	initcomponentType();//构件类型
     	defect.init();//病害
         initMap();//地图
-        
         
         $.ajax({
             type: 'post',
