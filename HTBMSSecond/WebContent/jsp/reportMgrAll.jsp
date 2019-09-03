@@ -615,7 +615,10 @@
 				$('#reportGrid .cbox').prop('checked', s).trigger('change');
 			});
 			
+			//屏蔽报错弹窗
+			$.fn.dataTable.ext.errMode = 'none'; 
 
+			
 			 function showMask(){
 		        	$("#cover").show();		
 		       	}

@@ -416,7 +416,7 @@ public class ReportMgrDao {
 						if(photo_date == null) {
 							FileManageUtil.fileCopyName(oldFile, spanDir, photo_name.concat(defect_name));
 						}else {
-							FileManageUtil.fileCopyName(oldFile, spanDir, photo_name);
+							FileManageUtil.fileCopyName(oldFile, spanDir, photo_name+photo_date.substring(11,19).replace(":",""));
 						}
 						
 						

@@ -1647,7 +1647,22 @@
     var myChartW;//动态称重图表
     var myChartH;//健康监测图表
     $(document).ready(function () {
-
+        $.ajax({
+            type: 'POST',
+            url: '../UserMgrServlet',
+            dataType: 'json',
+            data: {
+                type: "getHDSpace",
+                pan: "D"
+            },
+            error: function (msg) {
+                errMessage("请求CheckBridgeServlet失败");
+            },
+            success: function (json) {
+            	 $("#totalSpace").find("h4").append(json.obj.totalSpace);
+                 $("#usableSpace").find("h4").append(json.obj.usableSpace);
+            }
+        });
     	initFreeway();//路线名称
     	custody.init();//管养单位+所属路段+所属分区
     	initbridgeType();//桥型

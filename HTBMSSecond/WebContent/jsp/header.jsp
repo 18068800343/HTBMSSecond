@@ -299,28 +299,9 @@
 		<!-- end pulled right: nav area -->
 
 	</header>
-	<!-- END HEADER -->
-<script src="../js/libs/jquery-2.1.1.min.js"></script>
-<script type="text/javascript">
 
-$(function(){
-    $.ajax({
-        type: 'POST',
-        url: '../UserMgrServlet',
-        dataType: 'json',
-        data: {
-            type: "getHDSpace",
-            pan: "D"
-        },
-        error: function (msg) {
-            errMessage("请求CheckBridgeServlet失败");
-        },
-        success: function (json) {
-        	 $("#totalSpace").find("h4").append(json.obj.totalSpace);
-             $("#usableSpace").find("h4").append(json.obj.usableSpace);
-        }
-    });
-})
-</script>
 </body>
+<script type="text/javascript">
+   
+</script>
 </html>
