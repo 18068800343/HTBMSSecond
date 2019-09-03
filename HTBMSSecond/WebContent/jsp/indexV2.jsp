@@ -1572,7 +1572,7 @@
             //marker.setAnimation(BMAP_ANIMATION_BOUNCE);
         }
         marker.addEventListener("click", function () {
-            this.openInfoWindow(infoWindow);
+            this.openInfoWindow();
         });
     }
 
@@ -1663,13 +1663,15 @@
                  $("#usableSpace").find("h4").append(json.obj.usableSpace);
             }
         });
+        getBridgeEval();
     	initFreeway();//路线名称
     	custody.init();//管养单位+所属路段+所属分区
     	initbridgeType();//桥型
     	initcomponentType();//构件类型
     	defect.init();//病害
         initMap();//地图
-        getBridgeEval();
+        
+        
         $.ajax({
             type: 'post',
             url: '../GetLogServlet',
