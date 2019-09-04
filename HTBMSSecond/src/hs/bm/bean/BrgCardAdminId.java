@@ -1,5 +1,9 @@
 package hs.bm.bean;
 
+import java.util.List;
+
+import hs.bm.vo.BridgeEvalVO;
+
 public class BrgCardAdminId {
 
 	/**桥梁编号*/
@@ -54,6 +58,9 @@ public class BrgCardAdminId {
 	private String card_path;
 
 	private String main_span;
+	/**桥梁评定数据，首页地图显示使用*/
+	private List<BridgeEvalVO> bridgeEvalVOList;
+	
 	public void setBridge_id(String bridge_id){
 		this.bridge_id=bridge_id;
 	}
@@ -260,6 +267,14 @@ public class BrgCardAdminId {
 
 	public void setMain_span(String main_span) {
 		this.main_span = main_span;
+	}
+
+	public List<BridgeEvalVO> getBridgeEvalVOList() {
+		return bridgeEvalVOList;
+	}
+
+	public void setBridgeEvalVOList(List<BridgeEvalVO> bridgeEvalVOList) {
+		this.bridgeEvalVOList = bridgeEvalVOList;
 	}
 	
 }

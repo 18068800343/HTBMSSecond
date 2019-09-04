@@ -1492,6 +1492,7 @@
     var markers = Array();
     var infos = Array();
     var blen, plen, clen;
+    var bridgeEval = [];
     function initMap() {
         map = new BMap.Map("map");
         map.centerAndZoom("江苏", 7);
@@ -1503,17 +1504,21 @@
         }
         map.clearOverlays();
         map.centerAndZoom("江苏", 7);
+        
         initIndexBrg();
     }
     function remove_overlay() {
         map.clearOverlays();
     }
-    function addMarker(point, bridge_id, bridge_name) {
+    function addMarker(point, brgCardAdminId) {
         var marker = new BMap.Marker(point);
+        var bridge_id = brgCardAdminId.bridge_id;
+        var bridge_name = brgCardAdminId.bridge_name;
+        var bridgeEval = brgCardAdminId.bridgeEvalVOList;
         var content = "";
         var level = "";
         for (var i in bridgeEval) {
-            if (bridgeEval[i].bridge_id == bridge_id) {
+            if (bridgeEval[i]!=undefined&&bridgeEval[i]!=null&&bridgeEval[i]!="") {
                 var prj_name = bridgeEval[i].prj_name;
                 var ER_STD = bridgeEval[i].eR_STD;
                 var ER_LEVEL = bridgeEval[i].eR_LEVEL;
@@ -1577,8 +1582,9 @@
     }
 
     var dataALL = {};
-    var bridgeEval = [];
+    
     function initIndexBrg() {
+//    	getBridgeEval();
         var prj_id = $("#project").val();
         var eva_type=$("#chk_type").val();
         var highway_id = $("#freeway").val();
@@ -1604,7 +1610,7 @@
                 dataALL = obj;
                 for (var i in obj) {
                     var point = new BMap.Point(obj[i].longitude, obj[i].latitude);
-                    addMarker(point, obj[i].bridge_id, obj[i].bridge_name);
+                    addMarker(point, obj[i]);
                 }
 
             },
@@ -1614,7 +1620,7 @@
     }
 
     
-    function getBridgeEval() {
+/*     function getBridgeEval() {
         $.ajax({
             type: 'post',
             url: '../StructMgrServlet',
@@ -1630,7 +1636,7 @@
             error: function () {
             }
         });
-    }
+    } */
 
     function  search(){
     	$('#chk_type').val('%');
@@ -1663,7 +1669,7 @@
                  $("#usableSpace").find("h4").append(json.obj.usableSpace);
             }
         });
-        getBridgeEval();
+        
     	initFreeway();//路线名称
     	custody.init();//管养单位+所属路段+所属分区
     	initbridgeType();//桥型

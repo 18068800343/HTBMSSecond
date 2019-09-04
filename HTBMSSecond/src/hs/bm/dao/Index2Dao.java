@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import hs.bm.bean.BrgCardAdminId;
+import hs.bm.vo.BridgeEvalVO;
 
 public class Index2Dao {
 	private static Index2Dao dao;
@@ -697,7 +698,7 @@ public class Index2Dao {
 	}
 	
 	
-	public List<BrgCardAdminId> initIndexBrg(String prj_id, String highway_id, String manage_id, String section_id,
+	public List<BrgCardAdminId> initIndexBrg_old(String prj_id, String highway_id, String manage_id, String section_id,
 			String zone_id,String eva_type) {
 		List<BrgCardAdminId> lb = new ArrayList<>();
 		String sql="";
@@ -735,6 +736,139 @@ public class Index2Dao {
 				bca.setZone_id(rs.getString("zone_id"));
 				lb.add(bca);
 
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			dataOperation.close();
+		}
+		return lb;
+	}
+	
+	//2019.09.04增加首页地图桥检评价显示速度的修改，原代码在上面
+	public List<BrgCardAdminId> initIndexBrg(String prj_id, String highway_id, String manage_id, String section_id,
+			String zone_id,String eva_type) {
+		List<BrgCardAdminId> lb = new ArrayList<>();
+		String sql="";
+		String[] sa = null;
+		if(eva_type.equals("%")){
+			sa = new String[] { highway_id, manage_id, section_id, zone_id};
+			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
+					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
+					"	from brg_card_admin_id as aa" + 
+					"	left join (SELECT a.prj_desc,b.* " + 
+					"			from chk_project_info as a ," + 
+					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
+					"				ER_GRADE,ER_DATE " + 
+					"				from chk_brg_regular " + 
+					"				full join evaluationrec" + 
+					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
+					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null";
+		}else if(eva_type.equals("2004")){
+			sa = new String[] { highway_id, manage_id, section_id, zone_id};
+			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
+					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
+					"	from brg_card_admin_id as aa" + 
+					"	left join (SELECT a.prj_desc,b.* " + 
+					"			from chk_project_info as a ," + 
+					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
+					"				ER_GRADE,ER_DATE " + 
+					"				from chk_brg_regular " + 
+					"				full join evaluationrec" + 
+					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
+					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null " + 
+					"	and aa.bridge_id in (SELECT b.bridge_id FROM chk_project_info a, eva_ubr_2004 b where a.prj_id=b.prj_id GROUP BY a.prj_id)";
+					  
+		}else if(eva_type.equals("2011")){
+			sa = new String[] { highway_id, manage_id, section_id, zone_id};
+			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
+					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
+					"	from brg_card_admin_id as aa" + 
+					"	left join (SELECT a.prj_desc,b.* " + 
+					"			from chk_project_info as a ," + 
+					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
+					"				ER_GRADE,ER_DATE " + 
+					"				from chk_brg_regular " + 
+					"				full join evaluationrec" + 
+					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
+					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null " + 
+					"	and aa.bridge_id in (SELECT b.bridge_id FROM chk_project_info a, eva_mbr b WHERE a.prj_id=b.prj_id GROUP BY a.prj_id)";				
+		}
+		
+		
+		if (!prj_id.equals("%")) {
+			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
+					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
+					"	from brg_card_admin_id as aa" + 
+					"	left join (SELECT a.prj_desc,b.* " + 
+					"			from chk_project_info as a ," + 
+					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
+					"				ER_GRADE,ER_DATE " + 
+					"				from chk_brg_regular " + 
+					"				full join evaluationrec" + 
+					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
+					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? " + 
+					"	and aa.bridge_id in (select bridge_id from chk_brg_regular where prj_id like ?) and aa.longitude!='' and aa.longitude is not null";
+			sa = new String[] { highway_id, manage_id, section_id, zone_id, prj_id };
+		}
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, sa);
+		try {
+			BrgCardAdminId last_BrgCardAdminId = null;
+			String last_Bridge_id = "";
+			String current_Bridge_id = "";
+			while (rs.next()) {
+				if(null!=last_BrgCardAdminId)  last_Bridge_id=last_BrgCardAdminId.getBridge_id();
+				current_Bridge_id = rs.getString("bridge_id");
+				if(!current_Bridge_id.equals(last_Bridge_id)) {
+					BrgCardAdminId bca = new BrgCardAdminId();
+					if(null!=last_BrgCardAdminId) 
+					{
+						lb.add(last_BrgCardAdminId);
+					}
+					last_BrgCardAdminId = bca;
+					bca.setBridge_id(rs.getString("bridge_id"));
+					bca.setBridge_name(rs.getString("bridge_name"));
+					bca.setBridge_no(rs.getString("bridge_no"));
+					bca.setHighway_id(rs.getString("highway_id"));
+					bca.setLongitude(rs.getString("longitude"));
+					bca.setLatitude(rs.getString("latitude"));
+					bca.setManage_id(rs.getString("manage_id"));
+					bca.setSection_id(rs.getString("section_id"));
+					bca.setZone_id(rs.getString("zone_id"));
+					
+					List<BridgeEvalVO> bevList = new ArrayList<>();
+					if(null!=rs.getString("prj_id")) {
+						BridgeEvalVO bev = new BridgeEvalVO();
+						bev.setPrj_id(rs.getString("prj_id"));
+						bev.setPrj_name(rs.getString("prj_desc"));
+						bev.setER_GRADE(rs.getString("ER_GRADE"));
+						bev.setER_LEVEL(rs.getString("ER_LEVEL"));
+						bev.setER_STD(rs.getString("ER_STD"));
+						bev.setER_DATE(rs.getString("ER_DATE"));
+						bevList.add(bev);
+					}
+					bca.setBridgeEvalVOList(bevList);
+					
+				}else {
+					BridgeEvalVO bev = new BridgeEvalVO();
+					bev.setPrj_id(rs.getString("prj_id"));
+					bev.setPrj_name(rs.getString("prj_desc"));
+					bev.setER_GRADE(rs.getString("ER_GRADE"));
+					bev.setER_LEVEL(rs.getString("ER_LEVEL"));
+					bev.setER_STD(rs.getString("ER_STD"));
+					bev.setER_DATE(rs.getString("ER_DATE"));
+					last_BrgCardAdminId.getBridgeEvalVOList().add(bev);
+				}
+		
+			}
+			if(null!=last_BrgCardAdminId) 
+			{
+				lb.add(last_BrgCardAdminId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
