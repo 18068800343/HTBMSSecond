@@ -1,5 +1,6 @@
 package hs.bm.dao;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.fastjson.JSON;
+import com.mysql.jdbc.Connection;
 
 import hs.bm.bean.EvaBrgRec;
 import hs.bm.vo.DefectStatistics;
@@ -621,11 +624,12 @@ public class StatisticsDao {
 		List<MemberStatistics> lm = new ArrayList<MemberStatistics>();
 		String sql = "";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		DruidPooledConnection conn=(DruidPooledConnection) MyDataSource.getInstance().getConnection();
 		ResultSet rs = null;
 		try {
 			switch (type) {
 			case "bridge":
-				sql = "SELECT\n" +
+				/*sql = "SELECT\n" +
 						"	b.highway_name,\n" +
 						"	e.section_name,\n" +
 						"	c.org_name,\n" +
@@ -706,7 +710,22 @@ public class StatisticsDao {
 					ms.setMember_no(rs.getString("member_no"));
 					ms.setMemType(rs.getString("member_model"));
 					lm.add(ms);
-				}
+				}*/
+				CallableStatement call = conn.prepareCall("{call getstructmems(?,?,?,?,?,?,?,?,?,?,?)}");
+				call.setString(1, id);
+				call.setString(2, mem.getLine());
+				call.setString(3, mem.getSection());
+				call.setString(4, mem.getManage());
+				call.setString(5, mem.getZone());
+				call.setString(6, mem.getDirection());
+				call.setString(7, mem.getSpan());
+				call.setString(8, mem.getStruct_type());
+				call.setString(9, mem.getMember_name());
+				call.setString(10, mem.getDistr_name());
+				call.setString(11, mem.getComponent_name());
+				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				List<MemberStatistics> getAllstructmems = GetAllstructmems();
+				lm.addAll(getAllstructmems);
 				break;
 			case "culvert":
 				sql = "SELECT\n" +
@@ -878,9 +897,48 @@ public class StatisticsDao {
 		} catch (Exception e) {
 		} finally {
 			dataOperation.close();
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return lm;
 	}
+	
+	public List<MemberStatistics> GetAllstructmems() {
+		List<MemberStatistics> lm = new ArrayList<MemberStatistics>();
+		String sql = "select highway_name,section_name,org_name,zone_name,bridge_name,direction,span_no,brg_type_name,distr_name,component8,"
+				+ "member_name,member_no,member_model from getstructmems";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		ResultSet rs = dataOperation.executeQuery(sql, null);
+		try {
+			while (rs.next()) {
+				MemberStatistics ms = new MemberStatistics();
+				ms.setLine(rs.getString("highway_name"));
+				ms.setSection(rs.getString("section_name"));
+				ms.setManage(rs.getString("org_name"));
+				ms.setZone(rs.getString("zone_name"));
+				ms.setStruct_mode("桥梁");
+				ms.setStruct(rs.getString("bridge_name"));
+				ms.setDirection(rs.getString("direction"));
+				ms.setSpan(rs.getString("span_no"));
+				ms.setStruct_type(rs.getString("brg_type_name"));
+				ms.setDistr_name(rs.getString("distr_name"));
+				ms.setComponent_name(rs.getString("component8"));
+				ms.setMember_name(rs.getString("member_name"));
+				ms.setMember_no(rs.getString("member_no"));
+				ms.setMemType(rs.getString("member_model"));
+				lm.add(ms);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return lm;
+	}
+	
 	/*public List<DefectStatistics> getDefectList(String prj_id, String id, String type, DefectStatistics mem) {
 		StructLine sl = getStructLine(id, type);
 		List<DefectStatistics> lm = new ArrayList<DefectStatistics>();
