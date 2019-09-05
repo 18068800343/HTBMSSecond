@@ -1199,6 +1199,7 @@
 				
 			}
 			
+			$.fn.dataTable.ext.errMode = 'none';       //屏蔽掉报错弹窗
 		</script>
 		
 	</body>

@@ -478,9 +478,18 @@ public class StatisticsDao {
 		ids = getRepeat(prj, sid);
 		System.out.println(JSON.toJSONString(ids));
 		System.out.println(ids.size());
+		String idsIn = "";
+		int i=0;
 		for (String s : ids) {
-			ll.addAll(getMemList(s, statistics.getStruct_mode(), statistics));
+			i++;
+			if(i==ids.size()) {
+				idsIn=idsIn+s;
+			}else {
+				idsIn=idsIn+s+",";
+			}
 		}
+		System.out.println(idsIn.toString());
+		ll.addAll(getMemList(idsIn.toString(), statistics.getStruct_mode(), statistics));
 		return ll;
 	}
 
@@ -713,6 +722,7 @@ public class StatisticsDao {
 				}*/
 				CallableStatement call = conn.prepareCall("{call getstructmems(?,?,?,?,?,?,?,?,?,?,?)}");
 				call.setString(1, id);
+				System.out.println(id);
 				call.setString(2, mem.getLine());
 				call.setString(3, mem.getSection());
 				call.setString(4, mem.getManage());
@@ -724,6 +734,8 @@ public class StatisticsDao {
 				call.setString(10, mem.getDistr_name());
 				call.setString(11, mem.getComponent_name());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				call.close();
+				conn.close();
 				List<MemberStatistics> getAllstructmems = GetAllstructmems();
 				lm.addAll(getAllstructmems);
 				break;
@@ -895,6 +907,7 @@ public class StatisticsDao {
 				break;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			dataOperation.close();
 			try {
