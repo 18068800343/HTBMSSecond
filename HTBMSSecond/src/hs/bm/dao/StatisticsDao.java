@@ -478,9 +478,18 @@ public class StatisticsDao {
 		ids = getRepeat(prj, sid);
 		System.out.println(JSON.toJSONString(ids));
 		System.out.println(ids.size());
+		String idsIn = "";
+		int i=0;
 		for (String s : ids) {
-			ll.addAll(getMemList(s, statistics.getStruct_mode(), statistics));
+			i++;
+			if(i==ids.size()) {
+				idsIn=idsIn+s;
+			}else {
+				idsIn=idsIn+s+",";
+			}
 		}
+		System.out.println(idsIn.toString());
+		ll.addAll(getMemList(idsIn.toString(), statistics.getStruct_mode(), statistics));
 		return ll;
 	}
 
@@ -713,6 +722,7 @@ public class StatisticsDao {
 				}*/
 				CallableStatement call = conn.prepareCall("{call getstructmems(?,?,?,?,?,?,?,?,?,?,?)}");
 				call.setString(1, id);
+				System.out.println(id);
 				call.setString(2, mem.getLine());
 				call.setString(3, mem.getSection());
 				call.setString(4, mem.getManage());
@@ -724,6 +734,8 @@ public class StatisticsDao {
 				call.setString(10, mem.getDistr_name());
 				call.setString(11, mem.getComponent_name());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				call.close();
+				conn.close();
 				List<MemberStatistics> getAllstructmems = GetAllstructmems();
 				lm.addAll(getAllstructmems);
 				break;
@@ -895,6 +907,7 @@ public class StatisticsDao {
 				break;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			dataOperation.close();
 			try {
@@ -1175,9 +1188,25 @@ public class StatisticsDao {
 			}
 		}
 		
-		for(Map<String, String> map : prjStruct){
+		/*for(Map<String, String> map : prjStruct){
 			ll.addAll(getDefectList(map.get("project"), map.get("struct"), statistics.getStruct_mode(), statistics));
+		}*/
+		String prjIdsIn = "";
+		String idsIn = "";
+		int i=0;
+		for (Map<String, String> map : prjStruct) {
+			i++;
+			if(i==prjStruct.size()) {
+				prjIdsIn=prjIdsIn+map.get("project");
+				idsIn=idsIn+map.get("struct");
+			}else {
+				prjIdsIn=prjIdsIn+map.get("project")+",";
+				idsIn=idsIn+map.get("struct")+",";
+			}
 		}
+		System.out.println(prjIdsIn.toString());
+		System.out.println(idsIn.toString());
+		ll.addAll(getDefectList(prjIdsIn, idsIn, statistics.getStruct_mode(), statistics));
 		return ll;
 	}
 
@@ -1186,11 +1215,12 @@ public class StatisticsDao {
 		List<DefectStatistics> lm = new ArrayList<DefectStatistics>();
 		String sql = "";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		DruidPooledConnection conn=(DruidPooledConnection) MyDataSource.getInstance().getConnection();
 		ResultSet rs = null;
 		try {
 			switch (type) {
 			case "bridge":
-				sql = "SELECT DISTINCT\n" +
+				/*sql = "SELECT DISTINCT\n" +
 						"	cpi.prj_desc,\n" +
 						"	a.bridge_pile_no,\n" +
 						"	b.highway_name,\n" +
@@ -1290,7 +1320,29 @@ public class StatisticsDao {
 					ms.setImportant(rs.getString("defect_attr"));
 					ms.setDevelop(rs.getString("develop_state"));
 					lm.add(ms);
-				}
+				}*/
+				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+				call.setString(1, project);
+				//System.out.println(project);
+				call.setString(2, id);
+				//System.out.println(id);
+				call.setString(3, statistics.getLine());
+				call.setString(4, statistics.getSection());
+				call.setString(5, statistics.getManage());
+				call.setString(6, statistics.getZone());
+				call.setString(7, statistics.getDirection());
+				call.setString(8, statistics.getSpan());
+				call.setString(9, statistics.getStruct_type());
+				call.setString(10, statistics.getMember_name());
+				call.setString(11, statistics.getDistr_name());
+				call.setString(12, statistics.getComponent_name());
+				call.setString(13, statistics.getDefect_name_f());
+				call.setString(14, statistics.getDefect_name());
+				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				call.close();
+				conn.close();
+				List<DefectStatistics> getAllstructmems = GetAllStructDefects();
+				lm.addAll(getAllstructmems);
 				break;
 			case "culvert":
 				sql = "SELECT DISTINCT\n" +
@@ -1504,6 +1556,47 @@ public class StatisticsDao {
 		} finally {
 			dataOperation.close();
 		}
+		return lm;
+	}
+	
+	public List<DefectStatistics> GetAllStructDefects() {
+		List<DefectStatistics> lm = new ArrayList<DefectStatistics>();
+		String sql = "select prj_desc,bridge_pile_no,highway_name,section_name,manage_name,zone_name,bridge_name,"
+				+ "direction,span_no,brg_type_name,distr_name,component8,member_name,member_no,member_model,"
+				+ "defect_name_f,defect_name,defect_location_desc,defect_count,defect_attr,develop_state from getstructdefects";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		ResultSet rs = dataOperation.executeQuery(sql, null);
+		try {
+			while (rs.next()) {
+				DefectStatistics ms = new DefectStatistics();
+				ms.setProject(rs.getString("prj_desc"));
+				ms.setLine(rs.getString("highway_name"));
+				ms.setSection(rs.getString("section_name"));
+				ms.setBridge_pile_no(rs.getString("bridge_pile_no"));
+				ms.setManage(rs.getString("manage_name"));
+				ms.setZone(rs.getString("zone_name"));
+				ms.setStruct_mode("桥梁");
+				ms.setStruct(rs.getString("bridge_name"));
+				ms.setDirection(rs.getString("direction"));
+				ms.setSpan(rs.getString("span_no"));
+				ms.setStruct_type(rs.getString("brg_type_name"));
+				ms.setDistr_name(rs.getString("distr_name"));
+				ms.setComponent_name(rs.getString("component8"));
+				ms.setMember_name(rs.getString("member_name"));
+				ms.setMember_no(rs.getString("member_no"));
+				ms.setMemType(rs.getString("member_model"));
+				ms.setDefect_name_f(rs.getString("defect_name_f"));
+				ms.setDefect_name(rs.getString("defect_name"));
+				ms.setDefect_count(rs.getString("defect_count"));
+				ms.setDefect_location_desc(rs.getString("defect_location_desc"));
+				ms.setImportant(rs.getString("defect_attr"));
+				ms.setDevelop(rs.getString("develop_state"));
+				lm.add(ms);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
 		return lm;
 	}
 	
