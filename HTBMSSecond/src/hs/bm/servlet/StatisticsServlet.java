@@ -18,6 +18,7 @@ import org.apache.tools.ant.util.SymbolicLinkUtils;
 
 import com.alibaba.fastjson.JSON;
 
+import hs.bm.bean.BrgCardAdminId;
 import hs.bm.bean.DicBrgStructTypeDef;
 import hs.bm.bean.DicCulStructTypeDef;
 import hs.bm.bean.DicPassStructTypeDef;
@@ -238,6 +239,16 @@ public class StatisticsServlet extends HttpServlet {
 			ro.setSuccess("success");
 			ro.setError(0);
 			ro.setObj(taskId);
+			ro.ToJsp(response);
+			return;
+		}
+		
+		if (type.equals("getBridgePileNoBybridgeName")) {
+			String bridge_name = request.getParameter("bridge_name");
+			List<BrgCardAdminId> ll = StatisticsDao.getInstance().getBridgePileNoBybridgeName(bridge_name);
+			ro.setSuccess("success");
+			ro.setError(0);
+			ro.setObj(ll);
 			ro.ToJsp(response);
 			return;
 		}

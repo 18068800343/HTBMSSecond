@@ -14,6 +14,7 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.fastjson.JSON;
 import com.mysql.jdbc.Connection;
 
+import hs.bm.bean.BrgCardAdminId;
 import hs.bm.bean.EvaBrgRec;
 import hs.bm.vo.DefectStatistics;
 import hs.bm.vo.EvalStatistics;
@@ -1321,23 +1322,24 @@ public class StatisticsDao {
 					ms.setDevelop(rs.getString("develop_state"));
 					lm.add(ms);
 				}*/
-				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 				call.setString(1, project);
-				//System.out.println(project);
+				System.out.println(project);
 				call.setString(2, id);
-				//System.out.println(id);
-				call.setString(3, statistics.getLine());
-				call.setString(4, statistics.getSection());
-				call.setString(5, statistics.getManage());
-				call.setString(6, statistics.getZone());
-				call.setString(7, statistics.getDirection());
-				call.setString(8, statistics.getSpan());
-				call.setString(9, statistics.getStruct_type());
-				call.setString(10, statistics.getMember_name());
-				call.setString(11, statistics.getDistr_name());
-				call.setString(12, statistics.getComponent_name());
-				call.setString(13, statistics.getDefect_name_f());
-				call.setString(14, statistics.getDefect_name());
+				System.out.println(id);
+				call.setString(3, statistics.getBridge_pile_no());
+				call.setString(4, statistics.getLine());
+				call.setString(5, statistics.getSection());
+				call.setString(6, statistics.getManage());
+				call.setString(7, statistics.getZone());
+				call.setString(8, statistics.getDirection());
+				call.setString(9, statistics.getSpan());
+				call.setString(10, statistics.getStruct_type());
+				call.setString(11, statistics.getMember_name());
+				call.setString(12, statistics.getDistr_name());
+				call.setString(13, statistics.getComponent_name());
+				call.setString(14, statistics.getDefect_name_f());
+				call.setString(15, statistics.getDefect_name());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
 				call.close();
 				conn.close();
@@ -1553,6 +1555,7 @@ public class StatisticsDao {
 				break;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();  
 		} finally {
 			dataOperation.close();
 		}
@@ -1563,7 +1566,8 @@ public class StatisticsDao {
 		List<DefectStatistics> lm = new ArrayList<DefectStatistics>();
 		String sql = "select prj_desc,bridge_pile_no,highway_name,section_name,manage_name,zone_name,bridge_name,"
 				+ "direction,span_no,brg_type_name,distr_name,component8,member_name,member_no,member_model,"
-				+ "defect_name_f,defect_name,defect_location_desc,defect_count,defect_attr,develop_state from getstructdefects";
+				+ "defect_name_f,defect_name,defect_location_desc,defect_count,defect_attr,develop_state,"
+				+ "defect_serial,photo_id,photo_name,photo_path,eva_mbr_calcu_value from getstructdefects";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		ResultSet rs = dataOperation.executeQuery(sql, null);
 		try {
@@ -1591,6 +1595,11 @@ public class StatisticsDao {
 				ms.setDefect_location_desc(rs.getString("defect_location_desc"));
 				ms.setImportant(rs.getString("defect_attr"));
 				ms.setDevelop(rs.getString("develop_state"));
+				ms.setDefect_serial(rs.getString("defect_serial"));
+				ms.setPhoto_id(rs.getString("photo_id"));
+				ms.setPhoto_name(rs.getString("photo_name"));
+				ms.setPhoto_path(rs.getString("photo_path"));
+				ms.setEva_mbr_calcu_value(rs.getString("eva_mbr_calcu_value"));
 				lm.add(ms);
 			}
 		} catch (SQLException e) {
@@ -1981,6 +1990,24 @@ public class StatisticsDao {
     		 "AND dbsm.distr_name LIKE ?\n" +
     		 "AND dbsm.component8 LIKE ?;";
      System.out.println(sql);
+	}
+
+	public List<BrgCardAdminId> getBridgePileNoBybridgeName(String bridge_name) {
+		List<BrgCardAdminId> lm = new ArrayList<BrgCardAdminId>();
+		String sql = "select bridge_pile_no from brg_card_admin_id where bridge_name like ?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		ResultSet rs = dataOperation.executeQuery(sql,new String[]{bridge_name});
+		try {
+			while (rs.next()) {
+				BrgCardAdminId ms = new BrgCardAdminId();
+				ms.setBridge_pile_no(rs.getString("bridge_pile_no"));
+				lm.add(ms);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return lm;
 	}
 
 

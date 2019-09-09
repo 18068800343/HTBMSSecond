@@ -244,6 +244,11 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                                                    <label>桩号</label>
+                                                    <select  style="width:100%" class="form-control input-sm select2" id="bridge_pile_no">
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
                                                     <label>方向</label>
                                                     <select style="width:100%" class="form-control input-sm select2"
                                                             id="direction">
@@ -381,6 +386,8 @@
                                             <th style="width: 120px;">缺损位置</th>
                                             <th style="width: 120px;">缺损状况</th>
                                             <th style="width: 50px;">是否重点</th>
+                                            <th style="width: 50px;">照片</th>
+                                            <th style="width: 50px;">11标准评分</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -407,6 +414,22 @@
 </div>
 <!-- END #MAIN PANEL -->
 
+<div id="lookImg" class="row"  style="min-width: 500px">
+    <div class="col-xs-12">
+        <h5></h5>
+        <div id="lookImg_area" class="col-lg-12"
+             style="padding: 10px 20px 10px 20px; text-align: center;"></div>
+    </div>
+
+    <!-- <div
+			style="position: absolute; transform: translate(-50%, -50%); top: 50%; left: 50%;">
+			<img src="../img/upload.gif" alt="..." style="width: 100px"
+				onmousedown="return false;">
+		</div>
+		<img alt="" src="" style="width: auto; max-height: 400px"
+			onload="$('#lookImg').find('img').eq(0).hide();"> <span
+			style="display: none;"></span> -->
+</div>
 
 <div id="cover" class="cover">
     <div id="loading" class="loading">处理中...
@@ -504,7 +527,6 @@ var role = '<%=session.getAttribute("userRole")%>';
         defect.init();
     });
 
-
     //面板事件
     $('#collapseOne').on('show.bs.collapse', function () {
         $('.fa-angle-up').show();
@@ -553,7 +575,8 @@ var role = '<%=session.getAttribute("userRole")%>';
             member_name: $('#mem').val(),
             memType: $('#memType').val(),
             defect_name_f: $('#defect_f').val(),
-            defect_name: $('#defect').val()
+            defect_name: $('#defect').val(),
+            bridge_pile_no:$("#bridge_pile_no").val(),
         }
         console.log(info)
         showMask();
@@ -908,6 +931,36 @@ var role = '<%=session.getAttribute("userRole")%>';
             d.trigger('change');
         }
     }
+   
+  //根据桥梁查桩号
+    $('#struct').on('change', function () {
+        var bridge_name=$("#struct").find("option:selected").text()
+        if(bridge_name=="--全部--"){
+        	bridge_name="%"
+        }else{
+        	bridge_name="%"+bridge_name+"%"
+        }
+         $.ajax({
+            type: 'POST',
+            url: '../StatisticsServlet',
+            dataType: 'json',
+            data: {
+                type: "getBridgePileNoBybridgeName",
+                bridge_name:bridge_name,
+            },
+            error: function (msg) {
+                errMessage("请求CheckBridgeServlet失败");
+            },
+            success: function (json) {
+                $("#bridge_pile_no").empty();
+                $("#bridge_pile_no").append('<option value="%">--全部--</option>');
+	                for (var i = 0; i < json.obj.length; i++) {
+		                $("#bridge_pile_no").append("<option value='" + json.obj[i].bridge_pile_no + "'>" + json.obj[i].bridge_pile_no + "</option>");
+		            }
+            	 $('#bridge_pile_no').val(['%']).trigger('change')
+            }
+        }); 
+    });
 
 
     var structBaseDef = {
@@ -1188,7 +1241,9 @@ var role = '<%=session.getAttribute("userRole")%>';
             {"data": "defect_name"},
             {"data": "defect_location_desc"},
             {"data": "defect_count"},
-            {"data": "important"}
+            {"data": "important"},
+            {"data": null},
+            {"data": null}
         ],
         "columnDefs": [
             {
@@ -1221,6 +1276,24 @@ var role = '<%=session.getAttribute("userRole")%>';
                     } else {
                         return '否';
                     }
+                }
+            }, {
+                "targets": 19,
+                "searchable": true,
+                "render": function (data, type, full) {
+                	var ck;
+                	if(data.defect_serial!=undefined && data.defect_serial != "" && data.defect_serial != null){
+                		ck="<a style='cursor:pointer'  data-serial='" + data.defect_serial + "' onclick='lookImg(this)'>查看</a>"
+                	}else{
+                		ck="<a style='color:red;'  data-serial='' onclick='' disabled>无图</a>"
+                	}
+                    return ck;
+                }
+            }, {
+                "targets": 20,
+                "searchable": true,
+                "render": function (data, type, full) {
+                    return "<span class='label label-success state'>"+Number(data.eva_mbr_calcu_value).toFixed(2)+"</span>";
                 }
             }],
         "bDestroy": true,
@@ -1349,6 +1422,75 @@ var role = '<%=session.getAttribute("userRole")%>';
     }
     function releaseGuest() {//普通用户
 
+    }
+    
+    $(function(){
+    	$('#lookImg').dialog({
+            autoOpen: false,
+            width: 'auto',
+            height: 500,
+            resizable: false,
+            modal: true,
+            show: 'drop',
+            hide: 'drop',
+            title: '查看照片',
+            buttons: [
+                {
+                    html: "确定",
+                    "class": "btn btn-default",
+                    click: function () {
+                        $('#lookImg').dialog('close');
+                    }
+                }]
+        });
+        $('#lookImg').prop('hidden', false);
+    })
+    
+    function lookImg(obj){
+    	var serial = $(obj).attr('data-serial');
+    	var photos = new Array();
+        $.ajax({
+            type: 'POST',
+            url: '../CheckSpanServlet',
+            dataType: 'json',
+            async: false,
+            data: {
+                type: "lookImgBySerial",
+                serial: serial
+            },
+            error: function (msg) {
+                errMessage("请求CheckSpanServlet失败");
+            },
+            success: function (json) {
+                if (json.success == "fail") {
+                    errMessage("出错！");
+                } else {
+                    photos = json.obj;
+                }
+            }
+        });
+        $('#lookImg_area').empty();
+        for (var i = 0; i < photos.length; i++) {
+            var dom = $('<div class="photo thumbnail col-lg-12" >' +
+                '<div style="position: absolute;transform: translate(-50%, -50%);top: 50%;left: 50% ;">' +
+                '<img class="load" src="../img/upload.gif" alt="..." style="width:100px" onmousedown="return false;">' +
+                '</div>' +
+                '<img style="height: 200px" alt="" src="" class="img" onload="$(this).closest(\'.photo\').find(\'.load\').hide();" >' +
+                '<label class="photo_name"></label>&nbsp&nbsp<a class="download btn btn-default btn-xs" href="" >下载图片</a>' +
+                '<input type="text" class="photo_path" style="display: none;">' +
+                '<input type="text" class="photo_id" style="display: none;">' +
+                '</div>');
+            dom.find('.img').prop('src', encodeURI('../ImageDownLoadServer?path=' + photos[i].photo_path + '&' + Math.random()));
+            dom.find('.download').prop('href', encodeURI('../ImageDownLoadServer?path=' + photos[i].photo_path + '&' + Math.random()));
+
+            dom.find('.photo_path').val(photos[i].photo_path);
+            //console.log(photos[i]);
+            dom.find('.photo_name').html(photos[i].photo_name);
+            dom.find('.photo_id').val(photos[i].photo_id);
+            $('#lookImg_area').append(dom);
+
+        }
+    	$('#lookImg').dialog('open');
     }
 
 </script>

@@ -32,9 +32,38 @@ public class DefectStatistics {
      private String develop;
      
      private String bridge_pile_no;
+     private String defect_serial;
+     private String photo_id;
+     private String photo_name;
+     private String photo_path;
+     private String eva_mbr_calcu_value;
      
      
      
+	public String getEva_mbr_calcu_value() {
+		return eva_mbr_calcu_value;
+	}
+	public void setEva_mbr_calcu_value(String eva_mbr_calcu_value) {
+		this.eva_mbr_calcu_value = eva_mbr_calcu_value;
+	}
+	public String getPhoto_id() {
+		return photo_id;
+	}
+	public void setPhoto_id(String photo_id) {
+		this.photo_id = photo_id;
+	}
+	public String getPhoto_name() {
+		return photo_name;
+	}
+	public void setPhoto_name(String photo_name) {
+		this.photo_name = photo_name;
+	}
+	public String getPhoto_path() {
+		return photo_path;
+	}
+	public void setPhoto_path(String photo_path) {
+		this.photo_path = photo_path;
+	}
 	public String getBridge_pile_no() {
 		return bridge_pile_no;
 	}
@@ -167,5 +196,12 @@ public class DefectStatistics {
 	public void setDevelop(String develop) {
 		this.develop = develop;
 	}
+	public String getDefect_serial() {
+		return defect_serial;
+	}
+	public void setDefect_serial(String defect_serial) {
+		this.defect_serial = defect_serial;
+	}
+	
    
 }
