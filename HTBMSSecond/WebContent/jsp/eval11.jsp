@@ -74,7 +74,7 @@
             cursor: pointer;
         }
 
-        #evaRes th, td {
+        #evaRes,#pingfen11 th, td {
             text-align: center;
         }
 
@@ -181,14 +181,10 @@
                                                 <input class="form-control" id="searchData" value=""
                                                        placeholder="搜索" type="text">
                                             </div>
-                                            <a class="btn btn-primary disabled pull-right"
-                                               onclick="overEval()"> 完成本桥评定 </a> <a
-                                                class="btn btn-default pull-right"
-                                                style="display: none; margin-right: 5px;"
-                                                onclick="showScore()">清洁、小修</a> <a
-                                                class="btn btn-default pull-right"
-                                                style="display: none; margin-right: 5px;"
-                                                onclick="evaRes();">结果统计</a>
+                                            <a class="btn btn-primary disabled pull-right" onclick="overEval()"> 完成本桥评定 </a> 
+                                            <a class="btn btn-default pull-right" style="display: none; margin-right: 5px;" onclick="showScore()">清洁、小修</a>
+                                            <a class="btn btn-default pull-right" style="display: none; margin-right: 5px;" onclick="evaRes();">结果统计</a>
+                                            <a class="btn btn-default pull-right" style=" margin-right: 5px;" onclick="pingfen11()">11评分</a>
                                         </div>
 
                                     </div>
@@ -290,8 +286,32 @@
         <tbody>
         </tbody>
     </table>
-
 </div>
+
+<div id="pingfen11" hidden="hidden">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th colspan="3" style="text-align: center; vertical-align: middle !important;">部位</th>
+            <th colspan="5" style="text-align: center; vertical-align: middle !important;">部件</th>
+        </tr>
+        <tr>
+        	<th style="text-align: center; vertical-align: middle !important;">名称</th>
+            <th style="text-align: center; vertical-align: middle !important;">评分</th>
+            <th style="text-align: center; vertical-align: middle !important;">等级</th>
+            <th style="text-align: center; vertical-align: middle !important;">序号</th>
+            <th style="text-align: center; vertical-align: middle !important;">名称</th>
+            <th style="text-align: center; vertical-align: middle !important;">构件数量</th>
+            <th style="text-align: center; vertical-align: middle !important;">评分</th>
+            <th style="text-align: center; vertical-align: middle !important;">等级</th>
+        </tr>
+        
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
 <div id="cover" class="cover">
     <div id="loading" class="loading">处理中......</div>
 </div>
@@ -1143,6 +1163,24 @@
         show: 'drop',
         hide: 'drop'
     });
+    
+    $('#pingfen11').dialog({
+        autoOpen: false,
+        width: 700,
+        maxHeight: 700,
+        resizable: false,
+        modal: true,
+        show: 'drop',
+        hide: 'drop',
+        title: "评定结果",
+        buttons: [{
+            html: "确定",
+            "class": "btn btn-default",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }]
+    });
 
     function evaRes() {
         $('#evaRes').dialog({
@@ -1238,6 +1276,124 @@
         });
     }
 
+   
+
+    function pingfen11() {
+        $('#pingfen11').dialog('open');
+         $.ajax({
+            type: 'POST',
+            url: '../Eval11Servlet',
+            dataType: 'json',
+            data: {
+                type: "pingfen11"
+            },
+            error: function (msg) {
+            },
+            success: function (json) {
+                var obj = json.obj;
+                var evaBridgePart = obj.evaBridgePart;
+                var unitevaluationrec = obj.unitevaluationrec;
+                $('#pingfen11 tbody').empty();
+                var sbjgcount=0;
+                var xbjgcount=0;
+                var qmxcount=0;
+                var countu=1;
+                for(var i in unitevaluationrec)
+                {
+                	if(unitevaluationrec[i].eva_ubr_part=='上部结构'){
+                		sbjgcount++;
+                	}else if(unitevaluationrec[i].eva_ubr_part=='下部结构'){
+                		xbjgcount++;
+                	}else if(unitevaluationrec[i].eva_ubr_part=='桥面系'){
+                		qmxcount++;
+                	}
+                }
+                var tsbhtml = '<tr><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value3+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                
+                var tsb = $(tsbhtml);
+                var txb =$(txbhtml);
+                var qm = $(qmhtml);
+                var fristb = true;
+                for(var i in unitevaluationrec)
+                {	
+                	
+                	var tu = $('<tr> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>');
+                	if(unitevaluationrec[i].eva_ubr_part=='上部结构')
+                		{ if(fristb){
+                			tsb.eq(0).find('td').eq(3).html(countu);countu++;
+                			tsb.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
+                			tsb.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
+                			tsb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+                			tsb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(tsb);
+                			fristb=false;
+                		  } else{
+                			tu.find('td').eq(0).html(countu);countu++;
+                			tu.find('td').eq(1).html(unitevaluationrec[i].component_id);
+                			tu.find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
+                			tu.find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+                			tu.find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(tu);
+                			} 
+                		}
+                }
+                fristb = true;
+                for(var i in unitevaluationrec)
+                {	
+                	
+                	var tu = $('<tr> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>');
+                	if(unitevaluationrec[i].eva_ubr_part=='下部结构')
+                		{ if(fristb){
+                			txb.eq(0).find('td').eq(3).html(countu);countu++;
+                			txb.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
+                			txb.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
+                			txb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+                			txb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(txb);
+                			fristb=false;
+                		  }else{
+                			tu.find('td').eq(0).html(countu);countu++;
+                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
+                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
+                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(tu);
+                			}
+                		}
+                }
+                fristb = true;
+                for(var i in unitevaluationrec)
+                {
+                	
+                	var tu = $('<tr> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>');
+                	if(unitevaluationrec[i].eva_ubr_part=='桥面系')
+                		{ if(fristb){
+                			qm.eq(0).find('td').eq(3).html(countu);countu++;
+                			qm.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
+                			qm.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
+                			qm.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+                			qm.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(qm);
+                			fristb=false;
+                		  }else{
+                			tu.eq(0).find('td').eq(0).html(countu);countu++;
+                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
+                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
+                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
+                			$('#pingfen11 tbody').append(tu);
+                			}
+                		}
+                }
+                var zt = $('<tr><td colspan="2">总体评分</td><td colspan="2">'+evaBridgePart.eva_bridge_part_value+'</td><td colspan="2">等级</td><td colspan="2">'+evaBridgePart.eva_bridge_part_grde+'</td></tr>');
+                $('#pingfen11 tbody').append(zt);
+            }
+        }); 
+    }
+    
+    
     $('#searchData').on('change', function () {
         var d = $(this).val();
         table.search(d).draw(true);

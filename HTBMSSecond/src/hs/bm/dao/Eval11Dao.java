@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import hs.bm.bean.EvaBridgePart;
+import hs.bm.bean.Unitevaluationrec;
 import hs.bm.vo.Eval11Info;
 import hs.bm.vo.IndexsetIndexVO;
 import hs.bm.vo.OperationConstruct;
@@ -248,6 +249,61 @@ public class Eval11Dao {
 		}
 		dataOperation.close();
 		return map;
+	}
+	
+	public EvaBridgePart getpinfen11EvaBridgePart(String prj_id, String bridge_id) {
+		String sql = "select a.eva_bridge_part_value1,a.eva_bridge_part_value2,a.eva_bridge_part_value3, " + 
+				"       a.eva_bridge_part_index1,a.eva_bridge_part_index2,a.eva_bridge_part_index3, " + 
+				"	   b.er_grade,b.er_level " + 
+				"from eva_bridge_part as a " + 
+				"left join evaluationrec as b on a.bridge_no=b.bridge_no and a.prj_no=b.prj_no " + 
+				"where b.er_std='2011' and a.prj_no=? and a.bridge_no=?;";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id,bridge_id});
+		EvaBridgePart evaBridgePart = new EvaBridgePart();
+		try {
+			while(rs.next()){
+				evaBridgePart.setEva_bridge_part_value1(rs.getString("eva_bridge_part_value1"));
+				evaBridgePart.setEva_bridge_part_value2(rs.getString("eva_bridge_part_value2"));
+				evaBridgePart.setEva_bridge_part_value3(rs.getString("eva_bridge_part_value3"));
+				evaBridgePart.setEva_bridge_part_index1(rs.getByte("eva_bridge_part_index1"));
+				evaBridgePart.setEva_bridge_part_index2(rs.getByte("eva_bridge_part_index2"));
+				evaBridgePart.setEva_bridge_part_index3(rs.getByte("eva_bridge_part_index3"));
+				evaBridgePart.setEva_bridge_part_value(rs.getString("er_grade"));
+				evaBridgePart.setEva_bridge_part_grde(rs.getString("er_level"));	
+		
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return evaBridgePart;
+	}
+	
+	public List<Unitevaluationrec> getpinfen11Unitevaluationrec(String prj_id, String bridge_id) {
+		String sql = "select a.component_id,count(b.component_id) as counts,a.eva_ubr_part,a.uer_grade,a.uer_index " + 
+				"from unitevaluationrec as a " + 
+				"inner join eva_mbr_calcu as b on a.prj_no=b.prj_id and a.bridge_no=b.bridge_id and a.component_id=b.component_id " + 
+				"where a.prj_no like ? and a.bridge_no like ? " + 
+				"group by a.component_id;";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id,bridge_id});
+		List<Unitevaluationrec> utrList = new ArrayList<Unitevaluationrec>();
+		try {
+			while(rs.next()){
+				Unitevaluationrec utr = new Unitevaluationrec();
+				utr.setEva_ubr_part(rs.getString("eva_ubr_part"));
+				utr.setComponent_id(rs.getString("component_id"));
+				utr.setUer_unitid(rs.getInt("counts"));
+				utr.setUer_grade(rs.getFloat("uer_grade"));
+				utr.setUer_index(rs.getInt("uer_index"));
+				utrList.add(utr);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return utrList;
 	}
 
 	public boolean checkPrjEvaCount(String id, String prj_id){

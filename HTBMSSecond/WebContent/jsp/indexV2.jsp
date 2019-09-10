@@ -1584,7 +1584,7 @@
     var dataALL = {};
     
     function initIndexBrg() {
-//    	getBridgeEval();
+    	getBridgeEval();
         var prj_id = $("#project").val();
         var eva_type=$("#chk_type").val();
         var highway_id = $("#freeway").val();
@@ -1619,8 +1619,7 @@
         });
     }
 
-    
-/*     function getBridgeEval() {
+     function getBridgeEval() {
         $.ajax({
             type: 'post',
             url: '../StructMgrServlet',
@@ -1636,7 +1635,7 @@
             error: function () {
             }
         });
-    } */
+    }
 
     function  search(){
     	$('#chk_type').val('%');

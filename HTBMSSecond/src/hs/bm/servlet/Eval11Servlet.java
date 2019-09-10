@@ -1,6 +1,7 @@
 package hs.bm.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 
 import hs.bm.bean.ChkBrgDefect;
 import hs.bm.bean.EvaBridgePart;
+import hs.bm.bean.Unitevaluationrec;
 import hs.bm.dao.CheckSpanDao;
 import hs.bm.dao.Eval11Dao;
 import hs.bm.dao.LogDao;
@@ -169,6 +171,21 @@ public class Eval11Servlet extends HttpServlet {
 			OperationConstruct oc = (OperationConstruct)request.getSession().getAttribute("OperationConstruct");
 			//List<EvaluationRec> ll = new ArrayList<EvaluationRec>();
 			Map<String, Map<String, EvaBridgePart>> map= Eval11Dao.getInstance().getEvaRes(oc.getPrj_id(), oc.getId());
+			ro.setSuccess("success");;
+			ro.setError(0);
+			ro.setObj(map);
+			ro.ToJsp(response);
+			return;
+		}
+		
+		if(type.equals("pingfen11")){
+			OperationConstruct oc = (OperationConstruct)request.getSession().getAttribute("OperationConstruct");
+			//List<EvaluationRec> ll = new ArrayList<EvaluationRec>();
+			Map<String, Object> map= new HashMap<String, Object>();
+			EvaBridgePart evaBridgePart =  Eval11Dao.getInstance().getpinfen11EvaBridgePart(oc.getPrj_id(), oc.getId());
+			List<Unitevaluationrec> list = Eval11Dao.getInstance().getpinfen11Unitevaluationrec(oc.getPrj_id(), oc.getId());
+			map.put("evaBridgePart", evaBridgePart);
+			map.put("unitevaluationrec",list);
 			ro.setSuccess("success");;
 			ro.setError(0);
 			ro.setObj(map);
