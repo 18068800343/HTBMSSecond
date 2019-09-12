@@ -1392,8 +1392,8 @@ public class StatisticsDao {
 						"AND cbd.mbr_chk_id = cbr2.mbr_chk_id\n" +
 						"AND cbd.mbr_no = bmi.r_id\n" +
 						"AND cbr.prj_id = cpi.prj_id\n" +
-						"AND cbr.prj_id LIKE ?\n" +
-						"AND a.culvert_id LIKE ?\n" +
+						"AND FIND_IN_SET(cbr.prj_id,?) \n" +
+						"AND FIND_IN_SET(a.culvert_id,?)\n" +
 						"AND b.highway_id LIKE ?\n" +
 						"AND e.section_id LIKE ?\n" +
 						"AND c.org_id LIKE ?\n" +
@@ -1496,8 +1496,8 @@ public class StatisticsDao {
 						"AND cbd.mbr_chk_id = cbr2.mbr_chk_id\n" +
 						"AND cbd.mbr_no = bmi.r_id\n" +
 						"AND cbr.prj_id = cpi.prj_id\n" +
-						"AND cbr.prj_id LIKE ?\n" +
-						"AND a.pass_id LIKE ?\n" +
+						"AND FIND_IN_SET(cbr.prj_id,?)\n" +
+						"AND FIND_IN_SET(a.pass_id,?)  \n" +
 						"AND b.highway_id LIKE ?\n" +
 						"AND e.section_id LIKE ?\n" +
 						"AND c.org_id LIKE ?\n" +
