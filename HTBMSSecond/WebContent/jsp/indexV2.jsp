@@ -286,7 +286,7 @@
                         <!-- end widget div -->
                     </div>
                     <!-- end widget -->
-
+					</div>
                 </article>
                 <!-- END GRID -->
 
@@ -518,6 +518,7 @@
 
 <script type="text/javascript">
     //路线
+    'use strict';
     var role = '<%=session.getAttribute("userRole")%>';
     var count=0;
     var line = {
@@ -1326,9 +1327,10 @@
 	   		init2004EVa();
 	   		init2011EVa();
 	   		initBrgType();
+	   		initDisease();
 	   		initEvaDate();
 	   		initEvaType();
-	   		initDisease();
+	   		
 	   		queryBrg();
 	   		window.clearInterval(t1);
    		}
@@ -1492,7 +1494,6 @@
     var markers = Array();
     var infos = Array();
     var blen, plen, clen;
-    var bridgeEval = [];
     function initMap() {
         map = new BMap.Map("map");
         map.centerAndZoom("江苏", 7);
@@ -1517,6 +1518,7 @@
         var bridgeEval = brgCardAdminId.bridgeEvalVOList;
         var content = "";
         var level = "";
+        var myIcon;
         for (var i in bridgeEval) {
             if (bridgeEval[i]!=undefined&&bridgeEval[i]!=null&&bridgeEval[i]!="") {
                 var prj_name = bridgeEval[i].prj_name;
@@ -1584,7 +1586,7 @@
     var dataALL = {};
     
     function initIndexBrg() {
-    	getBridgeEval();
+    	//getBridgeEval();
         var prj_id = $("#project").val();
         var eva_type=$("#chk_type").val();
         var highway_id = $("#freeway").val();
@@ -1619,7 +1621,7 @@
         });
     }
 
-     function getBridgeEval() {
+/*      function getBridgeEval() {
         $.ajax({
             type: 'post',
             url: '../StructMgrServlet',
@@ -1635,22 +1637,22 @@
             error: function () {
             }
         });
-    }
+    } */
 
     function  search(){
     	$('#chk_type').val('%');
     	$('#project').val('%');
     	queryBrg();
         initBrgType();
-        initEvaDate();
         initDisease();
+        initEvaDate();        
         initAllEVa();
         init2004EVa();
         init2011EVa();
     }
     var t1 ;
-    var myChartW;//动态称重图表
-    var myChartH;//健康监测图表
+//    var myChartW;//动态称重图表
+//    var myChartH;//健康监测图表
     $(document).ready(function () {
         $.ajax({
             type: 'POST',
@@ -1669,11 +1671,11 @@
             }
         });
         
+        defect.init();//病害
     	initFreeway();//路线名称
     	custody.init();//管养单位+所属路段+所属分区
-    	initbridgeType();//桥型
+    	initbridgeType();//桥型   	
     	initcomponentType();//构件类型
-    	defect.init();//病害
         initMap();//地图
         
         $.ajax({
