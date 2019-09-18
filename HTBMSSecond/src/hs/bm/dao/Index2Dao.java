@@ -754,63 +754,50 @@ public class Index2Dao {
 		if(eva_type.equals("%")){
 			sa = new String[] { highway_id, manage_id, section_id, zone_id};
 			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
-					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
-					"	from brg_card_admin_id as aa" + 
-					"	left join (SELECT a.prj_desc,b.* " + 
-					"			from chk_project_info as a ," + 
-					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
-					"				ER_GRADE,ER_DATE " + 
-					"				from chk_brg_regular " + 
-					"				full join evaluationrec" + 
-					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
-					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE " + 
+					"from brg_card_admin_id as aa " + 
+					"left join (SELECT DISTINCT bridge_id,a.prj_id as prj_id,ER_STD,ER_LEVEL,ER_GRADE,ER_DATE,prj_desc " + 
+					"			from chk_brg_regular as a " + 
+					"			inner join chk_project_info as c on a.prj_id=c.prj_id " + 
+					"			inner join evaluationrec as b on a.bridge_id=b.bridge_no and a.prj_id=b.prj_no " + 
+					"			) as bb on aa.bridge_id=bb.bridge_id " + 
 					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null";
 		}else if(eva_type.equals("2004")){
 			sa = new String[] { highway_id, manage_id, section_id, zone_id};
 			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
-					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
-					"	from brg_card_admin_id as aa" + 
-					"	left join (SELECT a.prj_desc,b.* " + 
-					"			from chk_project_info as a ," + 
-					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
-					"				ER_GRADE,ER_DATE " + 
-					"				from chk_brg_regular " + 
-					"				full join evaluationrec" + 
-					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
-					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE " + 
+					"from brg_card_admin_id as aa " + 
+					"left join (SELECT DISTINCT bridge_id,a.prj_id as prj_id,ER_STD,ER_LEVEL,ER_GRADE,ER_DATE,prj_desc " + 
+					"			from chk_brg_regular as a " + 
+					"			inner join chk_project_info as c on a.prj_id=c.prj_id " + 
+					"			inner join evaluationrec as b on a.bridge_id=b.bridge_no and a.prj_id=b.prj_no " + 
+					"			) as bb on aa.bridge_id=bb.bridge_id " + 
 					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null " + 
 					"	and aa.bridge_id in (SELECT b.bridge_id FROM chk_project_info a, eva_ubr_2004 b where a.prj_id=b.prj_id GROUP BY a.prj_id)";
 					  
 		}else if(eva_type.equals("2011")){
 			sa = new String[] { highway_id, manage_id, section_id, zone_id};
 			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
-					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
-					"	from brg_card_admin_id as aa" + 
-					"	left join (SELECT a.prj_desc,b.* " + 
-					"			from chk_project_info as a ," + 
-					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
-					"				ER_GRADE,ER_DATE " + 
-					"				from chk_brg_regular " + 
-					"				full join evaluationrec" + 
-					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
-					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE " + 
+					"from brg_card_admin_id as aa " + 
+					"left join (SELECT DISTINCT bridge_id,a.prj_id as prj_id,ER_STD,ER_LEVEL,ER_GRADE,ER_DATE,prj_desc " + 
+					"			from chk_brg_regular as a " + 
+					"			inner join chk_project_info as c on a.prj_id=c.prj_id " + 
+					"			inner join evaluationrec as b on a.bridge_id=b.bridge_no and a.prj_id=b.prj_no " + 
+					"			) as bb on aa.bridge_id=bb.bridge_id " + 
 					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? and aa.longitude!='' and aa.longitude is not null " + 
 					"	and aa.bridge_id in (SELECT b.bridge_id FROM chk_project_info a, eva_mbr b WHERE a.prj_id=b.prj_id GROUP BY a.prj_id)";				
 		}
-		
-		
+
 		if (!prj_id.equals("%")) {
 			sql = "select aa.bridge_id,aa.bridge_name,aa.bridge_no,aa.highway_id,aa.longitude,aa.latitude,aa.manage_id,aa.section_id,aa.zone_id," + 
-					"		bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE" + 
-					"	from brg_card_admin_id as aa" + 
-					"	left join (SELECT a.prj_desc,b.* " + 
-					"			from chk_project_info as a ," + 
-					"				(SELECT DISTINCT bridge_id,prj_id,ER_STD,ER_LEVEL," + 
-					"				ER_GRADE,ER_DATE " + 
-					"				from chk_brg_regular " + 
-					"				full join evaluationrec" + 
-					"				on bridge_id=bridge_no and prj_id=prj_no) " + 
-					"				as b where b.prj_id=a.prj_id) as bb on aa.bridge_id=bb.bridge_id" + 
+					"	bb.prj_id,bb.prj_desc,bb.ER_GRADE,bb.ER_LEVEL,bb.ER_STD,bb.ER_DATE " + 
+					"from brg_card_admin_id as aa " + 
+					"left join (SELECT DISTINCT bridge_id,a.prj_id as prj_id,ER_STD,ER_LEVEL,ER_GRADE,ER_DATE,prj_desc " + 
+					"			from chk_brg_regular as a " + 
+					"			inner join chk_project_info as c on a.prj_id=c.prj_id " + 
+					"			inner join evaluationrec as b on a.bridge_id=b.bridge_no and a.prj_id=b.prj_no " + 
+					"			) as bb on aa.bridge_id=bb.bridge_id " + 
 					"	where aa.highway_id like ? and aa.manage_id like ? and aa.section_id like ? and aa.zone_id like ? " + 
 					"	and aa.bridge_id in (select bridge_id from chk_brg_regular where prj_id like ?) and aa.longitude!='' and aa.longitude is not null";
 			sa = new String[] { highway_id, manage_id, section_id, zone_id, prj_id };
