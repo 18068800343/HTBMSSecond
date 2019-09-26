@@ -1282,11 +1282,11 @@ var role = '<%=session.getAttribute("userRole")%>';
                 "searchable": true,
                 "render": function (data, type, full) {
                 	var ck;
-                	if(data.defect_serial!=undefined && data.defect_serial != "" && data.defect_serial != null){
+                	if(data.photo_path!=undefined && data.photo_path != "" && data.photo_path != null){
                 		ck="<a style='cursor:pointer'  data-serial='" + data.defect_serial + "' onclick='lookImg(this)'>查看</a>"
                 	}else{
                 		ck="<a style='color:red;'  data-serial='' onclick='' disabled>无图</a>"
-                	}
+                	} 
                     return ck;
                 }
             }, {
@@ -1448,6 +1448,7 @@ var role = '<%=session.getAttribute("userRole")%>';
     
     function lookImg(obj){
     	var serial = $(obj).attr('data-serial');
+    	//var photos = $(obj).attr('data-photos');
     	var photos = new Array();
         $.ajax({
             type: 'POST',
@@ -1468,7 +1469,8 @@ var role = '<%=session.getAttribute("userRole")%>';
                     photos = json.obj;
                 }
             }
-        });
+        }); 
+        
         $('#lookImg_area').empty();
         for (var i = 0; i < photos.length; i++) {
             var dom = $('<div class="photo thumbnail col-lg-12" >' +

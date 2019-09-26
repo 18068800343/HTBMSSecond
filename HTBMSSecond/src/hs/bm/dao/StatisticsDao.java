@@ -1387,6 +1387,11 @@ public class StatisticsDao {
 					ms.setDefect_location_desc(rs.getString("defect_location_desc"));
 					ms.setImportant(rs.getString("defect_attr"));
 					ms.setDevelop(rs.getString("develop_state"));
+					ms.setDefect_serial(rs.getString("defect_serial"));
+					ms.setPhoto_id(rs.getString("photo_id"));
+					ms.setPhoto_name(rs.getString("photo_name"));
+					ms.setPhoto_path(rs.getString("photo_path"));
+					ms.setEva_mbr_calcu_value(rs.getString("eva_mbr_calcu_value"));
 					lm.add(ms);
 				}
 				call.close();
