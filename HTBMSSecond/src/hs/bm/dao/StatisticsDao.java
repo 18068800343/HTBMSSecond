@@ -1,8 +1,14 @@
 package hs.bm.dao;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -735,10 +741,26 @@ public class StatisticsDao {
 				call.setString(10, mem.getDistr_name());
 				call.setString(11, mem.getComponent_name());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				while (rs.next()) {
+					MemberStatistics ms = new MemberStatistics();
+					ms.setLine(rs.getString("highway_name"));
+					ms.setSection(rs.getString("section_name"));
+					ms.setManage(rs.getString("org_name"));
+					ms.setZone(rs.getString("zone_name"));
+					ms.setStruct_mode("桥梁");
+					ms.setStruct(rs.getString("bridge_name"));
+					ms.setDirection(rs.getString("direction"));
+					ms.setSpan(rs.getString("span_no"));
+					ms.setStruct_type(rs.getString("brg_type_name"));
+					ms.setDistr_name(rs.getString("distr_name"));
+					ms.setComponent_name(rs.getString("component8"));
+					ms.setMember_name(rs.getString("member_name"));
+					ms.setMember_no(rs.getString("member_no"));
+					ms.setMemType(rs.getString("member_model"));
+					lm.add(ms);
+				}
 				call.close();
 				conn.close();
-				List<MemberStatistics> getAllstructmems = GetAllstructmems();
-				lm.addAll(getAllstructmems);
 				break;
 			case "culvert":
 				sql = "SELECT\n" +
@@ -767,7 +789,7 @@ public class StatisticsDao {
 						"	dic_brg_struct_distr_def AS dbsd,\n" +
 						"	dic_brg_struct_member_def AS dbsm\n" +
 						"WHERE\n" +
-						"	a.culvert_id LIKE ?\n" +
+						"	FIND_IN_SET(a.culvert_id,?) \n" +
 						"AND b.highway_id LIKE ?\n" +
 						"AND e.section_id LIKE ?\n" +
 						"AND c.org_id LIKE ?\n" +
@@ -810,10 +832,10 @@ public class StatisticsDao {
 					ms.setManage(rs.getString("manage_name"));
 					ms.setZone(rs.getString("zone_name"));
 					ms.setStruct_mode("涵洞");
-					ms.setStruct(rs.getString("bridge_name"));
+					ms.setStruct(rs.getString("culvert_name"));
 					ms.setDirection(rs.getString("direction"));
 					ms.setSpan(rs.getString("span_no"));
-					ms.setStruct_type(rs.getString("brg_type_name"));
+					ms.setStruct_type(rs.getString("cul_type_name"));
 					ms.setDistr_name(rs.getString("distr_name"));
 					ms.setComponent_name(rs.getString("component8"));
 					ms.setMember_name(rs.getString("member_name"));
@@ -850,7 +872,7 @@ public class StatisticsDao {
 						"	dic_brg_struct_distr_def AS dbsd,\n" +
 						"	dic_brg_struct_member_def AS dbsm\n" +
 						"WHERE\n" +
-						"	a.pass_id LIKE ?\n" +
+						"	FIND_IN_SET(a.pass_id,?)\n" +
 						"AND b.highway_id LIKE ?\n" +
 						"AND e.section_id LIKE ?\n" +
 						"AND c.org_id LIKE ?\n" +
@@ -893,10 +915,10 @@ public class StatisticsDao {
 					ms.setManage(rs.getString("manage_name"));
 					ms.setZone(rs.getString("zone_name"));
 					ms.setStruct_mode("通道");
-					ms.setStruct(rs.getString("bridge_name"));
+					ms.setStruct(rs.getString("pass_name"));
 					ms.setDirection(rs.getString("direction"));
 					ms.setSpan(rs.getString("span_no"));
-					ms.setStruct_type(rs.getString("brg_type_name"));
+					ms.setStruct_type(rs.getString("pass_type_name"));
 					ms.setDistr_name(rs.getString("distr_name"));
 					ms.setComponent_name(rs.getString("component8"));
 					ms.setMember_name(rs.getString("member_name"));
@@ -1198,10 +1220,10 @@ public class StatisticsDao {
 		for (Map<String, String> map : prjStruct) {
 			i++;
 			if(i==prjStruct.size()) {
-				prjIdsIn=prjIdsIn+map.get("project");
+				 prjIdsIn=prjIdsIn+map.get("project"); 
 				idsIn=idsIn+map.get("struct");
 			}else {
-				prjIdsIn=prjIdsIn+map.get("project")+",";
+				/* prjIdsIn=prjIdsIn+map.get("project")+","; */
 				idsIn=idsIn+map.get("struct")+",";
 			}
 		}
@@ -1341,10 +1363,34 @@ public class StatisticsDao {
 				call.setString(14, statistics.getDefect_name_f());
 				call.setString(15, statistics.getDefect_name());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
+				while (rs.next()) {
+					DefectStatistics ms = new DefectStatistics();
+					ms.setProject(rs.getString("prj_desc"));
+					ms.setLine(rs.getString("highway_name"));
+					ms.setSection(rs.getString("section_name"));
+					ms.setBridge_pile_no(rs.getString("bridge_pile_no"));
+					ms.setManage(rs.getString("manage_name"));
+					ms.setZone(rs.getString("zone_name"));
+					ms.setStruct_mode("桥梁");
+					ms.setStruct(rs.getString("bridge_name"));
+					ms.setDirection(rs.getString("direction"));
+					ms.setSpan(rs.getString("span_no"));
+					ms.setStruct_type(rs.getString("brg_type_name"));
+					ms.setDistr_name(rs.getString("distr_name"));
+					ms.setComponent_name(rs.getString("component8"));
+					ms.setMember_name(rs.getString("member_name"));
+					ms.setMember_no(rs.getString("member_no"));
+					ms.setMemType(rs.getString("member_model"));
+					ms.setDefect_name_f(rs.getString("defect_name_f"));
+					ms.setDefect_name(rs.getString("defect_name"));
+					ms.setDefect_count(rs.getString("defect_count"));
+					ms.setDefect_location_desc(rs.getString("defect_location_desc"));
+					ms.setImportant(rs.getString("defect_attr"));
+					ms.setDevelop(rs.getString("develop_state"));
+					lm.add(ms);
+				}
 				call.close();
 				conn.close();
-				List<DefectStatistics> getAllstructmems = GetAllStructDefects();
-				lm.addAll(getAllstructmems);
 				break;
 			case "culvert":
 				sql = "SELECT DISTINCT\n" +
