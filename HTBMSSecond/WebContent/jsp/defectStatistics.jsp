@@ -1448,7 +1448,6 @@ var role = '<%=session.getAttribute("userRole")%>';
     
     function lookImg(obj){
     	var serial = $(obj).attr('data-serial');
-    	//var photos = $(obj).attr('data-photos');
     	var photos = new Array();
         $.ajax({
             type: 'POST',
