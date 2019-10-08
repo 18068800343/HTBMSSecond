@@ -1391,7 +1391,7 @@ public class StatisticsDao {
 					ms.setPhoto_id(rs.getString("photo_id"));
 					ms.setPhoto_name(rs.getString("photo_name"));
 					ms.setPhoto_path(rs.getString("photo_path"));
-					ms.setEva_mbr_calcu_value(rs.getString("eva_mbr_calcu_value"));
+					/*ms.setEva_mbr_calcu_value(rs.getString("eva_mbr_calcu_value"));*/
 					lm.add(ms);
 				}
 				call.close();

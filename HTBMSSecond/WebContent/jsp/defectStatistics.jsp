@@ -387,7 +387,7 @@
                                             <th style="width: 120px;">缺损状况</th>
                                             <th style="width: 50px;">是否重点</th>
                                             <th style="width: 50px;">照片</th>
-                                            <th style="width: 50px;">11标准评分</th>
+                                            <!-- <th style="width: 50px;">11标准评分</th> -->
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -1243,7 +1243,7 @@ var role = '<%=session.getAttribute("userRole")%>';
             {"data": "defect_count"},
             {"data": "important"},
             {"data": null},
-            {"data": null}
+            /* {"data": null} */
         ],
         "columnDefs": [
             {
@@ -1289,13 +1289,13 @@ var role = '<%=session.getAttribute("userRole")%>';
                 	} 
                     return ck;
                 }
-            }, {
+            }/* , {
                 "targets": 20,
                 "searchable": true,
                 "render": function (data, type, full) {
                     return "<span class='label label-success state'>"+Number(data.eva_mbr_calcu_value).toFixed(2)+"</span>";
                 }
-            }],
+            } */],
         "bDestroy": true,
         "iDisplayLength": 10,
         "autoWidth": true,
