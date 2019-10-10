@@ -331,7 +331,7 @@ public class Index2Dao {
 		int year=Integer.valueOf(sdf.format(new Date()));
 		List<Integer> list=new ArrayList<>();
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
-		String sql="select COUNT(1) from chk_brg_defect where mbr_chk_id in(select a.mbr_chk_id from chk_brg_record a,chk_span_record b,brg_card_admin_id c where a.span_chk_id=b.span_chk_id  and a.bridge_id=c.bridge_id and b.chk_time like ? ";
+		String sql="select COUNT(1) from chk_brg_defect as aa join chk_brg_record as a on a.mbr_chk_id=aa.mbr_chk_id join chk_span_record as b on a.span_chk_id=b.span_chk_id join brg_card_admin_id as c on a.bridge_id=c.bridge_id join brg_mbr_info as d on a.mbr_no=d.r_id where b.chk_time like ? ";
 				if(!highway_id.equals("%")){
 					sql=sql+" and c.highway_id='"+highway_id+"'";
 				}
@@ -344,20 +344,17 @@ public class Index2Dao {
 				if(!zone_id.equals("%")){
 					sql=sql+" and c.zone_id='"+zone_id+"'";
 				}
-		
 				if(!bridgeType.equals("%")){
-					sql=sql+" and b.span_top_struct='"+bridgeType+"')";
-				}else{
-					sql=sql+")";
+					sql=sql+" and b.span_top_struct='"+bridgeType+"'";
 				}
 				if(!componentType.equals("%")){
-					sql=sql+" and mbr_no in(select r_id from brg_mbr_info where member_type='"+componentType+"')";
+					sql=sql+" and d.member_type='"+componentType+"'";
 				}
 				if(!disease.equals("%")){
-					sql=sql+" and defect_name_f='"+disease+"'";
+					sql=sql+" and aa.defect_name_f='"+disease+"'";
 				}
 				if(!diseaseType.equals("%")){
-					sql=sql+" and defect_name='"+diseaseType+"'";
+					sql=sql+" and aa.defect_name='"+diseaseType+"'";
 				}
 		ResultSet rs = dataOperation.executeQuery(sql,new Object[]{year-2+"%"});
 		try {
@@ -369,36 +366,7 @@ public class Index2Dao {
 			e.printStackTrace();
 		}
 		
-		
-		String sql1="select COUNT(1) from chk_brg_defect where mbr_chk_id in(select a.mbr_chk_id from chk_brg_record a,chk_span_record b,brg_card_admin_id c where a.span_chk_id=b.span_chk_id  and a.bridge_id=c.bridge_id and b.chk_time like ? ";
-				if(!highway_id.equals("%")){
-					sql1=sql1+" and c.highway_id='"+highway_id+"'";
-				}
-				if(!manage_id.equals("%")){
-					sql1=sql1+" and c.manage_id='"+manage_id+"'";
-				}
-				if(!section_id.equals("%")){
-					sql1=sql1+" and c.section_id='"+section_id+"'";
-				}
-				if(!zone_id.equals("%")){
-					sql1=sql1+" and c.zone_id='"+zone_id+"'";
-				}
-		
-				if(!bridgeType.equals("%")){
-					sql1=sql1+" and b.span_top_struct='"+bridgeType+"')";
-				}else{
-					sql1=sql1+")";
-				}
-				if(!componentType.equals("%")){
-					sql1=sql1+" and mbr_no in(select r_id from brg_mbr_info where member_type='"+componentType+"')";
-				}
-				if(!disease.equals("%")){
-					sql1=sql1+" and defect_name_f='"+disease+"'";
-				}
-				if(!diseaseType.equals("%")){
-					sql1=sql1+" and defect_name='"+diseaseType+"'";
-				}
-		ResultSet rs1 = dataOperation.executeQuery(sql1,new Object[]{year-1+"%"});
+		ResultSet rs1 = dataOperation.executeQuery(sql,new Object[]{year-1+"%"});
 		try {
 			while(rs1.next()){
 				int count2=rs1.getInt(1);
@@ -408,37 +376,7 @@ public class Index2Dao {
 			e.printStackTrace();
 		}
 		
-		
-		
-		String sql2="select COUNT(1) from chk_brg_defect where mbr_chk_id in(select a.mbr_chk_id from chk_brg_record a,chk_span_record b,brg_card_admin_id c where a.span_chk_id=b.span_chk_id  and a.bridge_id=c.bridge_id and b.chk_time like ? ";
-				if(!highway_id.equals("%")){
-					sql2=sql2+" and c.highway_id='"+highway_id+"'";
-				}
-				if(!manage_id.equals("%")){
-					sql2=sql2+" and c.manage_id='"+manage_id+"'";
-				}
-				if(!section_id.equals("%")){
-					sql2=sql2+" and c.section_id='"+section_id+"'";
-				}
-				if(!zone_id.equals("%")){
-					sql2=sql2+" and c.zone_id='"+zone_id+"'";
-				}
-		
-				if(!bridgeType.equals("%")){
-					sql2=sql2+" and b.span_top_struct='"+bridgeType+"')";
-				}else{
-					sql2=sql2+")";
-				}
-				if(!componentType.equals("%")){
-					sql2=sql2+" and mbr_no in(select r_id from brg_mbr_info where member_type='"+componentType+"')";
-				}
-				if(!disease.equals("%")){
-					sql2=sql2+" and defect_name_f='"+disease+"'";
-				}
-				if(!diseaseType.equals("%")){
-					sql2=sql2+" and defect_name='"+diseaseType+"'";
-				}
-		ResultSet rs2 = dataOperation.executeQuery(sql2,new Object[]{year+"%"});
+		ResultSet rs2 = dataOperation.executeQuery(sql,new Object[]{year+"%"});
 		try {
 			while(rs2.next()){
 				int count3=rs2.getInt(1);
