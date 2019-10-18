@@ -37,9 +37,16 @@ public class DefectStatistics {
      private String photo_name;
      private String photo_path;
      private String eva_mbr_calcu_value;
+     private String repair_state;//修复状态，0未修复，1已修复
      
      
      
+	public String getRepair_state() {
+		return repair_state;
+	}
+	public void setRepair_state(String repair_state) {
+		this.repair_state = repair_state;
+	}
 	public String getEva_mbr_calcu_value() {
 		return eva_mbr_calcu_value;
 	}

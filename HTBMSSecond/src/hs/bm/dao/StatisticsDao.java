@@ -1344,7 +1344,7 @@ public class StatisticsDao {
 					ms.setDevelop(rs.getString("develop_state"));
 					lm.add(ms);
 				}*/
-				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 				call.setString(1, project);
 				System.out.println(project);
 				call.setString(2, id);
@@ -1362,6 +1362,7 @@ public class StatisticsDao {
 				call.setString(13, statistics.getComponent_name());
 				call.setString(14, statistics.getDefect_name_f());
 				call.setString(15, statistics.getDefect_name());
+				call.setString(16, statistics.getRepair_state());
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
 				while (rs.next()) {
 					DefectStatistics ms = new DefectStatistics();

@@ -303,6 +303,14 @@
                                                     <select class="form-control input-sm select2" id="defect">
                                                     </select>
                                                 </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-lg-4">
+                                                    <label>修复状态</label>
+                                                    <select class="form-control input-sm select2" id="repair_state">
+                                                    	<option value="%">--全部--</option>
+                                                        <option value="1">已维修</option>
+                                                        <option value="0">未维修</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -577,6 +585,7 @@ var role = '<%=session.getAttribute("userRole")%>';
             defect_name_f: $('#defect_f').val(),
             defect_name: $('#defect').val(),
             bridge_pile_no:$("#bridge_pile_no").val(),
+            repair_state:$("#repair_state").val(),
         }
         console.log(info)
         showMask();
