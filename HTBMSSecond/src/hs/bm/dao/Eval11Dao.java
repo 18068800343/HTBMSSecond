@@ -251,18 +251,20 @@ public class Eval11Dao {
 		return map;
 	}
 	
-	public EvaBridgePart getpinfen11EvaBridgePart(String prj_id, String bridge_id) {
+	public List<EvaBridgePart> getpinfen11EvaBridgePart(String prj_id, String bridge_id) {
 		String sql = "select a.eva_bridge_part_value1,a.eva_bridge_part_value2,a.eva_bridge_part_value3, " + 
 				"       a.eva_bridge_part_index1,a.eva_bridge_part_index2,a.eva_bridge_part_index3, " + 
-				"	   b.er_grade,b.er_level " + 
+				"	   b.er_grade,b.er_level,a.bridge_direction " + 
 				"from eva_bridge_part as a " + 
 				"left join evaluationrec as b on a.bridge_no=b.bridge_no and a.prj_no=b.prj_no " + 
 				"where b.er_std='2011' and a.prj_no=? and a.bridge_no=?;";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
 		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id,bridge_id});
-		EvaBridgePart evaBridgePart = new EvaBridgePart();
+		List<EvaBridgePart> list = new ArrayList<EvaBridgePart>();
+		EvaBridgePart evaBridgePart;
 		try {
 			while(rs.next()){
+				evaBridgePart = new EvaBridgePart();
 				evaBridgePart.setEva_bridge_part_value1(rs.getString("eva_bridge_part_value1"));
 				evaBridgePart.setEva_bridge_part_value2(rs.getString("eva_bridge_part_value2"));
 				evaBridgePart.setEva_bridge_part_value3(rs.getString("eva_bridge_part_value3"));
@@ -270,22 +272,89 @@ public class Eval11Dao {
 				evaBridgePart.setEva_bridge_part_index2(rs.getByte("eva_bridge_part_index2"));
 				evaBridgePart.setEva_bridge_part_index3(rs.getByte("eva_bridge_part_index3"));
 				evaBridgePart.setEva_bridge_part_value(rs.getString("er_grade"));
-				evaBridgePart.setEva_bridge_part_grde(rs.getString("er_level"));	
-		
+				evaBridgePart.setEva_bridge_part_grde(rs.getString("er_level"));
+				evaBridgePart.setBridge_direction(rs.getString("bridge_direction"));
+				list.add(evaBridgePart);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		dataOperation.close();
-		return evaBridgePart;
+		if(list.size()!=0&&list.get(0).getBridge_direction().equals("无"))
+		{
+			double pf1 = 0,pf2=0,pf3=0;
+			int num = list.size();
+			for(int i=0;i<list.size();i++)
+			{
+				pf1+=Double.parseDouble(list.get(i).getEva_bridge_part_value1());
+				pf2+=Double.parseDouble(list.get(i).getEva_bridge_part_value2());
+				pf3+=Double.parseDouble(list.get(i).getEva_bridge_part_value3());
+			}
+			evaBridgePart = new EvaBridgePart();
+			evaBridgePart.setEva_bridge_part_value1(String.format("%.4f", pf1/num));
+			evaBridgePart.setEva_bridge_part_value2(String.format("%.4f", pf2/num));
+			evaBridgePart.setEva_bridge_part_value3(String.format("%.4f", pf3/num));
+			evaBridgePart.setEva_bridge_part_index1(list.get(list.size()-1).getEva_bridge_part_index1());
+			evaBridgePart.setEva_bridge_part_index2(list.get(list.size()-1).getEva_bridge_part_index2());
+			evaBridgePart.setEva_bridge_part_index3(list.get(list.size()-1).getEva_bridge_part_index3());
+			evaBridgePart.setEva_bridge_part_value(list.get(list.size()-1).getEva_bridge_part_value());
+			evaBridgePart.setEva_bridge_part_grde(list.get(list.size()-1).getEva_bridge_part_grde());
+			evaBridgePart.setBridge_direction(list.get(list.size()-1).getBridge_direction());
+			list.clear();
+			list.add(evaBridgePart);
+		}else if(list.size()!=0){
+			double pf1 = 0,pf2=0,pf3=0,pf4=0,pf5=0,pf6=0;
+			int count1=0,count2=0;
+			EvaBridgePart evaBridgePart1 = new EvaBridgePart();
+			EvaBridgePart evaBridgePart2 = new EvaBridgePart();
+			for(int i=0;i<list.size();i++)
+			{
+				if(list.get(i).getBridge_direction().equals("上行")) {
+					pf1+=Double.parseDouble(list.get(i).getEva_bridge_part_value1());
+					pf2+=Double.parseDouble(list.get(i).getEva_bridge_part_value2());
+					pf3+=Double.parseDouble(list.get(i).getEva_bridge_part_value3());
+					evaBridgePart1.setEva_bridge_part_index1(list.get(i).getEva_bridge_part_index1());
+					evaBridgePart1.setEva_bridge_part_index2(list.get(i).getEva_bridge_part_index2());
+					evaBridgePart1.setEva_bridge_part_index3(list.get(i).getEva_bridge_part_index3());
+					evaBridgePart1.setEva_bridge_part_value(list.get(i).getEva_bridge_part_value());
+					evaBridgePart1.setEva_bridge_part_grde(list.get(i).getEva_bridge_part_grde());
+					evaBridgePart1.setBridge_direction(list.get(i).getBridge_direction());
+					count1++;
+				}else {
+					pf4+=Double.parseDouble(list.get(i).getEva_bridge_part_value1());
+					pf5+=Double.parseDouble(list.get(i).getEva_bridge_part_value2());
+					pf6+=Double.parseDouble(list.get(i).getEva_bridge_part_value3());
+					evaBridgePart2.setEva_bridge_part_index1(list.get(i).getEva_bridge_part_index1());
+					evaBridgePart2.setEva_bridge_part_index2(list.get(i).getEva_bridge_part_index2());
+					evaBridgePart2.setEva_bridge_part_index3(list.get(i).getEva_bridge_part_index3());
+					evaBridgePart2.setEva_bridge_part_value(list.get(i).getEva_bridge_part_value());
+					evaBridgePart2.setEva_bridge_part_grde(list.get(i).getEva_bridge_part_grde());
+					evaBridgePart2.setBridge_direction(list.get(i).getBridge_direction());
+					count2++;
+					}
+					
+					
+				}
+				evaBridgePart1.setEva_bridge_part_value1(String.format("%.4f", pf1/count1));
+				evaBridgePart1.setEva_bridge_part_value2(String.format("%.4f", pf2/count1));
+				evaBridgePart1.setEva_bridge_part_value3(String.format("%.4f", pf3/count1));
+				evaBridgePart2.setEva_bridge_part_value1(String.format("%.4f", pf4/count2));
+				evaBridgePart2.setEva_bridge_part_value2(String.format("%.4f", pf5/count2));
+				evaBridgePart2.setEva_bridge_part_value3(String.format("%.4f", pf6/count2));
+				list.clear();
+				list.add(evaBridgePart1);
+				list.add(evaBridgePart2);
+			
+		}
+		return list;
 	}
 	
 	public List<Unitevaluationrec> getpinfen11Unitevaluationrec(String prj_id, String bridge_id) {
-		String sql = "select a.component_id,count(b.component_id) as counts,a.eva_ubr_part,a.uer_grade,a.uer_index " + 
+		String sql = "select a.component_id,count(b.component_id) as counts,a.eva_ubr_part,a.uer_grade,a.uer_index,b.bridge_direction " + 
 				"from unitevaluationrec as a " + 
-				"inner join eva_mbr_calcu as b on a.prj_no=b.prj_id and a.bridge_no=b.bridge_id and a.component_id=b.component_id " + 
+				"inner join eva_mbr_calcu as b on a.prj_no=b.prj_id and a.bridge_no=b.bridge_id and a.component_id=b.component_id and a.bridge_direction=b.bridge_direction " + 
 				"where a.prj_no like ? and a.bridge_no like ? " + 
-				"group by a.component_id;";
+				"group by a.component_id,b.bridge_direction;";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
 		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id,bridge_id});
 		List<Unitevaluationrec> utrList = new ArrayList<Unitevaluationrec>();
@@ -297,6 +366,7 @@ public class Eval11Dao {
 				utr.setUer_unitid(rs.getInt("counts"));
 				utr.setUer_grade(rs.getFloat("uer_grade"));
 				utr.setUer_index(rs.getInt("uer_index"));
+				utr.setBridge_direction(rs.getString("bridge_direction"));
 				utrList.add(utr);
 			}
 		} catch (SQLException e) {
