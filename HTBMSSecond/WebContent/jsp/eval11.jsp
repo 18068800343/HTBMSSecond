@@ -1403,22 +1403,39 @@
                     var sbjgcount=0;
                     var xbjgcount=0;
                     var qmxcount=0;
+                    var sbjgcount1=0;
+                    var xbjgcount1=0;
+                    var qmxcount1=0;
                     var countu=1;
                     for(var i in unitevaluationrec)
                     {
                     	if(unitevaluationrec[i].eva_ubr_part=='上部结构'){
-                    		sbjgcount++;
+                    		if(unitevaluationrec[i].bridge_direction=='上行'){
+                    			sbjgcount++;
+                    		}else{
+                    			sbjgcount1++;
+                    		}
                     	}else if(unitevaluationrec[i].eva_ubr_part=='下部结构'){
-                    		xbjgcount++;
+                    		if(unitevaluationrec[i].bridge_direction=='上行'){
+                    			xbjgcount++;
+                    		}else{
+                    			xbjgcount1++;
+                    		}
+                    		
                     	}else if(unitevaluationrec[i].eva_ubr_part=='桥面系'){
-                    		qmxcount++;
+                    		if(unitevaluationrec[i].bridge_direction=='上行'){
+                    			qmxcount++;
+                    		}else{
+                    			qmxcount1++;
+                    		}
+                    		
                     	}
                     }
                    
-                    var fxhtml='<td rowspan="'+(sbjgcount+xbjgcount+qmxcount)/2+'" style="text-align: center;vertical-align: middle !important;">上行</td><';
-                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var txbhtml = '<tr><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var qmhtml = '<tr><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var fxhtml='<td rowspan="'+(sbjgcount+xbjgcount+qmxcount)+'" style="text-align: center;vertical-align: middle !important;">上行</td><';
+                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
                     
                     var tsb = $(tsbhtml);
                     var txb =$(txbhtml);
@@ -1493,16 +1510,17 @@
 	                			}
 	                		}
 	                }
-	                tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    txbhtml = '<tr><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    qmhtml = '<tr><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount/2+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+	                fxhtml='<td rowspan="'+(sbjgcount1+xbjgcount1+qmxcount1)+'" style="text-align: center;vertical-align: middle !important;">下行</td><';
+	                tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    txbhtml = '<tr><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    qmhtml = '<tr><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
                     
                     tsb = $(tsbhtml);
                     txb =$(txbhtml);
                     qm = $(qmhtml);
 	                
 	                
-	                tsb.eq(0).find('td').eq(0).html("下行");
+
 	                var fristb = true;
 	                for(var i in unitevaluationrec)
 	                {
