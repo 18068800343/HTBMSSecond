@@ -373,6 +373,12 @@
                                             <th class="hasinput">
                                                 <input type="text" class="form-control" placeholder="检索"/>
                                             </th>
+                                            <th class="hasinput">
+                                                <input type="text" class="form-control" placeholder="检索"/>
+                                            </th>
+                                            <th class="hasinput">
+                                                <input type="text" class="form-control" placeholder="检索"/>
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th style="width: 100px;">项目</th>

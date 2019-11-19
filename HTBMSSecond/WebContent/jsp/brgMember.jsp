@@ -1097,7 +1097,11 @@
                             table.row($(a).parents("tr")).remove().draw(false);
                             autoFromMbr();
                         } else {
-                            errMessage("删除失败！");
+                        	if(json.success == "chking"){
+                        		errMessage("该桥梁正在检查中！无法删除！");
+                        	}else{
+                             errMessage("删除失败！");
+                        	}
                         }
                     }
                 });

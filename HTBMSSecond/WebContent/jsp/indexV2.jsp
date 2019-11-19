@@ -1668,6 +1668,15 @@
             success: function (json) {
             	 $("#totalSpace").find("h4").append(json.obj.totalSpace);
                  $("#usableSpace").find("h4").append(json.obj.usableSpace);
+                 var us = json.obj.usableSpace;
+                 var endIndex = us.indexOf("G");
+                     us = us.substring(0,endIndex);
+                     us = parseInt(us);
+                 if(us<100){
+                	 $("#usableSpace").find("h4").css("color","red");
+                 }else{
+                	 $("#usableSpace").find("h4").removeAttr("color");
+                 }
             }
         });
         

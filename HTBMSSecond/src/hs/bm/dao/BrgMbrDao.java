@@ -442,6 +442,22 @@ public class BrgMbrDao {
 		return i;
 	}
 	
+	/**删除一条构件信息*/
+	public int queryStructChkState(String id){
+		String sql = "select * from struct_chk_state where id = ?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{id});
+		int i = 0;
+		try {
+			if(rs.next()){
+				i =  rs.getInt("id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return i;
+	}
 	/**简化*/
 	private int excuteUpdate(String sql,Object[] obj){
 		int i=0;

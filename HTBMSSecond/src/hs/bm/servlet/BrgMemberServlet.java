@@ -694,14 +694,22 @@ public class BrgMemberServlet extends HttpServlet {
 		ResObj ro = new ResObj();
 		String log_user=(String) request.getSession().getAttribute("username");
 		try {
-			int i=BrgMbrDao.getIntance().delMember(new Object[] { request.getParameter("memberid") });
-			if (i > 0) {
-				ro.setSuccess("success");
-				LogDao.getInstance().addLogInfo(log_user,"删除构件", "操作成功","BrgMemberServlet+delMember");
-			} else {
-				ro.setSuccess("fail");
-				ro.setError(i);
+			int j = BrgMbrDao.getIntance().queryStructChkState(request.getParameter("memberid"));
+			int i = 0;
+			if(j==0){
+			    i=BrgMbrDao.getIntance().delMember(new Object[] { request.getParameter("memberid") });
+			    if (i > 0) {
+					ro.setSuccess("success");
+					LogDao.getInstance().addLogInfo(log_user,"删除构件", "操作成功","BrgMemberServlet+delMember:"+request.getParameter("memberid"));
+				} else {
+					ro.setSuccess("fail");
+					ro.setError(i);
+				}
+			}else{
+				ro.setSuccess("chking");
+				ro.setError(j);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			LogDao.getInstance().addLogInfo(log_user,"删除构件", e.getMessage(),"BrgMemberServlet+delMember+memberid:"+ request.getParameter("memberid"));

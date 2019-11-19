@@ -1192,44 +1192,53 @@ public class StatisticsDao {
 			manage=manageName(manage);
 		}
 		
-		List<Map<String, String>> prj = getStructProjectByProject(statistics.getProject(), statistics.getStruct_mode(),manage,statistics.getLine());
-			
 
-		List<String> sid = new ArrayList<String>();
-		if (statistics.getStruct().equals("%")) {
-			sid = getAllStructId(statistics.getStruct_mode());
-		} else {
-			sid.add(statistics.getStruct());
-		}
-		ids = getRepeat(null, sid);
-		List<Map<String, String>> prjStruct = new ArrayList<Map<String, String>>();
-		for (String s : ids) {
-			for(Map<String, String> map : prj){
-				if(s.equals(map.get("struct"))){
-					prjStruct.add(map);
-				}
-			}
-		}
 		
 		/*for(Map<String, String> map : prjStruct){
 			ll.addAll(getDefectList(map.get("project"), map.get("struct"), statistics.getStruct_mode(), statistics));
 		}*/
-		String prjIdsIn = "";
-		String idsIn = "";
-		int i=0;
-		for (Map<String, String> map : prjStruct) {
-			i++;
-			if(i==prjStruct.size()) {
-				 prjIdsIn=prjIdsIn+map.get("project"); 
-				idsIn=idsIn+map.get("struct");
-			}else {
-				/* prjIdsIn=prjIdsIn+map.get("project")+","; */
-				idsIn=idsIn+map.get("struct")+",";
+		
+		if("%".equals(statistics.getStruct())&&"%".equals(statistics.getProject())&&"bridge".equals(statistics.getStruct_mode())) {
+			ll.addAll(getDefectList("", "", statistics.getStruct_mode(), statistics));
+		}else {
+			List<Map<String, String>> prj = getStructProjectByProject(statistics.getProject(), statistics.getStruct_mode(),manage,statistics.getLine());
+			
+
+			List<String> sid = new ArrayList<String>();
+			if (statistics.getStruct().equals("%")) {
+				sid = getAllStructId(statistics.getStruct_mode());
+			} else {
+				sid.add(statistics.getStruct());
 			}
+			ids = getRepeat(null, sid);
+			List<Map<String, String>> prjStruct = new ArrayList<Map<String, String>>();
+			for (String s : ids) {
+				for(Map<String, String> map : prj){
+					if(s.equals(map.get("struct"))){
+						prjStruct.add(map);
+					}
+				}
+			}
+			
+			String prjIdsIn = "";
+			String idsIn = "";
+			int i=0;
+			for (Map<String, String> map : prjStruct) {
+				i++;
+				if(i==prjStruct.size()) {
+					 prjIdsIn=prjIdsIn+map.get("project"); 
+					idsIn=idsIn+map.get("struct");
+				}else {
+					 prjIdsIn=prjIdsIn+map.get("project")+",";
+					idsIn=idsIn+map.get("struct")+",";
+				}
+			}
+			System.out.println(prjIdsIn.toString());
+			System.out.println(idsIn.toString());
+			ll.addAll(getDefectList(prjIdsIn, idsIn, statistics.getStruct_mode(), statistics));
 		}
-		System.out.println(prjIdsIn.toString());
-		System.out.println(idsIn.toString());
-		ll.addAll(getDefectList(prjIdsIn, idsIn, statistics.getStruct_mode(), statistics));
+		
+
 		return ll;
 	}
 
@@ -1344,7 +1353,16 @@ public class StatisticsDao {
 					ms.setDevelop(rs.getString("develop_state"));
 					lm.add(ms);
 				}*/
-				CallableStatement call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+				CallableStatement call;
+				if("%".equals(statistics.getProject())) {
+					if("%".equals(statistics.getStruct())) {
+						call = conn.prepareCall("{call getstructdefectsPrjAndStruct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					}else {
+						call = conn.prepareCall("{call getstructdefectsPrj(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					}
+				}else {
+					call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+				}
 				call.setString(1, project);
 				System.out.println(project);
 				call.setString(2, id);
