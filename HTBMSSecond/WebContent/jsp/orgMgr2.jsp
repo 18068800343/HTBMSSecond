@@ -800,6 +800,8 @@
     <script src="../js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	/**************************************定义全局变量*************************************************************/
+		/* 当前登录人 */
+		var username='<%=session.getAttribute("username")%>';
 		var $li1=undefined;/*上行标签*/
 		var $lli=undefined;
 		var $ul=$("#tree-ul");
@@ -3930,6 +3932,18 @@ imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL
 					    	    }
 					          }
 					    } ,{
+						      "targets": 2,
+						      "searchable": false,
+						      "render": function(data, type, full) {
+						    	  console.log(username);
+						    	    if(username=="shiro"){
+						    	    	return data;
+						    	    }else{
+						    	    	return '******'
+						    	    }
+						    	    
+						          }
+						    },{
 						      "targets": 0,
 						      "searchable": false,
 						      "orderable":false,
@@ -4051,7 +4065,12 @@ imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL
 					//alert(data.usr_no);
 					//$("#tcauId").val(data.usr_no);
 					$("#tcauName").val(data.usr_name);
-					$("#tcauPass").val(data.usr_pwd);
+					if(username=="shiro"){
+						$("#tcauPass").val(data.usr_pwd);
+					}else{
+						$("#tcauPass").val('******');
+					}
+					//$("#tcauPass").val(data.usr_pwd);
 					$("#tcauRole").val(data.usr_role).trigger("change");
 					//$("#kcauRole").find('option:selected').val();
 					$("#tcauRole").select2();
