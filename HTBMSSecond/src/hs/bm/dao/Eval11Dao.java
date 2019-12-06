@@ -350,11 +350,12 @@ public class Eval11Dao {
 	}
 	
 	public List<Unitevaluationrec> getpinfen11Unitevaluationrec(String prj_id, String bridge_id) {
-		String sql = "select a.component_id,count(b.component_id) as counts,a.eva_ubr_part,a.uer_grade,a.uer_index,b.bridge_direction " + 
+		String sql = "select a.component_id,a.eva_ubr_part,a.uer_grade,a.uer_index,b.bridge_direction " + 
 				"from unitevaluationrec as a " + 
 				"inner join eva_mbr_calcu as b on a.prj_no=b.prj_id and a.bridge_no=b.bridge_id and a.component_id=b.component_id and a.bridge_direction=b.bridge_direction " + 
 				"where a.prj_no like ? and a.bridge_no like ? " + 
 				"group by a.component_id,b.bridge_direction;";
+		
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
 		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id,bridge_id});
 		List<Unitevaluationrec> utrList = new ArrayList<Unitevaluationrec>();
@@ -363,7 +364,6 @@ public class Eval11Dao {
 				Unitevaluationrec utr = new Unitevaluationrec();
 				utr.setEva_ubr_part(rs.getString("eva_ubr_part"));
 				utr.setComponent_id(rs.getString("component_id"));
-				utr.setUer_unitid(rs.getInt("counts"));
 				utr.setUer_grade(rs.getFloat("uer_grade"));
 				utr.setUer_index(rs.getInt("uer_index"));
 				utr.setBridge_direction(rs.getString("bridge_direction"));
@@ -372,7 +372,34 @@ public class Eval11Dao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		String sql2 = "select dbsm.component1,count(dbsm.component1) as counts,bsi.direction "+
+				"from brg_span_info as bsi "+
+				"inner join brg_mbr_info as bmi on bsi.s_id=bmi.s_id "+
+				"inner join dic_brg_struct_member_def as dbsm on bmi.member_type=dbsm.member_name "+
+				"where bsi.bridge_id like ? "+
+				"group by dbsm.component1,bsi.direction ";
+		MyDataOperation dataOperation2 = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs2 = dataOperation2.executeQuery(sql2, new String[]{bridge_id});
+		
+		try {
+			while(rs2.next()){
+				String component_id=rs2.getString("component1");
+				int counts = rs2.getInt("counts");
+				String direction=rs2.getString("direction");
+				for(Unitevaluationrec u : utrList)
+				{
+					if(u!=null&&u.getComponent_id()!=null&&u.getComponent_id().equals(component_id)&&u.getBridge_direction().equals(direction))
+					{
+						u.setUer_unitid(counts);
+					}
+				}
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		dataOperation.close();
+		dataOperation2.close();
 		return utrList;
 	}
 
