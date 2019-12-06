@@ -740,7 +740,8 @@ String path = request.getRequestURI().toString();
 					<a href="#"><i class="fa fa-lg fa-fw fa-cog"></i> <span class="menu-item-parent">系统管理</span></a>
 					<ul>
 						<%
-						if(role.equals("guest")||role.equals("orgCharge")||role.equals("orgDuty")||role.equals("orgEngineer")){
+						//if(role.equals("guest")||role.equals("orgCharge")||role.equals("orgDuty")||role.equals("orgEngineer")){
+						if(!role.equals("superAdmin")){
 						if(path.endsWith("account.jsp")) {
 						%>
 						<li class="active">
@@ -755,7 +756,8 @@ String path = request.getRequestURI().toString();
 						</li>
 						<%} %>
 						<%
-						if(role.equals("admin")||role.equals("superAdmin")||role.equals("orgAdmin")){
+						//if(role.equals("admin")||role.equals("superAdmin")||role.equals("orgAdmin")){
+						if(role.equals("superAdmin")){
 						if(path.endsWith("UserAccountManager.jsp")) {
 						%>
 						<li class="active">
@@ -771,7 +773,8 @@ String path = request.getRequestURI().toString();
 						<%} %>
 						
 						<%
-						if(role.equals("admin")||role.equals("superAdmin")||role.equals("orgAdmin")){
+						//if(role.equals("admin")||role.equals("superAdmin")||role.equals("orgAdmin")){
+						if(role.equals("superAdmin")){
 						if(path.endsWith("orgMgr2.jsp")) {
 						%>
 						<li class="active">
@@ -787,7 +790,8 @@ String path = request.getRequestURI().toString();
 						<%} %>
 						
 						<%
-						if(role.equals("admin")||role.equals("superAdmin")){
+						//if(role.equals("admin")||role.equals("superAdmin")){
+						if(role.equals("superAdmin")){
 						if(path.endsWith("StaffNumber.jsp")) {
 						%>
 						<li class="active">
@@ -803,7 +807,8 @@ String path = request.getRequestURI().toString();
 						<%} %>
 						
 						<%
-						if(role.equals("admin")||role.equals("superAdmin")){
+						//if(role.equals("admin")||role.equals("superAdmin")){
+						if(role.equals("superAdmin")){
 						if(path.endsWith("dataBaseBackUp.jsp")) {
 						%>
 						<li class="active">
