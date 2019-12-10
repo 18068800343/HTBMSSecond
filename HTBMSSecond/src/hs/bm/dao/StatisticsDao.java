@@ -467,36 +467,43 @@ public class StatisticsDao {
 
 	public List<MemberStatistics> searchMember(MemberStatistics statistics) {
 		List<MemberStatistics> ll = new ArrayList<MemberStatistics>();
-		List<String> ids = new ArrayList<String>();
-
-		List<String> prj = null;
-		if (!statistics.getProject().equals("0")) {
-			prj = getStructByProject(statistics.getProject(), statistics.getStruct_mode());
-		}
-		System.out.println("prj："+JSON.toJSONString(prj));
-//		List<String> lsec = getStructByLineManage( statistics );
-		List<String> sid = new ArrayList<String>();
-		if (statistics.getStruct().equals("%")) {
-			sid = getAllStructId(statistics.getStruct_mode());
-		} else {
-			sid.add(statistics.getStruct());
-		}
-//		ids = getRepeat(prj, lsec);
-		ids = getRepeat(prj, sid);
-		System.out.println(JSON.toJSONString(ids));
-		System.out.println(ids.size());
-		String idsIn = "";
-		int i=0;
-		for (String s : ids) {
-			i++;
-			if(i==ids.size()) {
-				idsIn=idsIn+s;
-			}else {
-				idsIn=idsIn+s+",";
+		
+		if("%".equals(statistics.getStruct())&&("%".equals(statistics.getProject())||"0".equals(statistics.getProject()))&&"bridge".equals(statistics.getStruct_mode())) {
+			ll.addAll(getMemList("", statistics.getStruct_mode(), statistics));
+		}else {
+			List<String> ids = new ArrayList<String>();
+			List<String> prj = null;
+			if (!statistics.getProject().equals("0")) {
+				prj = getStructByProject(statistics.getProject(), statistics.getStruct_mode());
 			}
+			System.out.println("prj："+JSON.toJSONString(prj));
+//			List<String> lsec = getStructByLineManage( statistics );
+			List<String> sid = new ArrayList<String>();
+			if (statistics.getStruct().equals("%")) {
+				sid = getAllStructId(statistics.getStruct_mode());
+			} else {
+				sid.add(statistics.getStruct());
+			}
+//			ids = getRepeat(prj, lsec);
+			ids = getRepeat(prj, sid);
+			System.out.println(JSON.toJSONString(ids));
+			System.out.println(ids.size());
+			String idsIn = "";
+			int i=0;
+			for (String s : ids) {
+				i++;
+				if(i==ids.size()) {
+					idsIn=idsIn+s;
+				}else {
+					idsIn=idsIn+s+",";
+				}
+			}
+			System.out.println(idsIn.toString());
+			ll.addAll(getMemList(idsIn.toString(), statistics.getStruct_mode(), statistics));
 		}
-		System.out.println(idsIn.toString());
-		ll.addAll(getMemList(idsIn.toString(), statistics.getStruct_mode(), statistics));
+		
+		
+
 		return ll;
 	}
 
@@ -727,7 +734,16 @@ public class StatisticsDao {
 					ms.setMemType(rs.getString("member_model"));
 					lm.add(ms);
 				}*/
-				CallableStatement call = conn.prepareCall("{call getstructmems(?,?,?,?,?,?,?,?,?,?,?)}");
+				CallableStatement call;
+				if("%".equals(mem.getProject())) {
+					if("%".equals(mem.getStruct())) {
+						call = conn.prepareCall("{call GetStructMemsStruct(?,?,?,?,?,?,?,?,?,?,?)}");
+					}else {
+						call = conn.prepareCall("{call GetStructMems(?,?,?,?,?,?,?,?,?,?,?)}");
+					}
+				}else {
+					call = conn.prepareCall("{call GetStructMems(?,?,?,?,?,?,?,?,?,?,?)}");
+				}
 				call.setString(1, id);
 				System.out.println(id);
 				call.setString(2, mem.getLine());

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import hs.bm.bean.ImgPackage;
 import hs.bm.bean.ReportInfo;
+import hs.bm.bean.ReportQueue;
 import hs.bm.util.FileManageUtil;
 import hs.bm.util.PropertiesUtil;
 import hs.bm.util.ZipManageUtil;
@@ -186,7 +187,7 @@ public class ReportMgrDao {
 
 	public List<ReportInfo> initTableAll() {
 		List<ReportInfo> lr = new ArrayList<ReportInfo>();
-		String sql = "select distinct * from report_info ORDER BY report_date DESC";
+		String sql = " SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id WHERE	rifo.struct_mode = 'bridge' ORDER BY	rifo.report_date DESC";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		ResultSet rs = dataOperation.executeQuery(sql, null);
 		try {
@@ -208,6 +209,7 @@ public class ReportMgrDao {
 				oc.setUser_name(rs.getString("user_name"));
 				oc.setTask_id(rs.getString("task_id"));
 				oc.setReport_count(rs.getInt("report_count"));
+				oc.setRowno(rs.getInt("rowno"));
 				getStructNameNo(oc, dataOperation);
 				
 				lr.add(oc);
@@ -221,7 +223,7 @@ public class ReportMgrDao {
 	
 	public List<ReportInfo> initTableAll2(String orgid) {
 		List<ReportInfo> lr = new ArrayList<ReportInfo>();
-		String sql = "select distinct * from report_info where struct_mode = 'bridge' ORDER BY report_date DESC";
+		String sql = "SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id WHERE	rifo.struct_mode = 'bridge' ORDER BY	rifo.report_date DESC";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		ResultSet rs = dataOperation.executeQuery(sql, null);
 		try {
@@ -243,6 +245,7 @@ public class ReportMgrDao {
 				oc.setUser_name(rs.getString("user_name"));
 				oc.setTask_id(rs.getString("task_id"));
 				oc.setReport_count(rs.getInt("report_count"));
+				oc.setRowno(rs.getInt("rowno"));
 				Boolean flag = getStructNameNo2(oc, dataOperation,orgid);
 				if(flag==false){
 					continue;
@@ -361,7 +364,97 @@ public class ReportMgrDao {
 		dataOperation.close();
 		return i;
 	}
+	
+	
+	public int addReportQueue(ReportQueue rq) {
+		String sql = "insert into report_queue(report_id,report_op,prj_id,struct_id,struct_mode,chk_type,report_build,insert_time,taskName) "
+				+ "values(?,?,?,?,?,?,?,?,?)";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql,
+				new Object[] {rq.getReport_id(), rq.getReport_op(), rq.getPrj_id(),
+						rq.getStruct_id(), rq.getStruct_mode(),rq.getChk_type(),rq.getReport_build(),rq.getInsert_time(),rq.getTaskName()});
+		dataOperation.close();
+		return i;
+	}
+	
+	public int deleteReportQueueById(Integer id) {
+		String sql = "delete from report_queue where id = ?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql,new Object[]{id});
+		dataOperation.close();
+		return i;
+	}
+	
+	public Integer getReportQueueCount() {
+		String	sql = "select count(0) as count from report_queue";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[] {});
+		int i = 0;
+		try {
+			if (rs.next()) {
+				i  = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
 
+	public List<ReportQueue> getAllReportQueue() {
+		List<ReportQueue> lr = new ArrayList<ReportQueue>();
+		String sql = "select * from report_queue order by id";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		ResultSet rs = dataOperation.executeQuery(sql, null);
+		try {
+			while (rs.next()) {
+				ReportQueue oc = new ReportQueue();
+				oc.setId(rs.getInt("id"));
+				oc.setReport_id(rs.getString("report_id"));
+				oc.setReport_op(rs.getString("report_op"));
+				oc.setPrj_id(rs.getString("prj_id"));
+				oc.setStruct_id(rs.getString("struct_id"));
+				oc.setStruct_mode(rs.getString("struct_mode"));
+				oc.setChk_type(rs.getString("chk_type"));
+				oc.setReport_build(rs.getString("report_build"));
+				oc.setInsert_time(rs.getString("insert_time"));
+				oc.setTaskName(rs.getString("taskName"));
+				lr.add(oc);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return lr;
+	}
+	
+	public ReportQueue getNearlyReportQueue() {
+		String sql = "select * from report_queue order by id limit 1";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+		ResultSet rs = dataOperation.executeQuery(sql, null);
+		ReportQueue oc = null;
+		try {
+			if (rs.next()) {
+				oc = new ReportQueue();
+				oc.setId(rs.getInt("id"));
+				oc.setReport_id(rs.getString("report_id"));
+				oc.setReport_op(rs.getString("report_op"));
+				oc.setPrj_id(rs.getString("prj_id"));
+				oc.setStruct_id(rs.getString("struct_id"));
+				oc.setStruct_mode(rs.getString("struct_mode"));
+				oc.setChk_type(rs.getString("chk_type"));
+				oc.setReport_build(rs.getString("report_build"));
+				oc.setInsert_time(rs.getString("insert_time"));
+				oc.setTaskName(rs.getString("taskName"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		
+		return oc;
+	}
+	
 	public int delReport(String report_id) {
 		String sql = "delete from report_info where report_id=?";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());

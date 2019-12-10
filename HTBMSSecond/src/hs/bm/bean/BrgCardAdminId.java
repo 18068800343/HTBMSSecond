@@ -58,6 +58,27 @@ public class BrgCardAdminId {
 	private String card_path;
 
 	private String main_span;
+	
+	private String max_kuajing;
+	
+	private String main_kuajiegou;
+	
+	public String getMax_kuajing() {
+		return max_kuajing;
+	}
+
+	public void setMax_kuajing(String max_kuajing) {
+		this.max_kuajing = max_kuajing;
+	}
+
+	public String getMain_kuajiegou() {
+		return main_kuajiegou;
+	}
+
+	public void setMain_kuajiegou(String main_kuajiegou) {
+		this.main_kuajiegou = main_kuajiegou;
+	}
+
 	/**桥梁评定数据，首页地图显示使用*/
 	private List<BridgeEvalVO> bridgeEvalVOList;
 	

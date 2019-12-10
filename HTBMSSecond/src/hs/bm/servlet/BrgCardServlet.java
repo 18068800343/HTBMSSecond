@@ -874,6 +874,8 @@ public class BrgCardServlet extends HttpServlet
 			String edit_span_built = request.getParameter("edit_span_built");
 			String edit_brg_type = request.getParameter("edit_brg_type");
 			String edit_location = request.getParameter("edit_location");
+			String edit_max_kuajing = request.getParameter("edit_max_kuajing");
+			String edit_main_kuajiegou = request.getParameter("edit_main_kuajiegou");
 			String longitude = "";
 			String latitude = "";
 			if (edit_location != "" && edit_location.contains(","))
@@ -881,9 +883,9 @@ public class BrgCardServlet extends HttpServlet
 				longitude = request.getParameter("edit_location").split(",")[0];
 				latitude = request.getParameter("edit_location").split(",")[1];
 			}
-			int i = BrgCardDao.getInstance().updateBrgCardAdminId(highway_id, maintain_org, edit_section, edit_zone, bridge_no, bridge_name, bridge_pile_no,
+			int i = BrgCardDao.getInstance().updateBrgCardAdminId2(highway_id, maintain_org, edit_section, edit_zone, bridge_no, bridge_name, bridge_pile_no,
 					function_type, edit_span_built, edit_brg_type, beneath_path_name, beneath_path_pile_no, design_load, pass_load, skew_slope, deck_pavement,
-					build_year, longitude, latitude, op.getId());
+					build_year, longitude, latitude, op.getId(),edit_max_kuajing,edit_main_kuajiegou);
 			boolean flag = false;
 			if (i > 0)
 			{

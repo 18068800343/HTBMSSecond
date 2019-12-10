@@ -89,6 +89,8 @@ public class BrgCardDao
 				entity.setBridge_mode(Nullchange.NulltoString(rs.getString("bridge_mode")));
 				entity.setLongitude(Nullchange.NulltoString(rs.getString("longitude")));
 				entity.setLatitude(Nullchange.NulltoString(rs.getString("latitude")));
+				entity.setMax_kuajing(Nullchange.NulltoString(rs.getString("max_kuajing")));
+				entity.setMain_kuajiegou(Nullchange.NulltoString(rs.getString("main_kuajiegou")));
 				list.add(entity);
 			}
 		} catch (SQLException e)
@@ -666,6 +668,26 @@ public class BrgCardDao
 				highway_id,manage_id,seciton_id,zone_id,bridge_no,bridge_name,bridge_pile_no,function_type,
 				span_build,bridge_mode,beneath_path_name,beneath_path_pile_no,design_load,pass_load,skew_slope,
 				deck_pavement,build_year,longitude,latitude,bridge_id
+		});
+		dataOperation.close();
+		return i;
+	}
+	
+	public int updateBrgCardAdminId2(String highway_id,String manage_id,String seciton_id,String zone_id,
+			String bridge_no,String bridge_name,String bridge_pile_no,String function_type,String span_build,
+			String bridge_mode,String beneath_path_name,String beneath_path_pile_no,String design_load,String pass_load,
+			String skew_slope,String deck_pavement,String build_year,String longitude,String latitude,String bridge_id,String max_kuajing,String main_kuajiegou
+			){
+		int i = 0;
+		String sql =" UPDATE brg_card_admin_id SET highway_id=?,manage_id=?,section_id=?,zone_id=?," +
+				" bridge_no=?,bridge_name=?,bridge_pile_no=?,function_type=?,span_build=?, " +
+				" bridge_mode=?,beneath_path_name=?,beneath_path_pile_no=?,design_load=?, " +
+				" pass_load=?,skew_slope=?,deck_pavement=?,build_year=?,longitude=?,latitude=?,max_kuajing=?,main_kuajiegou=? WHERE bridge_id=? ";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		i = dataOperation.executeUpdate(sql, new String[]{ 
+				highway_id,manage_id,seciton_id,zone_id,bridge_no,bridge_name,bridge_pile_no,function_type,
+				span_build,bridge_mode,beneath_path_name,beneath_path_pile_no,design_load,pass_load,skew_slope,
+				deck_pavement,build_year,longitude,latitude,max_kuajing,main_kuajiegou,bridge_id
 		});
 		dataOperation.close();
 		return i;

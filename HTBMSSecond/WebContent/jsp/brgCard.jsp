@@ -570,6 +570,21 @@
                         <td><label>经纬度坐标</label></td>
                         <td><input type="text" class="form-control" id="edit_location" title="双击拾取坐标">
                         </td>
+                        <th>21</th>
+                        <td><label>最大跨径</label></td>
+                        <td><input type="text" class="form-control" id="edit_max_kuajing" title=""></td>
+                    </tr>
+
+                    <tr>
+                        <th>22</th>
+                        <td><label>主跨结构</label></td>
+                        <td>
+                       	 <input type="text" class="form-control" id="edit_main_kuajiegou" title="">
+                        </td>
+                        <th></th>
+                        <td></td>
+                        <td>
+                        </td>
                         <th></th>
                         <td></td>
                         <td></td>
@@ -1035,6 +1050,15 @@
                 <label>跨径组成</label>
                 <!-- <select class="form-control " id="new_span_build"> -->
                 <input class="form-control" id="new_span_build">
+            </div>
+            <div class="form-group">
+                <label>最大跨径</label>
+                <!-- <select class="form-control " id="new_span_build"> -->
+                <input class="form-control" id="max_kuajing">
+            </div>
+            <div class="form-group">
+                <label>主跨结构</label>
+                <input class="form-control" id="main_kuajiegou">
             </div>
             <div class="form-group">
                 <label>主跨组成</label>
@@ -2553,7 +2577,9 @@
                             new_span_build: $("#new_span_build").val(),
                             new_bridge_mode: $("#new_bridge_mode").val(),
                             new_location: $("#new_location").val(),
-                            new_main_span:$("#new_main_span").val()
+                            new_main_span:$("#new_main_span").val(),
+                            max_kuajing:$("#max_kuajing").val(),
+                            main_kuajiegou:$("#main_kuajiegou").val()
                         },
                         error: function (msg) {
                             errMessage("请求BrgCardServlet失败");
@@ -3077,16 +3103,22 @@
                             $('#table1').append("<tr><th>19</th><th>桥梁分类</th><td>"
                                 + data[i].bridge_mode
                                 + "</td><th>20</th><th>经纬坐标</th><td>"
-                                + "</td><th></th><th></th><td></td></tr>");
+                                + "</td><th>21</th><th>最大跨径 </th><td></td></tr>");
                         } else {
                             $('#table1').append("<tr><th>19</th><th>桥梁分类</th><td>"
                                 + data[i].bridge_mode
                                 + "</td><th>20</th><th>经纬坐标</th><td>"
                                 + data[i].longitude + "," + data[i].latitude
-                                + "</td><th></th><th></th><td></td></tr>");
+                                + "</td><th>21</th><th>最大跨径 </th><td>"+data[i].max_kuajing+"</td></tr>");
 
                         }
-
+                        if (data[i].main_kuajiegou == "" && data[i].main_kuajiegou == "") {
+                            $('#table1').append("<tr><th>22</th><th>主跨结构 </th><td>"
+                                + data[i].main_kuajiegou+"</td></tr>");
+                        } else {
+                        	 $('#table1').append("<tr><th>22</th><th>主跨结构</th><td>"
+                                     + data[i].main_kuajiegou+"</td></tr>");
+                        }
                     }
                 }
             }
@@ -5050,6 +5082,8 @@
         var build_year = $('#table1 tr:eq(4) td:eq(2)').text();
         var edit_span_built = $('#span_view').attr("data-sp");
         var edit_location = $('#table1 tr:eq(6) td:eq(1)').text();
+        var edit_max_kuajing = $('#table1 tr:eq(6) td:eq(2)').text();
+        var edit_main_kuajiegou = $('#table1 tr:eq(7) td:eq(0)').text();
         $("#roadline_no").val(highway_no);
         $("#roadline_level").val(highway_level);
         $("#bridge_no").val(bridge_no);
@@ -5065,6 +5099,9 @@
         $("#build_year").val(build_year);
         $("#edit_span_built").val(edit_span_built);
         $("#edit_location").val(edit_location);
+        $("#edit_max_kuajing").val(edit_max_kuajing);
+        $("#edit_main_kuajiegou").val(edit_main_kuajiegou);
+        
         $('#tb1').dialog({
             buttons: [{
                 html: "<i class='fa fa-plus'></i>&nbsp; 保存",
@@ -5130,7 +5167,9 @@
                             edit_zone: $('#edit_zone').val(),
                             edit_span_built: $('#edit_span_built').val(),
                             edit_brg_type: $('#edit_brg_type').val(),
-                            edit_location: $('#edit_location').val()
+                            edit_location: $('#edit_location').val(),
+                            edit_max_kuajing:$('#edit_max_kuajing').val(),
+                            edit_main_kuajiegou:$('#edit_main_kuajiegou').val()
                         },
                         error: function (msg) {
                             errMessage("请求BrgCardServlet失败");
@@ -5164,6 +5203,8 @@
                                 $('#table1 tr:eq(4) td:eq(1)').text($('#maintain_org').select2("data")[0].text);
                                 $('#table1 tr:eq(4) td:eq(2)').text($('#build_year').val());
                                 $('#table1 tr:eq(5) td:eq(0)').text($('#edit_section').select2("data")[0].text);
+                                $('#table1 tr:eq(6) td:eq(2)').text($('#edit_max_kuajing').val());
+                                $('#table1 tr:eq(7) td:eq(0)').text($('#edit_main_kuajiegou').val());
                                 if ($('#edit_zone').select2("data")[0] != undefined) {
                                     $('#table1 tr:eq(5) td:eq(1)').text($('#edit_zone').select2("data")[0].text);
                                 } else {

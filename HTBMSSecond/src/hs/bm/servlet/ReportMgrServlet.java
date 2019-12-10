@@ -27,8 +27,11 @@ import com.alibaba.fastjson.JSONObject;
 
 import hs.bm.bean.ImgPackage;
 import hs.bm.bean.ReportInfo;
+import hs.bm.bean.ReportQueue;
+import hs.bm.bean.ReportQueueFlag;
 import hs.bm.dao.LogDao;
 import hs.bm.dao.ReportMgrDao;
+import hs.bm.server.AutoReportQueue;
 import hs.bm.util.CMDUtil;
 import hs.bm.util.CopyFile;
 import hs.bm.util.DeleteFileUtil;
@@ -45,6 +48,8 @@ import hs.bm.vo.StructInformation;
 public class ReportMgrServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
+	
+	private static boolean reportQueueFlag;
 
 	public ReportMgrServlet()
 	{
@@ -182,7 +187,8 @@ public class ReportMgrServlet extends HttpServlet
 					rt.setReport_count(Integer.valueOf(count));
 					rt.setReport_file_path("");
 					rt.setReport_status("生成中");
-					rt.setReport_date("");
+					String report_date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+					rt.setReport_date(report_date);
 					
 					String s_spans=jsonobj.getString("s_spans");
 					String x_spans=jsonobj.getString("x_spans");
@@ -203,96 +209,32 @@ public class ReportMgrServlet extends HttpServlet
 						w_spans="";
 					}
 					String taskName=s_spans+x_spans+w_spans;
+					String insertTime = TimeFormatUtil.getYMDtime("yyyy-MM-dd HH:mm:ss", new Date());
 					ReportMgrDao.getInstance().addReport(rt);
-						
+					ReportQueue rq = new ReportQueue();
+					rq.setChk_type(rt.getChk_type());
+					rq.setInsert_time(insertTime);
+					rq.setPrj_id(rt.getPrj_id());
+					rq.setReport_build(report_build);
+					rq.setReport_id(rt.getReport_id());
+					rq.setReport_op("");
+					rq.setStruct_id(rt.getStruct_id());
+					rq.setStruct_mode(rt.getStruct_mode());
+					rq.setTaskName(taskName);
 					
+					int ii = ReportMgrDao.getInstance().addReportQueue(rq);
+					System.out.println(ii);
+					boolean flagIn = true;
+					ReportQueueFlag reportQueueFlag = new ReportQueueFlag();
+					reportQueueFlag.setFlagIn(flagIn);
+					Thread.sleep(2000);
+					new Thread(new AutoReportQueue(reportQueueFlag)).start();;
 					
-					//String path = CMDUtil.buildReport(rt.getPrj_id(), rt.getStruct_id(), rt.getStruct_mode(), rt.getChk_type(), rt.getReport_build());
-					List ll = CMDUtil.buildReportBySpan(rt.getPrj_id(), rt.getStruct_id(), rt.getStruct_mode(), rt.getChk_type(), report_build);	
-					int i = 0;
-					if (ll.size()<=0){
-						i = -2;
-					} else{
-						String basePath = new File(PropertiesUtil.getPropertiesByName("rootDir")).getPath() + File.separator;
-						String path=(String) ll.get(0);
-						String newPath=path.replace(path.split("\\\\")[5], "")+UUID.randomUUID();
-						String zipPath=path.replace(path.split("\\\\")[5], "")+UUID.randomUUID();
-						String fileName = ReportMgrDao.getInstance().getFileName(rt.getStruct_id(),rt.getStruct_mode());
-						
-						String zipName=fileName+taskName;
-						for (int j = 0; j < ll.size(); j++){
-							 File dir= new File(newPath); 
-							 if(dir.mkdirs()){
-								 System.out.println("文件创建成功");
-							 }
-							String llpath=(String) ll.get(j);
-							try{
-								if(llpath.indexOf("(")>0||llpath.indexOf("（")>0){
-									String lastPath=llpath.split("\\\\")[5].substring(llpath.split("\\\\")[5].indexOf("(")+1,llpath.split("\\\\")[5].indexOf(")"));
-									String lastPathName=fileName+"("+lastPath+").docx";
-									CopyFile copy=new CopyFile();//拷贝文件
-									copy.copyFile(dir, llpath, lastPathName);
-								}else{
-									String lastPathName=fileName+".docx";
-									CopyFile copy=new CopyFile();//拷贝文件
-									copy.copyFile(dir, llpath, lastPathName);
-									
-								}
-							}catch (Exception e) {
-								
-							}
-						}
-						File zipdir= new File(zipPath); 
-						 if( zipdir.mkdirs()){
-							 System.out.println("zip文件夹创建成功");
-						 }
-						PackageFile p=new PackageFile();//压缩zip
-						if(taskName.indexOf("*")>0){
-							p.fileToZip(newPath, zipPath,fileName.replace(":", "：").replace(";", ","));
-							String report_date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-							i = ReportMgrDao.getInstance().updateReport(zipPath+File.separator+fileName.replace(";", ",")+".zip", report_date, "成功", report_id);
-						}else{
-							p.fileToZip(newPath, zipPath,zipName.replace(":", "：").replace(";", ","));
-							String report_date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-							i = ReportMgrDao.getInstance().updateReport(zipPath+File.separator+zipName.replace(";", ",")+".zip", report_date, "成功", report_id);
-						}
-						
-						
-						
-//			System.out.println("等待资源释放。。。。");
-//			synchronized (this) {
-//				try {
-//					Thread.sleep(15000);
-//					DeleteFileUtil dfu=new DeleteFileUtil();//删除copy文件夹
-//					dfu.deleteDirectory(newPath);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-						
-					}
-					switch (i){
-						case 0:
-							ReportMgrDao.getInstance().updateReportStatus("生成失败", report_id);
-							ro.setError(1);
-							ro.setSuccess("fail");
-							break;
-						case -1:
-							ReportMgrDao.getInstance().updateReportStatus("生成失败", report_id);
-							ro.setError(2);
-							ro.setSuccess("fail");
-							break;
-						case -2:
-							ReportMgrDao.getInstance().updateReportStatus("生成失败", report_id);
-							ro.setError(3);
-							ro.setSuccess("fail");
-							break;
-						default:
-							ro.setError(0);
-							ro.setSuccess("success");
-							ro.setObj(rt);
-							break;
-					}
+					//reportMethod();
+					ro.setError(0);
+					ro.setSuccess("success");
+					ro.setObj(rt);
+					
 				} else
 				{   
 						String tableData = request.getParameter("tableData");
@@ -472,7 +414,9 @@ public class ReportMgrServlet extends HttpServlet
 				pg.setStruct_mode(mode);
 				pg.setPrj_id(prj_id);
 				pg.setBuild_date(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				
 				int i = ReportMgrDao.getInstance().addPackage(pg);
+				
 				switch (i)
 				{
 				case 0:
@@ -587,6 +531,85 @@ public class ReportMgrServlet extends HttpServlet
 	{
 		doGet(request, response);
 	}
+	
+	
+	private void doReportMethodRecursion(){
+		
+		
+		
+	}
 
+	
+	
+	private void reportMethod() {
+		Integer count = ReportMgrDao.getInstance().getReportQueueCount();
+		if((reportQueueFlag&&count==1)||(!reportQueueFlag&&count>0)) {
+			reportQueueFlag = false;
+			
+			ReportQueue rt = ReportMgrDao.getInstance().getNearlyReportQueue();
+			String taskName = rt.getTaskName();
+			String report_id = rt.getReport_id();
+			List ll = CMDUtil.buildReportBySpan(rt.getPrj_id(), rt.getStruct_id(), rt.getStruct_mode(), rt.getChk_type(), rt.getReport_build());	
+			int i = 0;
+			if (ll.size()<=0){
+				i = -2;
+			} else{
+				String basePath = new File(PropertiesUtil.getPropertiesByName("rootDir")).getPath() + File.separator;
+				String path=(String) ll.get(0);
+				String newPath=path.replace(path.split("\\\\")[5], "")+UUID.randomUUID();
+				String zipPath=path.replace(path.split("\\\\")[5], "")+UUID.randomUUID();
+				String fileName = ReportMgrDao.getInstance().getFileName(rt.getStruct_id(),rt.getStruct_mode());
+				
+				String zipName=fileName+taskName;
+				for (int j = 0; j < ll.size(); j++){
+					File dir= new File(newPath); 
+					if(dir.mkdirs()){
+						System.out.println("文件创建成功");
+					}
+					String llpath=(String) ll.get(j);
+					try{
+						if(llpath.indexOf("(")>0||llpath.indexOf("（")>0){
+							String lastPath=llpath.split("\\\\")[5].substring(llpath.split("\\\\")[5].indexOf("(")+1,llpath.split("\\\\")[5].indexOf(")"));
+							String lastPathName=fileName+"("+lastPath+").docx";
+							CopyFile copy=new CopyFile();//拷贝文件
+							copy.copyFile(dir, llpath, lastPathName);
+						}else{
+							String lastPathName=fileName+".docx";
+							CopyFile copy=new CopyFile();//拷贝文件
+							copy.copyFile(dir, llpath, lastPathName);
+							
+						}
+					}catch (Exception e) {
+						
+					}
+				}
+				File zipdir= new File(zipPath); 
+				if( zipdir.mkdirs()){
+					System.out.println("zip文件夹创建成功");
+				}
+				PackageFile p=new PackageFile();//压缩zip
+				if(taskName.indexOf("*")>0){
+					p.fileToZip(newPath, zipPath,fileName.replace(":", "：").replace(";", ","));
+					String report_date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+					i = ReportMgrDao.getInstance().updateReport(zipPath+File.separator+fileName.replace(";", ",")+".zip", report_date, "成功", report_id);
+				}else{
+					p.fileToZip(newPath, zipPath,zipName.replace(":", "：").replace(";", ","));
+					String report_date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+					i = ReportMgrDao.getInstance().updateReport(zipPath+File.separator+zipName.replace(";", ",")+".zip", report_date, "成功", report_id);
+				}					
+			}
+		    int ii = ReportMgrDao.getInstance().deleteReportQueueById(rt.getId());
+		    if(ii>0) {
+		    	count = ReportMgrDao.getInstance().getReportQueueCount();
+		    	if(count>0) {
+		    		reportMethod();
+		    	}else {
+		    		return;
+		    	}
+		    }
+		}else {
+			return;
+		}
+	}
 
 }

@@ -39,8 +39,16 @@ public class ReportInfo {
 
 	private String task_id;
 	
+	private Integer rowno;
 	
-	
+	public Integer getRowno() {
+		return rowno;
+	}
+
+	public void setRowno(Integer rowno) {
+		this.rowno = rowno;
+	}
+
 	public String getTask_id() {
 		return task_id;
 	}

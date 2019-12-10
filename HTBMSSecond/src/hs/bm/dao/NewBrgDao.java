@@ -134,10 +134,10 @@ public class NewBrgDao
 		Connection conn = MyDataSource.getInstance().getConnection();
 		MyDataOperation mdo = new MyDataOperation(conn, false);
 		String sql = " INSERT INTO brg_card_admin_id(bridge_id,highway_id,manage_id,section_id,zone_id,bridge_no,bridge_name," +
-				"bridge_pile_no,span_build,bridge_mode,longitude,latitude,main_span) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+				"bridge_pile_no,span_build,bridge_mode,longitude,latitude,main_span,max_kuajing,main_kuajiegou) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 		String[] params={brg.getBridge_id(),brg.getHighway_id(),brg.getManage_id(),brg.getSection_id(),
 						brg.getZone_id(),brg.getBridge_no(),brg.getBridge_name(),brg.getBridge_pile_no(),
-						brg.getSpan_build(),brg.getBridge_mode(),brg.getLongitude(),brg.getLatitude(),brg.getMain_span()
+						brg.getSpan_build(),brg.getBridge_mode(),brg.getLongitude(),brg.getLatitude(),brg.getMain_span(),brg.getMax_kuajing(),brg.getMain_kuajiegou()
 						};
 		i = mdo.executeUpdate(sql, params);
 		mdo.close();

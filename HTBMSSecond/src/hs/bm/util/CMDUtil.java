@@ -383,7 +383,11 @@ public class CMDUtil {
 			op = "BridgeCheckAutoCalculateServer.exe 11 "+prj_id+" "+id+" "+build;
 		}
 		System.out.println(op);
+		
 		try {
+			
+			
+			//运行生成报告程序
 			Process process = Runtime.getRuntime().exec(ConfigInfo.autoBuild+op);
 			InputStream is = process.getInputStream();
 			  BufferedReader reader = new BufferedReader(new InputStreamReader(is, "GBK"));
@@ -399,6 +403,10 @@ public class CMDUtil {
 			   }
 			  }
 			  is.close();
+			  
+			  
+			  
+			  
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1052,6 +1052,9 @@
 				tableData.struct_mode = info.mode;
 				ParaMsg = "2,"+prj_id+","+info.id+","+sp+","+build; */
 			
+			function tiaoZhuan(){
+					location.href='reportMgrAll.jsp';
+				}
 				
 			function addReports(now){
 					
@@ -1067,9 +1070,14 @@
 				
 				if(now>=sum){
 								
-					successMessage("结束");
+					successMessage("添加任务成功,即将跳转至报告列表。。");
 					myTool.mask.hide();
-					location.href='reportMgrAll.jsp';
+					
+					
+					setTimeout(function(){//两秒后跳转
+					   location.href = "reportMgrAll.jsp";//PC网页式跳转
+					  },3000)
+					
 					return;
 				}
 				var $well = $area.eq(now);
@@ -1103,12 +1111,11 @@
 				reportInfo.struct_mode = $well.attr('data-mode');
 				reportInfo.report_sp = "报告";
 				reportInfo.report_build = getBuild($well);
-				console.log('生成第'+now+'个，共'+sum+'个，当前'+reportInfo.report_file_name);
+				console.log('添加生成任务第'+now+'个，共'+sum+'个，当前'+reportInfo.report_file_name);
 				//测试
 		//		addReports(now);
 		//		return;
-				myTool.mask.show('生成第'+now+'个，共'+sum+'个，当前'+reportInfo.report_file_name);
-				
+				 myTool.mask.show('添加生成任务第'+now+'个，共'+sum+'个，当前'+reportInfo.report_file_name); 
 				 $.ajax({
 					type: 'POST',
 					url: '../ReportMgrServlet',
@@ -1121,10 +1128,10 @@
 					},
 					error : function(msg) {
 						errMessage("请求ReportMgrServlet失败");
-						hidMask();
+						/* hidMask(); */
 				    },
 					success : function(json) {   
-						hidMask();
+						 hidMask(); 
 						 if(json.success=="fail"){
 							 switch (json.error) {
 							case 1:
@@ -1139,6 +1146,8 @@
 							default:
 								break;
 							}
+						 }else{
+							 /* successMessage("添加任务成功"); */
 						 }
 						addReports(now);
 					}

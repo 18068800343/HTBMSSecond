@@ -107,6 +107,10 @@ public class NewBrgServlet extends HttpServlet
 				bcai.setSpan_build(req.getParameter("new_span_build"));
 				bcai.setBridge_mode(req.getParameter("new_bridge_mode"));
 				bcai.setMain_span(req.getParameter("new_main_span"));
+				
+				bcai.setMax_kuajing(req.getParameter("max_kuajing"));
+				bcai.setMain_kuajiegou(req.getParameter("main_kuajiegou"));
+				
 				String location = req.getParameter("new_location");
 				if(location.equals("")||location==null){
 					bcai.setLatitude("");

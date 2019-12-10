@@ -381,7 +381,15 @@
 					    		  }else if(row.report_status=='成功'){
 					    			  return "<p style='color:green'>"+row.report_status+"</p>"
 					    		  }else{
-					    			  return "<p style='color:black'>"+row.report_status+"</p>"
+					    			  if(row.rowno==1){
+					    			   return "<p style='color:blue'>当前生成的报告</p>"
+					    			  }else{
+					    				  if(row.rowno!=undefined&&row.rowno!=null&&row.rowno!=0){
+					    				   return "<p style='color:black'>等待中,当前顺位:"+(row.rowno-1)+"</p>"
+					    				  }else{
+					    					  return "<p style='color:black'>生成中 </p>"
+					    				  }
+					    			  }
 					    		  }
 					          }
 					    },
