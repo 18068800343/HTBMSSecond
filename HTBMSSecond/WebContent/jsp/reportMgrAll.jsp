@@ -387,7 +387,7 @@
 					    				  if(row.rowno!=undefined&&row.rowno!=null&&row.rowno!=0){
 					    				   return "<p style='color:black'>等待中,当前顺位:"+(row.rowno-1)+"</p>"
 					    				  }else{
-					    					  return "<p style='color:black'>生成中 </p>"
+					    					  return "<p style='color:red'>生成失败 </p>"
 					    				  }
 					    			  }
 					    		  }

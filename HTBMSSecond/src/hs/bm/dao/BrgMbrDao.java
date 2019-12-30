@@ -706,6 +706,33 @@ public class BrgMbrDao {
 	}
 	
 	
+	public Integer judgeDelState(String bridge_id){
+		Integer audit_state = 0;
+		String sql = " SELECT * FROM struct_chk_state WHERE id=?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{bridge_id});
+		try
+		{
+			while (rs.next())
+			{
+				
+				audit_state=rs.getInt("state");
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return audit_state;
+	}
+	
+	/**结束桥梁检查状态，更改为未检查状态*/
+	public int endChkState(String bridge_id){
+		String sql=" update struct_chk_state set state=0 where id=?";
+		int i=this.excuteUpdate(sql, new String[]{bridge_id});
+		return i;
+	}	
+	
 	/**
 	 * 查询跨是否重复
 	 */

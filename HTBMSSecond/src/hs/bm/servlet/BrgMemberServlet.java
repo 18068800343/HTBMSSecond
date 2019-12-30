@@ -393,6 +393,26 @@ public class BrgMemberServlet extends HttpServlet {
 			ro.ToJsp(response);
 			return;
 		}
+		if (choice.equals("judgeDelState")) {
+			ResObj ro = new ResObj();
+			ro.setSuccess("success");
+			ro.setError(0);
+			OperationConstruct oc = (OperationConstruct) request.getSession().getAttribute("OperationConstruct");
+			Integer flag = BrgMbrDao.getIntance().judgeDelState(oc.getId());
+			ro.setObj(flag);
+			ro.ToJsp(response);
+			return;
+		}
+		if (choice.equals("endChkState")) {
+			ResObj ro = new ResObj();
+			ro.setSuccess("success");
+			ro.setError(0);
+			OperationConstruct oc = (OperationConstruct) request.getSession().getAttribute("OperationConstruct");
+			Integer flag = BrgMbrDao.getIntance().endChkState(oc.getId());
+			ro.setObj(flag);
+			ro.ToJsp(response);
+			return;
+		}
 		if (choice.equals("buildDirection")) {
 			String brg_id = request.getParameter("brg_id");
 			List<String> ll = BrgMbrDao.getIntance().buildDirection(brg_id);

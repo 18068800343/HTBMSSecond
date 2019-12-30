@@ -171,6 +171,10 @@
                                     <a onclick="delSpan()" class="btn btn-primary btn-xs disabled">
                                         删除
                                     </a>
+                                    &nbsp;
+                                    <a onclick="endChkState()" id="endChkState" class="btn btn-primary btn-xs disabled" style="display:none;">
+                                       结束检查
+                                    </a>
                                 </div>
                                 <div class="custom-scroll table-responsive" style="height:450px; overflow-y: scroll;">
 
@@ -661,6 +665,7 @@
 	}
 
     $(document).ready(function () {
+    		initEndChkStateA();
         pageSetUp();
         initTable();
         initTree();
@@ -1070,7 +1075,46 @@
 
 
     }
+    
+    function endChkState(){
+        $.SmartMessageBox({
+            title: "结束检查",
+            content: "您是否确认停止此检查？",
+            buttons: '[取消][确定]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "确定") {
+                $.ajax({
+                    type: 'POST',
+                    url: '../BrgMemberServlet',
+                    dataType: 'json',
+                    data: {
+                        choice: 'endChkState'
+                    },
+                    error: function (msg) {
+                        errMessage("系统错误！");
+                    },
+                    success: function (json) {
+                    	var obj = json.obj
+                    	if(obj>0){
+                    		$("#endChkState").hide();
+                    		successMessage("成功结束检查");
+                    	}else{
+                    		 errMessage("结束失败！");
+                    	}
+                    }
+                });
+            }
+        });
+    }
 
+    function initEndChkStateA(){
+    	var state = judgeDelState();
+        if(state!=0){
+        	$("#endChkState").show();
+        }else{
+        	$("#endChkState").hide();
+        }
+    }
     /***************************************************删除构件*********************************************************************************/
 
     function delMember(a) {
@@ -1080,6 +1124,11 @@
             buttons: '[取消][确定]'
         }, function (ButtonPressed) {
             if (ButtonPressed === "确定") {
+                var state = judgeDelState();
+                if(state!=0){
+                	errMessage("该结构物正在检查中,无法删除!");
+                	return;
+                }
                 $.ajax({
                     type: 'POST',
                     url: '../BrgMemberServlet',
@@ -2006,10 +2055,32 @@
         });
 
     }
+    
+    function judgeDelState(){
+    	var obj ;
+        $.ajax({
+            type: 'POST',
+            url: '../BrgMemberServlet',
+            dataType: 'json',
+            async:false,
+            data: {
+                choice: 'judgeDelState'
+            },
+            error: function (msg) {
+                errMessage("系统错误！");
+            },
+            success: function (json) {
+            	obj = json.obj;
+            }
+        });
+        return obj;
+    }
 
     /*****************************************************删除跨号**************************************************************/
 
     function delSpan() {
+    	
+    	
         if ($lli == undefined) {
             errMessage("请选择跨号！");
             return false;
@@ -2020,6 +2091,11 @@
             buttons: '[取消][确定]'
         }, function (ButtonPressed) {
             if (ButtonPressed === "确定") {
+                var state = judgeDelState();
+                if(state!=0){
+                	errMessage("该结构物正在检查中,无法删除!");
+                	return;
+                }
                 $("#cover").show();
                 $.ajax({
                     type: 'POST',

@@ -534,8 +534,8 @@
 						var chk_type = $('#chk_type').val();
 						var d = $('#project');
 						d.empty();
-						d.append('<option value="0">--不参与--</option>');
 						d.append('<option value="%">--全部--</option>');
+						d.append('<option value="0">--不参与--</option>');
 						for(var i = 0; i<project.data.length; i++){
 							if(chk_type=='%' || chk_type==project.data[i].chk_type){
 								d.append('<option value="'+project.data[i].prj_id+'">'+project.data[i].prj_desc+'</option>');
