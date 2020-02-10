@@ -187,7 +187,7 @@ public class ReportMgrDao {
 
 	public List<ReportInfo> initTableAll() {
 		List<ReportInfo> lr = new ArrayList<ReportInfo>();
-		String sql = " SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id WHERE	rifo.struct_mode = 'bridge' ORDER BY	rifo.report_date DESC";
+		String sql = " SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id  ORDER BY	rifo.report_date DESC";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		ResultSet rs = dataOperation.executeQuery(sql, null);
 		try {
@@ -223,7 +223,7 @@ public class ReportMgrDao {
 	
 	public List<ReportInfo> initTableAll2(String orgid) {
 		List<ReportInfo> lr = new ArrayList<ReportInfo>();
-		String sql = "SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id WHERE	rifo.struct_mode = 'bridge' ORDER BY	rifo.report_date DESC";
+		String sql = "SELECT DISTINCT rifo.*,qa.rowno FROM report_info rifo LEFT JOIN (	SELECT		(@rowNO := @rowNo + 1) AS rowno,		A.*	FROM	(SELECT * FROM report_queue) a,		(		SELECT		@rowNO := 0	) b) qa on rifo.report_id = qa.report_id  ORDER BY	rifo.report_date DESC";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
 		ResultSet rs = dataOperation.executeQuery(sql, null);
 		try {

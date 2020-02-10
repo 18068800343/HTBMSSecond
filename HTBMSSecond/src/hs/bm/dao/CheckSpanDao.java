@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -149,7 +151,82 @@ public class CheckSpanDao {
 		return lb;
 	}
 	
+	private static String formatDefDesc(String arrDesc,String errDesc) {
+		arrDesc = arrDesc.replace("\"","");
+		String arr[] = arrDesc.split(",");
+		StringBuffer sb = new StringBuffer();
+		int i = 0;
+		for(int k=0;k<arr.length;k++) {
+			String str = arr[k];
+			if(!"".equals(str)) {
+				if(k==2) {
+					str = "距"+str;
+				}
+				try {
+					Double num1 = Double.parseDouble(str);
+					if(i>0) {
+						str="-"+str;
+					}
+					i++;
+				} catch (NumberFormatException e) {
+					i = 0;
+				}
+
+				sb.append(str);
+			}
+		}
+		String sbEnd = sb.toString();
+		return sbEnd.substring(0,sbEnd.length());
+	}
 	
+	private static String formatErrDesc(String arrDesc,String errDesc) {
+		arrDesc = arrDesc.replace("\"","");
+		String arr[] = arrDesc.split(",");
+		StringBuffer sb = new StringBuffer();
+		String a = "";
+		String b = "";
+		String c = "";
+		String d = "";
+		int i = 0;
+		for(int k=0;k<arr.length;k++) {
+			String str = arr[k];
+			if(!"".equals(str)) {
+				try {
+					Double num1 = Double.parseDouble(str);
+					switch (i) {
+					case 0:
+						a = str;
+						break;
+					case 1:
+						b = str;
+						break;
+					case 2:
+						c = str;
+						break;
+					case 3:
+						d = str;
+						break;
+					default:
+						break;
+					}
+					i++;
+				} catch (NumberFormatException e) {
+				}
+			}
+		}
+		String errDescStart = errDesc.contains(",")?errDesc.split(",")[0]:"";
+		
+		if(errDesc.contains("a~")||errDesc.contains("am")) {
+			
+			errDesc = lastStr(errDesc, "a", a);
+			errDesc = errDesc.replaceFirst(a, "a");
+			if(errDesc.contains("b")) {
+				errDesc = errDesc.replaceFirst("b", b);
+				errDesc = errDesc.replaceFirst(b, "b");
+			}
+		}
+		return errDesc;
+	}
 
 	public List<ChkBrgDefect> getDefectList(String mbr_chk_id) {
 		String sql = "select * from chk_brg_defect where mbr_chk_id=?";
@@ -165,6 +242,7 @@ public class CheckSpanDao {
 				dmd.setMbr_chk_id(rs.getString("mbr_chk_id"));
 				dmd.setMbr_no(rs.getString("mbr_no"));
 				dmd.setDefect_name(rs.getString("defect_name"));
+				String errDesc = rs.getString("defect_location_desc");
 				dmd.setDefect_location_desc(rs.getString("defect_location_desc"));
 				dmd.setDefect_count(rs.getString("defect_count"));
 				dmd.setRepair_state(rs.getString("repair_state"));
@@ -172,6 +250,10 @@ public class CheckSpanDao {
 				dmd.setDefect_attr(rs.getString("defect_attr"));
 				dmd.setIs_uploaded(rs.getString("is_uploaded"));
 				dmd.setDefect_location_desc_val(rs.getString("defect_location_desc_val"));
+				String defLocationDescVal = dmd.getDefect_location_desc_val();
+				defLocationDescVal = null!=defLocationDescVal&&!"".equals(defLocationDescVal)?defLocationDescVal.substring(1, defLocationDescVal.length()-1):"";
+				String newDefectLocationDesc = formatErrDesc(defLocationDescVal,errDesc);
+				dmd.setDefect_location_desc(newDefectLocationDesc);
 				dmd.setDefect_count_val(rs.getString("defect_count_val"));
 				dmd.setChk_defect_memo(rs.getString("chk_defect_memo"));
 				dmd.setDefect_name_f(rs.getString("defect_name_f"));
@@ -704,5 +786,20 @@ public class CheckSpanDao {
 		dataOperation.close();
 		return orgId;
 	}
+    /**
+     * @param string 源字符
+     * @param str   替换字符
+     * @param target 被替换字符
+     * @return 返回字符串
+     */
+    public static String lastStr(String string,String str,String target){
+        int b = string.lastIndexOf(str);
+        return string.substring(0,b)+target+string.substring(b+1);
+    }
 	
+	public static void main(String[] args) {
+		String str = "a1233445a";
+		String a ="a";
+		System.err.println(str);
+	}
 }
