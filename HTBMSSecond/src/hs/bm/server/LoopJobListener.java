@@ -58,6 +58,10 @@ public class LoopJobListener implements ServletContextListener {
     	if(ConfigInfo.backUp){
     		schedule.scheduleWithFixedDelay(new AutoBackUpDataBase("系统"), waitTime, 172800, TimeUnit.SECONDS);
     	}
+    	
+    	if(ConfigInfo.autoRunReportQueue){
+    		schedule.scheduleWithFixedDelay(new AutoReRunReportQueue(), 60, 60, TimeUnit.SECONDS);
+    	}
     	/*if(ConfigInfo.sendMessageWeightAndHealth){
 	    	schedule.scheduleWithFixedDelay(new AutoSendMessage(), 5, 3600, TimeUnit.SECONDS);
 	    }*/

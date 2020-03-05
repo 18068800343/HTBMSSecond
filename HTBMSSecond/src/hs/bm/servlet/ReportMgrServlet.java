@@ -228,8 +228,8 @@ public class ReportMgrServlet extends HttpServlet
 					ReportQueueFlag reportQueueFlag = new ReportQueueFlag();
 					reportQueueFlag.setFlagIn(flagIn);
 					Thread.sleep(2000);
-					new Thread(new AutoReportQueue(reportQueueFlag)).start();;
-					
+					Thread autoReportThread = new Thread(new AutoReportQueue(reportQueueFlag),"autoReportThread");
+					autoReportThread.start();;
 					//reportMethod();
 					ro.setError(0);
 					ro.setSuccess("success");
@@ -288,6 +288,7 @@ public class ReportMgrServlet extends HttpServlet
 			String report_id = request.getParameter("report_id");
 			try {
 				int i = ReportMgrDao.getInstance().delReport(report_id);
+				        ReportMgrDao.getInstance().delReportQueue(report_id);
 				switch (i)
 				{
 				case 0:

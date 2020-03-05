@@ -397,6 +397,7 @@ public class ReportMgrDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		dataOperation.close();
 		return i;
 	}
 
@@ -457,6 +458,14 @@ public class ReportMgrDao {
 	
 	public int delReport(String report_id) {
 		String sql = "delete from report_info where report_id=?";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		int i = dataOperation.executeUpdate(sql, new String[] { report_id });
+		dataOperation.close();
+		return i;
+	}
+	
+	public int delReportQueue(String report_id) {
+		String sql = "delete from report_queue where report_id=?";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
 		int i = dataOperation.executeUpdate(sql, new String[] { report_id });
 		dataOperation.close();

@@ -20,7 +20,8 @@ public class ConfigInfo {
 	public static boolean dailyPrj = false;
 	/**是否运行定时检测健康及称重数据*/
 	public static boolean sendMessageWeightAndHealth = false;
-	
+	/**是否运行自动恢复报告生成程序*/
+	public static boolean autoRunReportQueue = true;
 	/**APP文件名*/
 	public static String apkName = "huatong.apk";
 //	public static String apkName = "seitbridge.apk";
