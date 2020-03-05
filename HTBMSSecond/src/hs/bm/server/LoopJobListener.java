@@ -60,7 +60,7 @@ public class LoopJobListener implements ServletContextListener {
     	}
     	
     	if(ConfigInfo.autoRunReportQueue){
-    		schedule.scheduleWithFixedDelay(new AutoReRunReportQueue(), 60, 60, TimeUnit.SECONDS);
+    		schedule.scheduleWithFixedDelay(new AutoReRunReportQueue(), 60, 1200, TimeUnit.SECONDS);
     	}
     	/*if(ConfigInfo.sendMessageWeightAndHealth){
 	    	schedule.scheduleWithFixedDelay(new AutoSendMessage(), 5, 3600, TimeUnit.SECONDS);
