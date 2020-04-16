@@ -3,6 +3,7 @@ package hs.bm.util;
 public class ConfigInfo {
 	
 	/**评定程序路径命令*/
+	public static String autoBuild1 ="/c D:\\AutoBuild\\";
 	public static String autoBuild = "cmd.exe /c D:\\AutoBuild\\";
 	/**备份数据库名称和命令地址*/
 	public static String dataBase = "D:\\mysql-5.6.28-winx64\\bin\\mysqldump htbmssecond >";

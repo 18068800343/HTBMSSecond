@@ -538,18 +538,18 @@ private static CheckPassDao checkPassDao;
 		//2018 chk_id 3d451fd9e2b843bea13b2dd7ed06b146
 		old_bc.setChk_id("824b185044d643baa1281ed453210a6e");
 		//根据chk_id查出跨检查记录集合
-		List<ChkSpanRecord> old_list = new CheckBridgeDao().getAllSpansData(old_bc).getSpans();
+		List<ChkSpanRecord> old_list = new CheckBridgeDao().getAllSpansData(old_bc,"new").getSpans();
 		for(ChkSpanRecord csr_old:old_list){
 			String oldDirection = csr_old.getDirection();
 			String oldSpanNo = csr_old.getSpan_no();
 			String newChkId = "824b185044d643baa1281ed453210a6e";
 			ChkSpanRecord newChkSpanRecord = new CheckBridgeDao().getChkSpanRecordByChkIdDirection(newChkId, oldDirection, oldSpanNo);
 			//根据跨检查记录每条的 span_chk_id查出对应的构件检查记录 获取记录中的 mbr_chk_id
-			 List<ChkBrgRecord> oldChkBrgRecords = new CheckBridgeDao().getChkBrgRecordBySpanChkId(csr_old.getSpan_chk_id());
+			 List<ChkBrgRecord> oldChkBrgRecords = new CheckBridgeDao().getChkBrgRecordBySpanChkId(csr_old.getSpan_chk_id(),"new");
 			 //如果跨下面的构件检查记录集合不为空,查出对应该跨的18年项目构件检查记录集合.
 			 if(oldChkBrgRecords.size()>0){
 				 //18年项目构件检查记录集合 chk_brg_record集合
-				 List<ChkBrgRecord> newChkBrgRecords = new CheckBridgeDao().getChkBrgRecordBySpanChkId(newChkSpanRecord.getSpan_chk_id());	 
+				 List<ChkBrgRecord> newChkBrgRecords = new CheckBridgeDao().getChkBrgRecordBySpanChkId(newChkSpanRecord.getSpan_chk_id(),"new");	 
 				 //如果老项目的构件检查记录有数据,而新项目里的构建检查记录无数据,将老项目的构件检查记录复制
 				 if(newChkBrgRecords!=null&&newChkBrgRecords.size()!=0){
 					 //根据老项目的构件检查主键mbr_chk_id查出对应构件的所有病害以及病害中的图片photo

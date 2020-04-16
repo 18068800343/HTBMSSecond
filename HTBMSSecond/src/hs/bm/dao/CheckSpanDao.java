@@ -291,6 +291,74 @@ public class CheckSpanDao {
 		dataOperation.close();
 		return lb;
 	}
+	public List<ChkBrgDefect> getDefectList(String mbr_chk_id,String dataSourceType) {
+		String sql = "select * from chk_brg_defect where mbr_chk_id=?";
+		
+		MyDataOperation dataOperation; 
+		if("new".equals(dataSourceType)) {
+			dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection(),false);
+		}else {
+			dataOperation = new MyDataOperation(MyDataSourceCopy.getInstance().getConnection(),false);
+		}
+		ResultSet rs = dataOperation.executeQuery(sql, new String[] { mbr_chk_id });
+		List<ChkBrgDefect> lb = new ArrayList<ChkBrgDefect>();
+		try {
+			while (rs.next()) {
+				ChkBrgDefect dmd = new ChkBrgDefect();
+				dmd.setDefect_serial(rs.getString("defect_serial"));
+				dmd.setDefect_id(rs.getString("defect_id"));
+				dmd.setMbr_chk_id(rs.getString("mbr_chk_id"));
+				dmd.setMbr_no(rs.getString("mbr_no"));
+				dmd.setDefect_name(rs.getString("defect_name"));
+				String errDesc = rs.getString("defect_location_desc");
+				dmd.setDefect_location_desc(rs.getString("defect_location_desc"));
+				dmd.setDefect_count(rs.getString("defect_count"));
+				dmd.setRepair_state(rs.getString("repair_state"));
+				dmd.setDevelop_state(rs.getString("develop_state"));
+				dmd.setDefect_attr(rs.getString("defect_attr"));
+				dmd.setIs_uploaded(rs.getString("is_uploaded"));
+				dmd.setDefect_location_desc_val(rs.getString("defect_location_desc_val"));
+				String defLocationDescVal = dmd.getDefect_location_desc_val();
+				defLocationDescVal = null!=defLocationDescVal&&!"".equals(defLocationDescVal)?defLocationDescVal.substring(1, defLocationDescVal.length()-1):"";
+				String newDefectLocationDesc = formatErrDesc(defLocationDescVal,errDesc);
+				dmd.setDefect_location_desc(newDefectLocationDesc);
+				dmd.setDefect_count_val(rs.getString("defect_count_val"));
+				dmd.setChk_defect_memo(rs.getString("chk_defect_memo"));
+				dmd.setDefect_name_f(rs.getString("defect_name_f"));
+				dmd.setCurrent(rs.getString("current"));
+				dmd.setDefect_photo(rs.getString("defect_photo"));
+				
+				String sql2 = "select * from chk_brg_photo where defect_serial=?";
+				MyDataOperation dataOperation2 = new MyDataOperation(MyDataSource.getInstance().getConnection(), false);
+				ResultSet rs2 = dataOperation2.executeQuery(sql2, new String[] { dmd.getDefect_serial() });
+				
+				List<ChkBrgPhoto> photoList = new ArrayList<ChkBrgPhoto>();
+				while (rs2.next()) {
+					
+					ChkBrgPhoto cbp = new ChkBrgPhoto();
+					String photo_path = rs2.getString("photo_path");
+					cbp.setPhoto_id(rs2.getString("photo_id"));
+					cbp.setPhoto_name(rs2.getString("photo_name"));
+					cbp.setPhoto_date(rs2.getString("photo_date"));
+					cbp.setPhoto_path(rs2.getString("photo_path"));
+					cbp.setDefect_serial(rs2.getString("defect_serial"));
+					if (photo_path!=null){
+						if (!photo_path.equals("")){
+							photoList.add(cbp);
+						}
+					}
+				}
+				
+				dmd.setPhotos(photoList);
+				lb.add(dmd);
+				dataOperation2.close();
+			}
+		} catch (SQLException e) {
+			log.info(e);
+		}
+		dataOperation.close();
+		return lb;
+	}
 
 	public int delMem(String mbr_chk_id) {
 		String sql = "delete from chk_brg_record where mbr_chk_id=?";

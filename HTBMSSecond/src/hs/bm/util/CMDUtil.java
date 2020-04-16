@@ -368,27 +368,30 @@ public class CMDUtil {
 		build = toJsonExchange(build);
 		String path = null;
 		System.out.println(build);
-		String op = "";
+		String op = "BridgeCheckAutoCalculateServer.exe";
+		String arg="";
 		if(mode.equals("bridge")){
 			if("daily".equals(chk_type)){
-				op = "BridgeCheckAutoCalculateServer.exe 13 "+prj_id+" "+id+" ";
+				arg = "13 "+prj_id+" "+id+" ";
 			}else{
-				op = "BridgeCheckAutoCalculateServer.exe 2 "+prj_id+" "+id+" "+build;
+				arg = "2 "+prj_id+" "+id+" "+build;
 			}
 	    }
 		if(mode.equals("pass")){
-			op = "BridgeCheckAutoCalculateServer.exe 10 "+prj_id+" "+id+" "+build;
+			arg = "10 "+prj_id+" "+id+" "+build;
 		}
 		if(mode.equals("culvert")){
-			op = "BridgeCheckAutoCalculateServer.exe 11 "+prj_id+" "+id+" "+build;
+			arg = "11 "+prj_id+" "+id+" "+build;
 		}
-		System.out.println(op);
+		System.out.println(op+" "+arg);
 		
 		try {
 			
 			
 			//运行生成报告程序
-			Process process = Runtime.getRuntime().exec(ConfigInfo.autoBuild+op);
+			ProcessBuilder pb =   new ProcessBuilder("cmd.exe", ConfigInfo.autoBuild1+op+" "+arg);
+			pb.redirectErrorStream(true); 
+			Process process = pb.start();//Runtime.getRuntime().exec(ConfigInfo.autoBuild+op);
 			InputStream is = process.getInputStream();
 			  BufferedReader reader = new BufferedReader(new InputStreamReader(is, "GBK"));
 			  String line;
@@ -402,11 +405,7 @@ public class CMDUtil {
 				   System.out.println(path);
 			   }
 			  }
-			  is.close();
-			  
-			  
-			  
-			  
+			  //is.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

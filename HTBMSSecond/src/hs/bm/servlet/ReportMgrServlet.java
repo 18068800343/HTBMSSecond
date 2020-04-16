@@ -447,6 +447,59 @@ public class ReportMgrServlet extends HttpServlet
 			return;
 		}
 
+		if (type.equals("addPackageNew"))
+		{
+			try {
+				String package_name = request.getParameter("package_name");
+				String prj_id = request.getParameter("prj_id");
+				OperationConstruct oc = (OperationConstruct) request.getSession().getAttribute("OperationConstruct");
+				String id = oc.getId();
+				String mode = oc.getMode();
+				
+				String path = ReportMgrDao.getInstance().buildPackageNew(id, prj_id, mode,package_name);
+				
+				String basePath = new File(PropertiesUtil.getPropertiesByName("rootDir")).getPath() + File.separator;
+				path = path.replace(basePath, "");
+				ImgPackage pg = new ImgPackage();
+				pg.setPackage_id(UUID.randomUUID().toString().replaceAll("-", ""));
+				pg.setPackage_name(package_name);
+				pg.setPackage_path(path);
+				pg.setStruct_id(id);
+				pg.setStruct_mode(mode);
+				pg.setPrj_id(prj_id);
+				pg.setBuild_date(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				
+				int i = ReportMgrDao.getInstance().addPackage(pg);
+				
+				switch (i)
+				{
+				case 0:
+					ro.setError(1);
+					ro.setSuccess("fail");
+					break;
+				case -1:
+					ro.setError(2);
+					ro.setSuccess("fail");
+					break;
+				case -2:
+					ro.setError(3);
+					ro.setSuccess("fail");
+					break;
+				default:
+					ro.setError(0);
+					ro.setSuccess("success");
+					LogDao.getInstance().addLogInfo(log_user,"增加成功", "ReportMgrServlet+addPackage","ReportMgrServlet");
+					ro.setObj(pg);
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LogDao.getInstance().addLogInfo(log_user,"增加失败", "ReportMgrServlet+addPackage",e.getMessage()+" *** ");
+			}
+			ro.ToJsp(response);
+			return;
+		}
+		
 		if (type.equals("initPackage"))
 		{
 			OperationConstruct oc = (OperationConstruct) request.getSession().getAttribute("OperationConstruct");

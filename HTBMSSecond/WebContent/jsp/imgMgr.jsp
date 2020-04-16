@@ -486,6 +486,55 @@
         });
 
     }
+    function addPackageNew() {
+        var package_name = $('#package_name').val();
+        if (package_name == "") {
+            errMessage("请输入名称！");
+            return;
+        }
+        var prj_id = $('#prj').val();
+
+        showMask();
+        $.ajax({
+            type: 'POST',
+            url: '../ReportMgrServlet',
+            dataType: 'json',
+            data: {
+                type: "addPackageNew",
+                package_name: package_name,
+                prj_id: prj_id
+            },
+            error: function (msg) {
+                errMessage("请求ReportMgrServlet失败");
+                hidMask();
+            },
+            success: function (json) {
+                hidMask();
+                if (json.success == "fail") {
+                    switch (json.error) {
+                        case 1:
+                            //successMessage("保存失败");
+                            break;
+                        case 2:
+                            errMessage("服务器出错");
+                            break;
+                        case 3:
+                            errMessage("图片打包失败");
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    successMessage("添加成功！")
+                    json.obj.prj_name = $("#prj option[value='" + prj_id + "']").html();
+                    console.log(json);
+                    table.row.add(json.obj).draw(false);
+                    $('#rgw').dialog('close');
+                }
+            }
+        });
+
+    }
 
     function addTableRow() {
         table.row.add(tableData).draw(false);
@@ -599,6 +648,13 @@
         hide: 'drop',
         title: "图片打包",
         buttons: [
+            {
+                html: "<i class='fa fa-plus'></i>&nbsp; 以病害UUID命名生成",
+                "class": "btn btn-default",
+                click: function () {
+                    addPackageNew();
+                }
+            },
             {
                 html: "<i class='fa fa-plus'></i>&nbsp; 生成",
                 "class": "btn btn-default",
