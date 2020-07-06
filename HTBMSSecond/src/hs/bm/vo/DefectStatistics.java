@@ -30,6 +30,8 @@ public class DefectStatistics {
      private String important;
      //发展状态
      private String develop;
+     //病害备注
+     private String chkDefectMemo;
      
      private String bridge_pile_no;
      private String defect_serial;
@@ -40,7 +42,12 @@ public class DefectStatistics {
      private String repair_state;//修复状态，0未修复，1已修复
      
      
-     
+	public String getChkDefectMemo() {
+		return chkDefectMemo;
+	}
+	public void setChkDefectMemo(String chkDefectMemo) {
+		this.chkDefectMemo = chkDefectMemo;
+	}
 	public String getRepair_state() {
 		return repair_state;
 	}

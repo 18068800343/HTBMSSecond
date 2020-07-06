@@ -1422,6 +1422,7 @@ public class StatisticsDao {
 					ms.setDefect_location_desc(rs.getString("defect_location_desc"));
 					ms.setImportant(rs.getString("defect_attr"));
 					ms.setDevelop(rs.getString("develop_state"));
+					ms.setChkDefectMemo(rs.getString("chk_defect_memo"));
 					ms.setDefect_serial(rs.getString("defect_serial"));
 					ms.setPhoto_id(rs.getString("photo_id"));
 					ms.setPhoto_name(rs.getString("photo_name"));

@@ -379,6 +379,9 @@
                                             <th class="hasinput">
                                                 <input type="text" class="form-control" placeholder="检索"/>
                                             </th>
+                                            <th class="hasinput">
+                                                <input type="text" class="form-control" placeholder="检索"/>
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th style="width: 100px;">项目</th>
@@ -401,6 +404,7 @@
                                             <th style="width: 120px;">缺损状况</th>
                                             <th style="width: 50px;">是否重点</th>
                                             <th style="width: 50px;">照片</th>
+                                            <th style="width: 50px;">病害备注</th>
                                             <!-- <th style="width: 50px;">11标准评分</th> -->
                                         </tr>
                                         </thead>
@@ -1258,6 +1262,7 @@ var role = '<%=session.getAttribute("userRole")%>';
             {"data": "defect_count"},
             {"data": "important"},
             {"data": null},
+            {"data": 'chkDefectMemo'},
             /* {"data": null} */
         ],
         "columnDefs": [
