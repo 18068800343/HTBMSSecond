@@ -24,6 +24,7 @@ import hs.bm.dao.ReportMgrDao;
 import hs.bm.dao.SendMessageDao;
 import hs.bm.util.CMDUtil;
 import hs.bm.util.ReadFileUtil;
+import hs.bm.util.SingleProcess;
 
 public class AutoReRunReportQueue implements Runnable{
 	
@@ -39,6 +40,19 @@ public class AutoReRunReportQueue implements Runnable{
 	}
 	
 	private static void reRunReportQueue() {
+		String lastReportTime = ReportMgrDao.getInstance().getReportInfoTimeNear();
+		//计算当前时间与最近一次报告时间差
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(lastReportTime);  
+		Date nowDate = new Date();
+		//单位:秒
+		long waitTime=0;
+	      try {
+			Date date = simpleDateFormat.parse(lastReportTime);
+			waitTime = (date.getTime()-nowDate.getTime())/1000*60;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    //
 		boolean flagIn = false;
 		ReportQueueFlag reportQueueFlag = new ReportQueueFlag();
 		reportQueueFlag.setFlagIn(flagIn);
@@ -50,6 +64,11 @@ public class AutoReRunReportQueue implements Runnable{
 		Integer count = ReportMgrDao.getInstance().getReportQueueCount();
 		String allThreadName = getAllThread();
 		if(!allThreadName.contains("autoReportThread")&&count>0) {
+			Thread autoReportThread = new Thread(new AutoReportQueue(reportQueueFlag),"autoReportThread");
+			autoReportThread.start();
+		}else if(allThreadName.contains("autoReportThread")&&waitTime>180){
+			SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateServer");
+			SingleProcess.comfirmSingleProcess("WINWORD.EXE");
 			Thread autoReportThread = new Thread(new AutoReportQueue(reportQueueFlag),"autoReportThread");
 			autoReportThread.start();
 		}

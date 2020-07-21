@@ -401,6 +401,23 @@ public class ReportMgrDao {
 		return i;
 	}
 
+	
+	public String getReportInfoTimeNear() {
+		String	sql = "select * from report_info order by report_date desc limit 1";
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{});
+		String time = "";
+		try {
+			while (rs.next()) {
+				time  = rs.getString("report_date");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		dataOperation.close();
+		return time;
+	}
+
 	public List<ReportQueue> getAllReportQueue() {
 		List<ReportQueue> lr = new ArrayList<ReportQueue>();
 		String sql = "select * from report_queue order by id";
