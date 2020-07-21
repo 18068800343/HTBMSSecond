@@ -85,6 +85,7 @@ public class SingleProcess {
     }
     
     public static void main(String[] args) {
-		SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateServer");
+		SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateS");
+		SingleProcess.comfirmSingleProcess("WINWORD");
 	}
 }

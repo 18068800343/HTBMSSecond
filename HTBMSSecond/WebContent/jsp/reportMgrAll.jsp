@@ -509,7 +509,8 @@
 								dataType: 'json',
 								data: {
 									type:"delReport",
-									report_id:data.report_id
+									report_id:data.report_id,
+									rowno:data.rowno
 								},
 								error : function(msg) {
 									errMessage("请求ReportMgrServlet失败");

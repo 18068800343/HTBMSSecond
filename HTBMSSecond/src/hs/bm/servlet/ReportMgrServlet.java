@@ -39,6 +39,7 @@ import hs.bm.util.FileManageUtil;
 import hs.bm.util.GetMacAndNetCard;
 import hs.bm.util.PackageFile;
 import hs.bm.util.PropertiesUtil;
+import hs.bm.util.SingleProcess;
 import hs.bm.util.TimeFormatUtil;
 import hs.bm.util.ZipManageUtil;
 import hs.bm.vo.OperationConstruct;
@@ -286,9 +287,15 @@ public class ReportMgrServlet extends HttpServlet
 		if (type.equals("delReport"))
 		{
 			String report_id = request.getParameter("report_id");
+			String rowno = request.getParameter("rowno");
 			try {
 				int i = ReportMgrDao.getInstance().delReport(report_id);
 				        ReportMgrDao.getInstance().delReportQueue(report_id);
+				        if("1".equals(rowno)) {
+							SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateS");
+							SingleProcess.comfirmSingleProcess("WINWORD");
+				        }
+				        
 				switch (i)
 				{
 				case 0:
