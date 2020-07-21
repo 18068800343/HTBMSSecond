@@ -42,13 +42,13 @@ public class AutoReRunReportQueue implements Runnable{
 	private static void reRunReportQueue() {
 		String lastReportTime = ReportMgrDao.getInstance().getReportInfoTimeNear();
 		//计算当前时间与最近一次报告时间差
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(lastReportTime);  
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		Date nowDate = new Date();
 		//单位:秒
 		long waitTime=0;
 	      try {
 			Date date = simpleDateFormat.parse(lastReportTime);
-			waitTime = (date.getTime()-nowDate.getTime())/1000*60;
+			waitTime = (nowDate.getTime()-date.getTime())/(1000*60);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -67,14 +67,15 @@ public class AutoReRunReportQueue implements Runnable{
 			Thread autoReportThread = new Thread(new AutoReportQueue(reportQueueFlag),"autoReportThread");
 			autoReportThread.start();
 		}else if(allThreadName.contains("autoReportThread")&&waitTime>180){
-			SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateServer");
-			SingleProcess.comfirmSingleProcess("WINWORD.EXE");
+			SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateS");
+			SingleProcess.comfirmSingleProcess("WINWORD");
 			Thread autoReportThread = new Thread(new AutoReportQueue(reportQueueFlag),"autoReportThread");
 			autoReportThread.start();
 		}
 	}
 	
 	public static void main(String[] args){
+		new AutoReRunReportQueue().run();
 		getAllThread();
 		Map map=Thread.getAllStackTraces(); //也可以map<Thread, StackTraceElement[]>
 		System.out.println("当前线程数："+map.size());

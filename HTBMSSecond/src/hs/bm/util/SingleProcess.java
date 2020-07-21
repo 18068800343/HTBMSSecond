@@ -85,6 +85,6 @@ public class SingleProcess {
     }
     
     public static void main(String[] args) {
-		SingleProcess.comfirmSingleProcess("QQ");
+		SingleProcess.comfirmSingleProcess("BridgeCheckAutoCalculateServer");
 	}
 }
