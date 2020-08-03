@@ -588,6 +588,45 @@ public class ReportMgrDao {
 		dataOperation.close();
 		return file.getAbsolutePath();
 	}
+
+	public String buildPackageZL(String id, String prj_id, String mode,String package_name) {
+		
+		String rootDir = PropertiesUtil.getPropertiesByName("rootDir");
+		
+		File baseDir = new File("D:\\\\package", "package");
+		if (!baseDir.exists()) {
+			baseDir.mkdirs();
+		}
+		//临时文件存放路径
+		File tmpDir = new File(baseDir, "tmp" + File.separator + System.currentTimeMillis());
+		if (!tmpDir.exists()) {
+			tmpDir.mkdirs();
+		}
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		String sql = "  SELECT DISTINCT	cbp.path photo_path,CONCAT(bcai.bridge_no,\"_\",bcai.bridge_name) defect_serial,CASE cbp.photo_type WHEN \"face\" THEN \"正面\" ELSE \"立面\" END AS zl FROM	brg_prj_photo cbp LEFT JOIN brg_card_admin_id bcai on cbp.bridge_id = bcai.bridge_id  ";
+		try {
+			ResultSet rt = dataOperation.executeQuery(sql, new String[] {  });
+			while (rt.next()) {
+				String photo_path = rt.getString("photo_path");
+				String photo_serial = rt.getString("defect_serial");
+				String zl = rt.getString("zl");
+				if (photo_path != null && !photo_path.equals("")) {
+					try {
+						File oldFile = new File(rootDir, photo_path);
+						FileManageUtil.fileCopyName(oldFile, tmpDir, photo_serial+"_"+zl);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		File file = new File(baseDir, package_name+System.currentTimeMillis() + ".zip");
+		ZipManageUtil.createZipFile(tmpDir, file);
+		dataOperation.close();
+		return file.getAbsolutePath();
+	}
 	
 	public String getDefectName(String id, String prj_id, String mode) {
 		String name = "";
