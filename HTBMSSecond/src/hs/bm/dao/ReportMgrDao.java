@@ -588,6 +588,43 @@ public class ReportMgrDao {
 		dataOperation.close();
 		return file.getAbsolutePath();
 	}
+	public String buildPackageNewPass(String id, String prj_id, String mode,String package_name) {
+		
+		String rootDir = PropertiesUtil.getPropertiesByName("rootDir");
+		
+		File baseDir = new File("D:\\\\package", "package");
+		if (!baseDir.exists()) {
+			baseDir.mkdirs();
+		}
+		//临时文件存放路径
+		File tmpDir = new File(baseDir, "tmp" + File.separator + System.currentTimeMillis());
+		if (!tmpDir.exists()) {
+			tmpDir.mkdirs();
+		}
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		String sql = " SELECT DISTINCT	cbp.photo_path,	cbp.defect_serial FROM	chk_pass_photo cbp LEFT JOIN chk_pass_defect cbdt ON cbp.defect_serial = cbdt.defect_serial LEFT JOIN chk_pass_record cbr ON cbdt.mbr_chk_id = cbr.mbr_chk_id LEFT JOIN chk_pass_span_record csr ON cbr.span_chk_id = csr.span_chk_id LEFT JOIN chk_pass_regular cbrr ON cbrr.chk_id = csr.chk_id LEFT JOIN chk_project_info cpi ON cpi.prj_id = cbrr.prj_id WHERE	cpi.prj_id =?";
+		try {
+			ResultSet rt = dataOperation.executeQuery(sql, new String[] { prj_id });
+			while (rt.next()) {
+				String photo_path = rt.getString("photo_path");
+				String photo_serial = rt.getString("defect_serial");
+				if (photo_path != null && !photo_path.equals("")) {
+					try {
+						File oldFile = new File(rootDir, photo_path);
+						FileManageUtil.fileCopyName(oldFile, tmpDir, photo_serial);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		File file = new File(baseDir, package_name+System.currentTimeMillis() + ".zip");
+		ZipManageUtil.createZipFile(tmpDir, file);
+		dataOperation.close();
+		return file.getAbsolutePath();
+	}
 
 	public String buildPackageZL(String id, String prj_id, String mode,String package_name) {
 		

@@ -174,6 +174,10 @@
                                             <a class="btn btn-warning disabled" onclick="overCheck()">
                                                 受限
                                             </a>
+                                                                                         &nbsp;
+                                            <a class="btn btn-warning" href="imgMgr.jsp">
+                                                图片打包
+                                            </a>
                                         </div>
 
                                     </div>
