@@ -799,28 +799,28 @@ public class CheckBridgeDao {
 		//根据新老项目进行缺少的检查记录恢复 @param 参数为老项目ID
 		//改代码已更改为支持双库桥梁检查记录复制,把关键参数 "old"更改为 "new"即为单库复制
 		//双库复制时,dbconfigCopy.properties 配置文件为被复制的库,即 old 库,   dbconfig.properties为新库,复制至的库,即 new 库
-		/**
-		 * @author Administrator
-		 * @param 1:老项目ID
-		 */
-		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("30ee97b319a34c7e8977384ffe9e85bd","old");
-		int i=1;
-		for(BridgeChkVo bridgeChkVo:bridgeChkVos){
-			System.out.println("第"+i+"座桥正在copy");
-			String oldChkId = bridgeChkVo.getChkId();
-			String brgId = bridgeChkVo.getBrgId();
-			//参数为新项目Id
-			String newChkId = getNewChkIdByBrgIdAndPrjId("99c4158664a14605a34b87a839f6e4bf", brgId);
-			if(null!=newChkId&&!"".equals(newChkId)){
-				copyByPrj(oldChkId, newChkId);
-				i++;
-			}
-		}
+//		/**
+//		 * @author Administrator
+//		 * @param 1:老项目ID
+//		 */
+//		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("30ee97b319a34c7e8977384ffe9e85bd","old");
+//		int i=1;
+//		for(BridgeChkVo bridgeChkVo:bridgeChkVos){
+//			System.out.println("第"+i+"座桥正在copy");
+//			String oldChkId = bridgeChkVo.getChkId();
+//			String brgId = bridgeChkVo.getBrgId();
+//			//参数为新项目Id
+//			String newChkId = getNewChkIdByBrgIdAndPrjId("99c4158664a14605a34b87a839f6e4bf", brgId);
+//			if(null!=newChkId&&!"".equals(newChkId)){
+//				copyByPrj(oldChkId, newChkId);
+//				i++;
+//			}
+//		}
 		
 		
 		//
 		//1参数为 oldChkId,2参数为 newChkId
-		copyByPrj("22ff5d5058134946b62c0b367d64a22e", "22ff5d5058134946b62c0b367d64a22e");
+		copyByPrj("dhy12849dsdhsd424d30dioyp065234ae", "db00775ed8044d0da7040ebf2cf5240d");
 	}
 	
 	
