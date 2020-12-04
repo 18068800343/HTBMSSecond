@@ -4,6 +4,14 @@ public class BridgeChkVo {
 
 	private String brgId;
 	private String chkId;
+	private String bridgeName;
+	
+	public String getBridgeName() {
+		return bridgeName;
+	}
+	public void setBridgeName(String bridgeName) {
+		this.bridgeName = bridgeName;
+	}
 	public String getBrgId() {
 		return brgId;
 	}

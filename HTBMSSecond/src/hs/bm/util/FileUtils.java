@@ -1,6 +1,10 @@
 package hs.bm.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 	/**
@@ -47,5 +51,23 @@ public class FileUtils {
 			 //方法的递归
 			 longErgodic(file2, files);
 		}
+	}
+	
+	
+	
+	public static void WriteNewLog(String str, String logpath,String fileName){
+		System.out.println("----------------开始写新日志----------------");
+		try {
+			File newlog = new File(logpath + "\\"+fileName+".txt");
+			if(!newlog.isFile()){
+				newlog.createNewFile();
+			} 
+			BufferedWriter bw = new BufferedWriter(new FileWriter(newlog,true));//true,则追加写入text文本
+			bw.write(str+"\r\n");	
+			bw.flush();
+			bw.close();
+		}catch (Exception e) {
+				e.printStackTrace();
+			}
 	}
 }

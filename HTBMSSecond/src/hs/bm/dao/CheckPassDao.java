@@ -15,6 +15,7 @@ import hs.bm.bean.ChkBrgRecord;
 import hs.bm.bean.ChkSpanRecord;
 import hs.bm.bean.DefectCount;
 import hs.bm.bean.PassSpanInfo;
+import hs.bm.util.FileUtils;
 import hs.bm.util.IDtool;
 import hs.bm.vo.BridgeChk;
 import hs.bm.vo.BridgeChkVo;
@@ -328,7 +329,7 @@ private static CheckPassDao checkPassDao;
 	}
 	
 	public static List<PassChkVo> getChkIdByPrjId(String prj_id){
-		String sql = " select chk_id,pass_id from chk_pass_regular where prj_id =? ";
+		String sql = " select chk_id, cpr.pass_id,pi.pass_no from chk_pass_regular cpr LEFT JOIN pass_info pi ON cpr.pass_id = pi.pass_id where prj_id =? ";
 		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
 		ResultSet rs = dataOperation.executeQuery(sql, new String[]{prj_id});
 		List<PassChkVo> passChkVos = new ArrayList<>();
@@ -338,6 +339,7 @@ private static CheckPassDao checkPassDao;
 				String chkId  = rs.getString("chk_id");
 				passChkVo.setChkId(chkId);
 				passChkVo.setPassId(rs.getString("pass_id"));
+				passChkVo.setPassName(rs.getString("pass_no"));
 				passChkVos.add(passChkVo);
 			}
 		} catch (SQLException e) {
@@ -378,6 +380,27 @@ private static CheckPassDao checkPassDao;
 		}
 		dataOperation.close();
 		return list;
+	}
+	
+	public static String getNearOldPrjId(String passId){
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		String sql = "select b.chk_id,b.prj_id from chk_project_info as a,chk_pass_regular as b where b.pass_id=? and a.prj_id=b.prj_id and a.chk_type=? and a.prj_state='1' ORDER BY prj_establish_tm desc LIMIT 0,1";
+//		System.out.println("获取数据");
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{passId, "regular"});
+//		String chk_id_old = null;
+		String prj_id_old = null;
+		try {
+			if(rs.next()){
+//				chk_id_old = rs.getString("chk_id");
+				prj_id_old = rs.getString("prj_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dataOperation.close();
+		}
+		return prj_id_old;
+		
 	}
 	
 	public static String getNewChkIdByBrgIdAndPrjId(String prj_id,String passId){
@@ -453,22 +476,32 @@ private static CheckPassDao checkPassDao;
 		}*/
 		//deletePhotoPath();
 		//根据新老项目进行缺少的检查记录恢复
-		List<PassChkVo> passChkVos = getChkIdByPrjId("e3e453fb3ef14d57979bc5c5eee7271b");
+		List<PassChkVo> passChkVos = getChkIdByPrjId("d392e80f915d4b7fbee831bb420723b6");
 		int i=1;
 		for(PassChkVo passChkVo:passChkVos){
 			System.out.println("第"+i+"座桥正在copy");
 			String oldChkId = passChkVo.getChkId();
 			String passId = passChkVo.getPassId();
-			String newChkId = getNewChkIdByBrgIdAndPrjId("99c4158664a14605a34b87a839f6e4bf", passId);
-			if(null!=newChkId&&!"".equals(newChkId)){
-				copyByPrj(oldChkId, newChkId);
+			
+			//--start  参数为新项目Id  加入该段代码后,即可解决遗新项目漏病害的问题
+			String oldPrjId = getNearOldPrjId(passId);
+			       oldChkId = getNewChkIdByBrgIdAndPrjId(oldPrjId, passId);
+			//---end    
+			
+			String newChkId = getNewChkIdByBrgIdAndPrjId("d392e80f915d4b7fbee831bb420723b6", passId);
+			if(null!=newChkId&&!"".equals(newChkId)&&null!=oldChkId&&!"".equals(oldChkId)){
+				copyByPrj(oldChkId, newChkId,passChkVo.getPassName(),"2020年宁靖盐定期检查");
 				i++;
 			}
 		}
 		/*copyByPrj("fab1acf597a84b81a4dbf789524b674b", "fd0a959466054ef897521fd04aa3a982");*/
 	}
 	
-	public static void copyByPrj(String oldChkId,String newChkId){
+	public static void copyByPrj(String oldChkId,String newChkId,String bridgeName,String fileName){
+		String bridge_id = "";
+		String span_no="";
+		String direction="";
+		
 		BridgeChk old_bc = new BridgeChk();
 		//2017年沿海高速公路桥梁定期检查  prj_id 6e0f036d7b3e44fd89915562e9bf02be
 		//2019年沿海高速定期检查  prj_id 8ba63281013842febc705a30ec0d2460
@@ -500,29 +533,45 @@ private static CheckPassDao checkPassDao;
 				 //18年项目构件检查记录集合 chk_brg_record集合
 				 List<ChkBrgRecord> newChkBrgRecords = new CheckPassDao().getChkPassRecordBySpanChkId(newChkSpanRecord.getSpan_chk_id());	 
 				 //如果老项目的构件检查记录有数据,而新项目里的构建检查记录无数据,将老项目的构件检查记录复制
-				 if(newChkBrgRecords==null||newChkBrgRecords.size()==0){
+				 //if(newChkBrgRecords==null||newChkBrgRecords.size()==0){
+				 
+				 //
+				 if(true) { 
+					 
+					 
 					 //根据老项目的构件检查主键mbr_chk_id查出对应构件的所有病害以及病害中的图片photo
 					 for(ChkBrgRecord old_chkBrgRecord:oldChkBrgRecords){
-						 //新项目在chkBrgRecord中插入新纪录,生成一个新的
-						 List<ChkBrgDefect> oldchkBrgDefects =  new CheckPassSpanDao().getDefectList(old_chkBrgRecord.getMbr_chk_id());
-						 String newMbrChkId =IDtool.getUUID(); 
-						 old_chkBrgRecord.setMbr_chk_id(newMbrChkId);
-						 old_chkBrgRecord.setSpan_chk_id(newChkSpanRecord.getSpan_chk_id());
-						 new CheckPassSpanDao().insertIntoChkPassRecord(old_chkBrgRecord);
-						 for(ChkBrgDefect oldChkBrgDefect:oldchkBrgDefects){
-							 String newDefectSerial=IDtool.getUUID();
-							 oldChkBrgDefect.setDefect_serial(newDefectSerial);
-							 oldChkBrgDefect.setMbr_chk_id(newMbrChkId);
-							 new CheckPassSpanDao().insertChkPassDefect(oldChkBrgDefect);
-							 List<ChkBrgPhoto> oldPhotoList = oldChkBrgDefect.getPhotos();
-							 for(ChkBrgPhoto oldChkBrgPhoto:oldPhotoList){
-								 oldChkBrgPhoto.setDefect_serial(newDefectSerial);
-								 oldChkBrgPhoto.setPhoto_path("");
-								 new CheckPassSpanDao().insertChkPassPhoto(oldChkBrgPhoto);
+						 String old_mbr_no = old_chkBrgRecord.getMbr_no();
+						 boolean flag = volidateMbrNo(old_mbr_no,newChkBrgRecords);
+						 if(!flag) {
+							 bridge_id = old_chkBrgRecord.getBridge_id();
+							 span_no=old_chkBrgRecord.getSpan_no();
+							 direction=old_chkBrgRecord.getDirection();
+							 if(!"".equals(bridge_id)) {
+								 FileUtils.WriteNewLog(bridge_id+" , "+bridgeName+" , "+direction+" , "+span_no+" , "+old_chkBrgRecord.getMbr_type(), "E:\\Download",fileName);
 							 }
-						 }
-					 }
-				 }
+							 //新项目在chkBrgRecord中插入新纪录,生成一个新的
+							 List<ChkBrgDefect> oldchkBrgDefects =  new CheckPassSpanDao().getDefectList(old_chkBrgRecord.getMbr_chk_id());
+							 String newMbrChkId =IDtool.getUUID(); 
+							 old_chkBrgRecord.setMbr_chk_id(newMbrChkId);
+							 old_chkBrgRecord.setSpan_chk_id(newChkSpanRecord.getSpan_chk_id());
+							 new CheckPassSpanDao().insertIntoChkPassRecord(old_chkBrgRecord);
+							 for(ChkBrgDefect oldChkBrgDefect:oldchkBrgDefects){
+								 String newDefectSerial=IDtool.getUUID();
+								 oldChkBrgDefect.setDefect_serial(newDefectSerial);
+								 oldChkBrgDefect.setMbr_chk_id(newMbrChkId);
+								 new CheckPassSpanDao().insertChkPassDefect(oldChkBrgDefect);
+								 List<ChkBrgPhoto> oldPhotoList = oldChkBrgDefect.getPhotos();
+								/*
+								 * for(ChkBrgPhoto oldChkBrgPhoto:oldPhotoList){
+								 * oldChkBrgPhoto.setDefect_serial(newDefectSerial);
+								 * oldChkBrgPhoto.setPhoto_path(""); new
+								 * CheckPassSpanDao().insertChkPassPhoto(oldChkBrgPhoto); }
+								 */
+							 }
+					   }
+				   }
+			     }
 			 }
 		}
 	}
@@ -570,5 +619,16 @@ private static CheckPassDao checkPassDao;
 				 }
 			 }
 		}
+	}
+	
+	public static boolean volidateMbrNo(String old_mbr_no,List<ChkBrgRecord> newChkBrgRecords) {
+		boolean flag = false;
+		for (ChkBrgRecord chkBrgRecord : newChkBrgRecords) {
+			if(old_mbr_no.equals(chkBrgRecord.getMbr_no())) {
+				flag = true;
+			}
+		}
+		return flag;
+		
 	}
 }

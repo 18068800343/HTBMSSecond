@@ -200,6 +200,7 @@
 														  <a class="btn btn-primary btn-sm" onclick="searchBydate()">检索</a>
 														</div>		
 														<a class="btn btn-primary btn-sm pull-right" id="thunderDownload">复制迅雷下载链接</a>
+														<a href="http://47.92.137.78:3000/" target="_blank" class="btn btn-primary btn-sm pull-right"  id="guangdiannaodu">光电挠度</a>
 													</div>
 				
 												</div>

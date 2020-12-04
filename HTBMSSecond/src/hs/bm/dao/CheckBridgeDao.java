@@ -24,6 +24,7 @@ import hs.bm.bean.ChkBrgRegular;
 import hs.bm.bean.ChkProjectInfo;
 import hs.bm.bean.ChkSpanRecord;
 import hs.bm.bean.DefectCount;
+import hs.bm.util.FileUtils;
 import hs.bm.util.IDtool;
 import hs.bm.vo.BridgeChk;
 import hs.bm.vo.BridgeChkVo;
@@ -62,7 +63,7 @@ public class CheckBridgeDao {
 	 * @param dataSourceType 数据源类型,old为老,new为新 
 	 */
 	public static List<BridgeChkVo> getChkIdByPrjId(String prj_id,String dataSourceType){
-		String sql = " select chk_id,bridge_id from chk_brg_regular where prj_id =? ";
+		String sql = " select chk_id,cbr.bridge_id,bcai.bridge_name from chk_brg_regular cbr LEFT JOIN brg_card_admin_id bcai on cbr.bridge_id = bcai.bridge_id where prj_id =? ";
 		MyDataOperation dataOperation; 
 		if("new".equals(dataSourceType)) {
 			dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
@@ -77,6 +78,7 @@ public class CheckBridgeDao {
 				String chkId  = rs.getString("chk_id");
 				bridgeChkVo.setChkId(chkId);
 				bridgeChkVo.setBrgId(rs.getString("bridge_id"));
+				bridgeChkVo.setBridgeName(rs.getString("bridge_name"));
 				bridgeChkVos.add(bridgeChkVo);
 			}
 		} catch (SQLException e) {
@@ -702,6 +704,28 @@ public class CheckBridgeDao {
         }
 		
 	}
+
+	public static String getNearOldPrjId(String bridge_id){
+		MyDataOperation dataOperation = new MyDataOperation(MyDataSource.getInstance().getConnection());
+		String sql = "select b.chk_id,b.prj_id from chk_project_info as a,chk_brg_regular as b where b.bridge_id=? and a.prj_id=b.prj_id and a.chk_type=? and a.prj_state='1' ORDER BY prj_establish_tm desc LIMIT 0,1";
+//		System.out.println("获取数据");
+		ResultSet rs = dataOperation.executeQuery(sql, new String[]{bridge_id, "regular"});
+//		String chk_id_old = null;
+		String prj_id_old = null;
+		try {
+			if(rs.next()){
+//				chk_id_old = rs.getString("chk_id");
+				prj_id_old = rs.getString("prj_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dataOperation.close();
+		}
+		return prj_id_old;
+		
+	}
+	
 	public List<ChkBrgRecord> getChkBrgRecordBySpanChkId(String span_chk_id,String dataSourceType)
 	{
 		//
@@ -799,32 +823,42 @@ public class CheckBridgeDao {
 		//根据新老项目进行缺少的检查记录恢复 @param 参数为老项目ID
 		//改代码已更改为支持双库桥梁检查记录复制,把关键参数 "old"更改为 "new"即为单库复制
 		//双库复制时,dbconfigCopy.properties 配置文件为被复制的库,即 old 库,   dbconfig.properties为新库,复制至的库,即 new 库
-//		/**
-//		 * @author Administrator
-//		 * @param 1:老项目ID
-//		 */
-//		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("30ee97b319a34c7e8977384ffe9e85bd","old");
-//		int i=1;
-//		for(BridgeChkVo bridgeChkVo:bridgeChkVos){
-//			System.out.println("第"+i+"座桥正在copy");
-//			String oldChkId = bridgeChkVo.getChkId();
-//			String brgId = bridgeChkVo.getBrgId();
-//			//参数为新项目Id
-//			String newChkId = getNewChkIdByBrgIdAndPrjId("99c4158664a14605a34b87a839f6e4bf", brgId);
-//			if(null!=newChkId&&!"".equals(newChkId)){
-//				copyByPrj(oldChkId, newChkId);
-//				i++;
-//			}
-//		}
+		/**
+		 * @author Administrator
+		 * @param 1:老项目ID
+		 */
+		List<BridgeChkVo> bridgeChkVos = getChkIdByPrjId("3802cbd13e554e1c801910083c2bd6e8","new");
+		int i=1;
+		for(BridgeChkVo bridgeChkVo:bridgeChkVos){
+			System.out.println("第"+i+"座桥正在copy");
+			String oldChkId = bridgeChkVo.getChkId();
+			String brgId = bridgeChkVo.getBrgId();
+			//--start  参数为新项目Id  加入该段代码后,即可解决遗新项目漏病害的问题
+			String oldPrjId = getNearOldPrjId(brgId);
+			       oldChkId = getNewChkIdByBrgIdAndPrjId(oldPrjId, brgId);
+			//---end       
+			       
+			String newChkId = getNewChkIdByBrgIdAndPrjId("3802cbd13e554e1c801910083c2bd6e8", brgId);
+			
+			//oldChkId 老项目id，newChkId 新项目id，第三个参数，桥梁名称（日志用到，可以填空字符串）,第四个参数日志文件名称
+			if(null!=newChkId&&!"".equals(newChkId)){
+				copyByPrj(oldChkId, newChkId,bridgeChkVo.getBridgeName(),"2020年沿海高速盐通段部分桥梁专项检查");
+				i++;
+			}
+		}
 		
 		
 		//
 		//1参数为 oldChkId,2参数为 newChkId
-		copyByPrj("dhy12849dsdhsd424d30dioyp065234ae", "db00775ed8044d0da7040ebf2cf5240d");
+//		copyByPrj("2ee652efc58f475e8d04779d421f27c1", "f3f5baf9cbc54b028f5ff2da0536151a");
 	}
 	
 	
-	public static void copyByPrj(String oldChkId,String newChkId){
+	public static void copyByPrj(String oldChkId,String newChkId,String bridgeName,String fileName){
+		Map map = new HashMap();
+		String bridge_id = "";
+		String span_no="";
+		String direction="";
 		BridgeChk old_bc = new BridgeChk();
 		//2017年沿海高速公路桥梁定期检查  prj_id 6e0f036d7b3e44fd89915562e9bf02be
 		//2019年沿海高速定期检查  prj_id 8ba63281013842febc705a30ec0d2460
@@ -837,7 +871,8 @@ public class CheckBridgeDao {
 		List<ChkSpanRecord> old_list = new CheckBridgeDao().getAllSpansData(old_bc,"old").getSpans();
 		for(ChkSpanRecord csr_old:old_list){
 			String oldDirection = csr_old.getDirection();
-			String oldSpanNo = csr_old.getSpan_no();
+			String oldSpanNo = csr_old.
+					getSpan_no();
 			//String newChkId = "824b185044d643baa1281ed453210a6e";
 			ChkSpanRecord newChkSpanRecord = new CheckBridgeDao().getChkSpanRecordByChkIdDirection(newChkId, oldDirection, oldSpanNo);
 			//根据跨检查记录每条的 span_chk_id查出对应的构件检查记录 获取记录中的 mbr_chk_id
@@ -857,30 +892,52 @@ public class CheckBridgeDao {
 				 List<ChkBrgRecord> newChkBrgRecords = new CheckBridgeDao().getChkBrgRecordBySpanChkId(newChkSpanRecord.getSpan_chk_id(),"new");	 
 				 //如果老项目的构件检查记录有数据,而新项目里的构建检查记录无数据,将老项目的构件检查记录复制
 				 try {
-					if(newChkBrgRecords==null||newChkBrgRecords.size()==0){
+					 //  改行判断为等于null时为 新检查记录里没有是从老项目复制
+					//if(newChkBrgRecords==null||newChkBrgRecords.size()==0){
+					//  改行判断为等于null时为 新检查记录里没有是从老项目复制
+					if(true){
+						
 						 //根据老项目的构件检查主键mbr_chk_id查出对应构件的所有病害以及病害中的图片photo
 						 for(ChkBrgRecord old_chkBrgRecord:oldChkBrgRecords){
-							 //新项目在chkBrgRecord中插入新纪录,生成一个新的
-							 List<ChkBrgDefect> oldchkBrgDefects =  new CheckSpanDao().getDefectList(old_chkBrgRecord.getMbr_chk_id(),"old");
-							 String newMbrChkId =IDtool.getUUID(); 
-							 old_chkBrgRecord.setMbr_chk_id(newMbrChkId);
-							 old_chkBrgRecord.setSpan_chk_id(newChkSpanRecord.getSpan_chk_id());
-							 new CheckSpanDao().insertIntoChkBrgRecord(old_chkBrgRecord);
-							 for(ChkBrgDefect oldChkBrgDefect:oldchkBrgDefects){
-								 String newDefectSerial=IDtool.getUUID();
-								 oldChkBrgDefect.setDefect_serial(newDefectSerial);
-								 oldChkBrgDefect.setMbr_chk_id(newMbrChkId);
-								 new CurrentControlDao().insertChkBrgDefect(oldChkBrgDefect);
-								 List<ChkBrgPhoto> oldPhotoList = oldChkBrgDefect.getPhotos();
-								 StringBuffer str = new StringBuffer("");
-								 for(ChkBrgPhoto oldChkBrgPhoto:oldPhotoList){
-									 oldChkBrgPhoto.setDefect_serial(newDefectSerial);
-									 //oldChkBrgPhoto.setPhoto_path("");
-									 if(!str.toString().contains(oldChkBrgPhoto.getPhoto_path())) {
-										 str.append(oldChkBrgPhoto.getPhoto_path());
-										 new CheckSpanDao().insertPhoto(oldChkBrgPhoto);
+							 
+							 String old_mbr_no = old_chkBrgRecord.getMbr_no();
+							 boolean flag = volidateMbrNo(old_mbr_no,newChkBrgRecords);
+							 //if("2".equals(old_chkBrgRecord.getSpan_no())) {
+								 //map.put(old_chkBrgRecord.getBridge_id(), 1);
+//								 System.out.println("****"+old_chkBrgRecord.getBridge_id()+"******");
+							 //}
+							 if(!flag) {
+								 bridge_id = old_chkBrgRecord.getBridge_id();
+								 span_no=old_chkBrgRecord.getSpan_no();
+								 direction=old_chkBrgRecord.getDirection();
+								 if(!"".equals(bridge_id)) {
+									 FileUtils.WriteNewLog(bridge_id+" , "+bridgeName+" , "+direction+" , "+span_no+" , "+old_chkBrgRecord.getMbr_type(), "E:\\Download",fileName);
+								 }
+								 //新项目在chkBrgRecord中插入新纪录,生成一个新的
+								 List<ChkBrgDefect> oldchkBrgDefects =  new CheckSpanDao().getDefectList(old_chkBrgRecord.getMbr_chk_id(),"old");
+								 String newMbrChkId =IDtool.getUUID(); 
+								 old_chkBrgRecord.setMbr_chk_id(newMbrChkId);
+								 old_chkBrgRecord.setSpan_chk_id(newChkSpanRecord.getSpan_chk_id());
+								 new CheckSpanDao().insertIntoChkBrgRecord(old_chkBrgRecord);
+								 for(ChkBrgDefect oldChkBrgDefect:oldchkBrgDefects){
+									 String newDefectSerial=IDtool.getUUID();
+									 oldChkBrgDefect.setDefect_serial(newDefectSerial);
+									 oldChkBrgDefect.setMbr_chk_id(newMbrChkId);
+									 new CurrentControlDao().insertChkBrgDefect(oldChkBrgDefect);
+									 List<ChkBrgPhoto> oldPhotoList = oldChkBrgDefect.getPhotos();
+									 StringBuffer str = new StringBuffer("");
+									 for(ChkBrgPhoto oldChkBrgPhoto:oldPhotoList){
+										 oldChkBrgPhoto.setDefect_serial(newDefectSerial);
+										 //是否需要携带图片
+										 //oldChkBrgPhoto.setPhoto_path("");
+										 
+										/*
+										 * if(!str.toString().contains(oldChkBrgPhoto.getPhoto_path())) {
+										 * str.append(oldChkBrgPhoto.getPhoto_path()); new
+										 * CheckSpanDao().insertPhoto(oldChkBrgPhoto); }
+										 */
+										 
 									 }
-									 
 								 }
 							 }
 						 }
@@ -891,6 +948,8 @@ public class CheckBridgeDao {
 				}
 			 }
 		}
+		
+		System.out.println(bridge_id);
 		
 	}
 	
@@ -936,5 +995,17 @@ public class CheckBridgeDao {
 				 }
 			 }
 		}
+	}
+	
+	
+	public static boolean volidateMbrNo(String old_mbr_no,List<ChkBrgRecord> newChkBrgRecords) {
+		boolean flag = false;
+		for (ChkBrgRecord chkBrgRecord : newChkBrgRecords) {
+			if(old_mbr_no.equals(chkBrgRecord.getMbr_no())) {
+				flag = true;
+			}
+		}
+		return flag;
+		
 	}
 }

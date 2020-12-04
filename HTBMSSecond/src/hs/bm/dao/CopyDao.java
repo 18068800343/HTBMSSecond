@@ -134,7 +134,7 @@ private static CopyDao copyDao;
 	}
 	
 	public void bridgeCopy(String chk_type, String chk_id, String bridge_id, String prj_id){
-		String sql = "select b.chk_id,b.prj_id from chk_project_info as a,chk_brg_regular as b where b.bridge_id=? and a.prj_id=b.prj_id and a.chk_type=? and a.prj_state='1' ORDER BY prj_complete_tm desc LIMIT 0,1";
+		String sql = "select b.chk_id,b.prj_id from chk_project_info as a,chk_brg_regular as b where b.bridge_id=? and a.prj_id=b.prj_id and a.chk_type=? and a.prj_state='1' ORDER BY prj_establish_tm desc LIMIT 0,1";
 //		System.out.println("获取数据");
 		ResultSet rs = dataOperation.executeQuery(sql, new String[]{bridge_id, chk_type});
 		String chk_id_old = null;
