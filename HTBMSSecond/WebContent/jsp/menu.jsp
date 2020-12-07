@@ -221,7 +221,7 @@ String path = request.getRequestURI().toString();
 					
 					<ul>
 							<%
-								if(role.equals("admin")||role.equals("superAdmin")||role.equals("guest")){
+								if(role.equals("admin")||role.equals("superAdmin")||role.equals("guest")||role.equals("orgAdmin")){
 							%>
 					<li>
 								<a href="#">数据管理</a>
