@@ -1320,9 +1320,9 @@
                     }
                    
                     var fxhtml='<td rowspan="'+(sbjgcount+xbjgcount+qmxcount)+'" style="text-align: center;vertical-align: middle !important;">无</td><';
-                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_value3+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePart.eva_bridge_part_value1).toFixed(2)+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePart.eva_bridge_part_value2).toFixed(2)+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePart.eva_bridge_part_value3).toFixed(2)+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePart.eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
                     
                     var tsb = $(tsbhtml);
                     var txb =$(txbhtml);
@@ -1337,7 +1337,7 @@
 	                			tsb.eq(0).find('td').eq(4).html(countu);countu++;
 	                			tsb.eq(0).find('td').eq(5).html(unitevaluationrec[i].component_id);
 	                			tsb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_unitid);
-	                			tsb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_grade);
+	                			tsb.eq(0).find('td').eq(7).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tsb.eq(0).find('td').eq(8).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tsb);
 	                			fristb=false;
@@ -1345,7 +1345,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			} 
@@ -1360,7 +1360,7 @@
 	                			txb.eq(0).find('td').eq(3).html(countu);countu++;
 	                			txb.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			txb.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			txb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			txb.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			txb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(txb);
 	                			fristb=false;
@@ -1368,7 +1368,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
@@ -1383,7 +1383,7 @@
 	                			qm.eq(0).find('td').eq(3).html(countu);countu++;
 	                			qm.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			qm.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			qm.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			qm.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			qm.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(qm);
 	                			fristb=false;
@@ -1391,13 +1391,13 @@
 	                			tu.eq(0).find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
 	                		}
 	                } 
-	                var zt = $('<tr><td colspan="3">总体评分</td><td colspan="2">'+evaBridgePart.eva_bridge_part_value+'</td><td colspan="2">等级</td><td colspan="2">'+evaBridgePart.eva_bridge_part_grde+'</td></tr>');
+	                var zt = $('<tr><td colspan="3">总体评分</td><td colspan="2">'+parseFloat(evaBridgePart.eva_bridge_part_value).toFixed(2)+'</td><td colspan="2">等级</td><td colspan="2">'+evaBridgePart.eva_bridge_part_grde+'</td></tr>');
 	                $('#pingfen11 tbody').append(zt);
                 }else{
                     var sbjgcount=0;
@@ -1433,9 +1433,9 @@
                     }
                    
                     var fxhtml='<td rowspan="'+(sbjgcount+xbjgcount+qmxcount)+'" style="text-align: center;vertical-align: middle !important;">上行</td><';
-                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[0].eva_bridge_part_value1).toFixed(2)+'</td><td rowspan="'+sbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var txbhtml = '<tr><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[0].eva_bridge_part_value2).toFixed(2)+'</td><td rowspan="'+xbjgcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    var qmhtml = '<tr><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[0].eva_bridge_part_value3).toFixed(2)+'</td><td rowspan="'+qmxcount+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[0].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
                     
                     var tsb = $(tsbhtml);
                     var txb =$(txbhtml);
@@ -1450,7 +1450,7 @@
 	                			tsb.eq(0).find('td').eq(4).html(countu);countu++;
 	                			tsb.eq(0).find('td').eq(5).html(unitevaluationrec[i].component_id);
 	                			tsb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_unitid);
-	                			tsb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_grade);
+	                			tsb.eq(0).find('td').eq(7).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tsb.eq(0).find('td').eq(8).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tsb);
 	                			fristb=false;
@@ -1458,7 +1458,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			} 
@@ -1473,7 +1473,7 @@
 	                			txb.eq(0).find('td').eq(3).html(countu);countu++;
 	                			txb.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			txb.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			txb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			txb.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			txb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(txb);
 	                			fristb=false;
@@ -1481,7 +1481,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
@@ -1496,7 +1496,7 @@
 	                			qm.eq(0).find('td').eq(3).html(countu);countu++;
 	                			qm.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			qm.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			qm.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			qm.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			qm.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(qm);
 	                			fristb=false;
@@ -1504,16 +1504,16 @@
 	                			tu.eq(0).find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
 	                		}
 	                }
 	                fxhtml='<td rowspan="'+(sbjgcount1+xbjgcount1+qmxcount1)+'" style="text-align: center;vertical-align: middle !important;">下行</td><';
-	                tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value1+'</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    txbhtml = '<tr><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value2+'</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
-                    qmhtml = '<tr><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_value3+'</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+	                tsbhtml = '<tr>'+fxhtml+'<td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">上部结构</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[1].eva_bridge_part_value1).toFixed(2)+'</td><td rowspan="'+sbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index1+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    txbhtml = '<tr><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">下部结构</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[1].eva_bridge_part_value2).toFixed(2)+'</td><td rowspan="'+xbjgcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index2+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
+                    qmhtml = '<tr><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">桥面结构</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+parseFloat(evaBridgePartlist[1].eva_bridge_part_value3).toFixed(2)+'</td><td rowspan="'+qmxcount1+'" style="text-align: center;vertical-align: middle !important;">'+evaBridgePartlist[1].eva_bridge_part_index3+'</td><td></td> <td></td> <td></td> <td></td> <td></td></tr>';
                     
                     tsb = $(tsbhtml);
                     txb =$(txbhtml);
@@ -1530,7 +1530,7 @@
 	                			tsb.eq(0).find('td').eq(4).html(countu);countu++;
 	                			tsb.eq(0).find('td').eq(5).html(unitevaluationrec[i].component_id);
 	                			tsb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_unitid);
-	                			tsb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_grade);
+	                			tsb.eq(0).find('td').eq(7).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tsb.eq(0).find('td').eq(8).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tsb);
 	                			fristb=false;
@@ -1538,7 +1538,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			} 
@@ -1553,7 +1553,7 @@
 	                			txb.eq(0).find('td').eq(3).html(countu);countu++;
 	                			txb.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			txb.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			txb.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			txb.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			txb.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(txb);
 	                			fristb=false;
@@ -1561,7 +1561,7 @@
 	                			tu.find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
@@ -1576,7 +1576,7 @@
 	                			qm.eq(0).find('td').eq(3).html(countu);countu++;
 	                			qm.eq(0).find('td').eq(4).html(unitevaluationrec[i].component_id);
 	                			qm.eq(0).find('td').eq(5).html(unitevaluationrec[i].uer_unitid);
-	                			qm.eq(0).find('td').eq(6).html(unitevaluationrec[i].uer_grade);
+	                			qm.eq(0).find('td').eq(6).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			qm.eq(0).find('td').eq(7).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(qm);
 	                			fristb=false;
@@ -1584,14 +1584,14 @@
 	                			tu.eq(0).find('td').eq(0).html(countu);countu++;
 	                			tu.eq(0).find('td').eq(1).html(unitevaluationrec[i].component_id);
 	                			tu.eq(0).find('td').eq(2).html(unitevaluationrec[i].uer_unitid);
-	                			tu.eq(0).find('td').eq(3).html(unitevaluationrec[i].uer_grade);
+	                			tu.eq(0).find('td').eq(3).html(parseFloat(unitevaluationrec[i].uer_grade).toFixed(2));
 	                			tu.eq(0).find('td').eq(4).html(unitevaluationrec[i].uer_index+"类");
 	                			$('#pingfen11 tbody').append(tu);
 	                			}
 	                		}
 	                }
 	                
-	                var zt = $('<tr><td colspan="3">总体评分</td><td colspan="2">'+evaBridgePartlist[0].eva_bridge_part_value+'</td><td colspan="2">等级</td><td colspan="2">'+evaBridgePartlist[0].eva_bridge_part_grde+'</td></tr>');
+	                var zt = $('<tr><td colspan="3">总体评分</td><td colspan="2">'+parseFloat(evaBridgePart.eva_bridge_part_value).toFixed(2)+'</td><td colspan="2">等级</td><td colspan="2">'+evaBridgePartlist[0].eva_bridge_part_grde+'</td></tr>');
 	                $('#pingfen11 tbody').append(zt);
                 }
                 
