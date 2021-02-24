@@ -1513,6 +1513,8 @@ var role = '<%=session.getAttribute("userRole")%>';
         }
     	$('#lookImg').dialog('open');
     }
+    
+    $.fn.dataTable.ext.errMode = 'none';       //屏蔽掉报错弹窗
 
 </script>
 
