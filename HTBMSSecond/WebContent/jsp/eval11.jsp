@@ -185,7 +185,9 @@
                                             <a class="btn btn-default pull-right" style="display: none; margin-right: 5px;" onclick="showScore()">清洁、小修</a>
                                             <a class="btn btn-default pull-right" style="display: none; margin-right: 5px;" onclick="evaRes();">结果统计</a>
                                             <a class="btn btn-default pull-right" style=" margin-right: 5px;" onclick="pingfen11()">11评分</a>
+                                        	<div id="tabBtn" class="btn btn-default pull-right"  style="margin-right: 5px;" ></div>
                                         </div>
+                                        
 
                                     </div>
 
@@ -390,6 +392,9 @@
 <script src="../js/plugin/datatables/dataTables.colVis.min.js"></script>
 <script src="../js/plugin/datatables/dataTables.tableTools.min.js"></script>
 <script src="../js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../js/datatables/dataTables.buttons.min.js"></script>
+<script src="../js/datatables/buttons.html5.min.js"></script>
+<script src="../js/datatables/buttons.flash.min.js"></script>
 <script
         src="../js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
 <script src="../js/myTool.js"></script>
@@ -495,8 +500,29 @@
                         "sNext": "下一页",
                         "sLast": "最后一页"
                     }
-                }
+                },
+				"buttons" : [ {
+					extend : "excel",
+					text : "导出excel",
+					filename : '导出构件评分',
+					exportOptions : {
+						format : {
+							header : function(data) {
+								return data;
+							},
+							body : function(data, columnIdx, rowIdx,
+									code) {
+
+								return data;
+							}
+						},
+						columns : [ 0, 1, 2, 3, 4, 5, 7 ]
+					}
+				} ]
             });
+    
+	table.buttons().container().appendTo($('#tabBtn'));
+	$('.buttons-excel').addClass('btn btn-primary');
 
     function showScore() {
         getScore();
