@@ -264,10 +264,31 @@ public class BrgMbrDao {
 	 * 删除原本下部构件信息
 	 * */
 	public int DeleteDownSpans(String bridge_id){
-		String sql=" delete from brg_card_down_struct where bridge_id=?";
+		String sql=" delete from brg_card_down_struct where bridge_id=? ";
+		
 		int i=this.excuteUpdate(sql,new Object[]{bridge_id});
 		return i;
     }
+	
+	/**
+	 * 删除原本下部构件信息
+	 * */
+	public int DeleteDownSpans(String bridge_id,String span_top,String span_down){
+		List list = new ArrayList<Object>();
+		list.add(bridge_id);
+		String sql=" delete from brg_card_down_struct where bridge_id=? ";
+		if(null!=span_top && !"".equals(span_top)) {
+			sql+= " and direction=? ";
+			list.add(span_top);
+		}
+		if(null!=span_down && !"".equals(span_down)) {
+			sql+= " and direction=? ";
+			list.add(span_down);
+		}
+		int i=this.excuteUpdate(sql,list.toArray());
+		return i;
+	}
+	
 	/**
 	 * 插入一条跨信息
 	 * */

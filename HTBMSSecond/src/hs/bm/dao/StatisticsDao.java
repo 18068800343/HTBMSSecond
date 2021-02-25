@@ -1370,14 +1370,28 @@ public class StatisticsDao {
 					lm.add(ms);
 				}*/
 				CallableStatement call;
+				String span = statistics.getSpan();
 				if("%".equals(statistics.getProject())) {
 					if("%".equals(statistics.getStruct())) {
-						call = conn.prepareCall("{call getstructdefectsPrjAndStruct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						if(null!=span && span.contains("-")) {
+							call = conn.prepareCall("{call getstructdefectsPrjAndStruct_span_between(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						}else {
+							call = conn.prepareCall("{call getstructdefectsPrjAndStruct(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						}
 					}else {
-						call = conn.prepareCall("{call getstructdefectsPrj(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						if(null!=span && span.contains("-")) {
+							call = conn.prepareCall("{call getstructdefectsPrj_span_between(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						}else {
+							call = conn.prepareCall("{call getstructdefectsPrj(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+						}
 					}
 				}else {
-					call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					if(null!=span && span.contains("-")) {
+						call = conn.prepareCall("{call getstructdefects_span_between(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					}else {
+						call = conn.prepareCall("{call getstructdefects(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					}
+					
 				}
 				call.setString(1, project);
 				System.out.println(project);
@@ -1389,7 +1403,11 @@ public class StatisticsDao {
 				call.setString(6, statistics.getManage());
 				call.setString(7, statistics.getZone());
 				call.setString(8, statistics.getDirection());
-				call.setString(9, statistics.getSpan());
+				if(null!=span && span.contains("-")) {
+					call.setString(9, span.split("-")[0]);
+				}else {
+					call.setString(9, statistics.getSpan());
+				}
 				call.setString(10, statistics.getStruct_type());
 				call.setString(11, statistics.getMember_name());
 				call.setString(12, statistics.getDistr_name());
@@ -1397,6 +1415,13 @@ public class StatisticsDao {
 				call.setString(14, statistics.getDefect_name_f());
 				call.setString(15, statistics.getDefect_name());
 				call.setString(16, statistics.getRepair_state());
+				if(null!=span && span.contains("-")) {
+					try {
+						call.setString(17, span.split("-")[1]);
+					} catch (Exception e) {
+						call.setString(17, "1000");
+					}
+				}
 				rs = call.executeQuery(); //执行查询操作，并获取结果集
 				while (rs.next()) {
 					DefectStatistics ms = new DefectStatistics();

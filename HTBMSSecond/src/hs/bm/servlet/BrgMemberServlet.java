@@ -280,12 +280,21 @@ public class BrgMemberServlet extends HttpServlet {
 			OperationConstruct oc = (OperationConstruct) request.getSession().getAttribute("OperationConstruct");
 			String str = request.getParameter("quickSpan_s");
 			String condition = request.getParameter("condition");
+			
 			String span_top = request.getParameter("span_top");
 			String span_down = request.getParameter("span_down");
+			
 			ArrayList<QuickDownSpanVo> list = (ArrayList<QuickDownSpanVo>) JSON.parseArray(str, QuickDownSpanVo.class);
 			
 			BrgMbrDao brgMbrDao = new BrgMbrDao();
-			brgMbrDao.DeleteDownSpans(oc.getId());
+			
+			if(span_top!=null || span_down!=null) {
+				brgMbrDao.DeleteDownSpans(oc.getId(),span_top,span_down);
+			}else{
+				brgMbrDao.DeleteDownSpans(oc.getId());
+			}
+			
+			
 			if (condition.equals("1")) {
 				condition = "分离式";
 				if (span_top != null && span_down != null) {
