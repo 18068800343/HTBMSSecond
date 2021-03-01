@@ -261,7 +261,7 @@
                                                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
                                                     <label>跨号</label>
                                                     <input style="width:100%;height: 32px;"
-                                                           class="form-control input-sm" placeholder="不输默认所有" id="span">
+                                                           class="form-control input-sm" placeholder="不输默认所有,可输入例如  1-4  查询1至4跨，输入单个数字如3查询单独3跨" id="span">
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-6 col-lg-4">
                                                     <label>结构类型</label>
